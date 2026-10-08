@@ -5,10 +5,10 @@
   "sources": {
     "docs/diseno/ontos/marca/manual/recursos/logo-n5.svg": "7c15febb133cf351ac6e9405e2d28241a09bb5e47bf7ecb1a3c7ffa79f41f264",
     "data/mensaje.json": "b34e4abf9a9ecf42c1ba6ec7b3052beeb90cd8b396d7b2d0935a4a447501397d",
-    "data/manual-marca.json": "e4cbd57e58f84f501e46804b4203b22836396f015c9973e5f3beccc5e54c17ba",
+    "data/manual-marca.json": "7c39b2945093db7ec7895f66823da9d866aabe83aec36b6b6ca77a1ff0c9f3d2",
     "data/marca-construccion.json": "aeaa24ae968cedb3a964c1c59355e692b63a37f3425c64c380ef6dc2775c78c6",
     "data/marca-wordmark-geometria.json": "198e7a43b7394915ab20b328656baf0c773b97ee4826d00317b0e160a3468f33",
-    "data/marca-aplicaciones.json": "ed4cb49edc355da236f6c27df1760efa84e78151c5af5289e41e26ffaa86a423",
+    "data/marca-aplicaciones.json": "4cc783693df0b4cdc4d6cc5bd525cf9b7b2ba3eb76e07e2a1da4f820bf1d035d",
     "data/design-system.json": "ae775c8a8e216927e16837857cdb40e23e7adeb89a24d8d4b76e62defad31c7f",
     "data/design-system-tokens.json": "3c2675c0283351ec0a4b213d1c8d2218c6b8368b5c01502b093934f445b07202",
     "scripts/lib/marca-movimiento.js": "6e294a13fbaad6e444f2ce3fcd4fbc68ab30f0605184e052f5cd43a7d95b3df5",
