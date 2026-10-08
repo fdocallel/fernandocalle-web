@@ -116,7 +116,7 @@ html[data-web-page="index"] .ontos-caja__cuerpo { display: grid; grid-template-c
 html[data-web-page="index"] .ontos-caja__bajada { max-width: 46rem; margin: 0; font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading); font-weight: 600; }
 html[data-web-page="index"] .ontos-caja { padding: var(--ds-space-7); background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius); }
 html[data-web-page="index"] .ontos-caja__logo, html[data-web-page="index"] .ontos-caja__logo img { display: block; }
-html[data-web-page="index"] .ontos-caja__logo img { width: 392px; max-width: none; height: auto; }
+html[data-web-page="index"] .ontos-caja__logo img { width: 430px; max-width: none; height: auto; }
 html[data-web-page="index"] .ontos-caja__que-es { max-width: 46rem; margin: var(--ds-space-4) 0 0; font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading); }
 html[data-web-page="index"] .ontos-caja__que-es strong { font-weight: 600; }
 html[data-web-page="index"] .proximo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-5); margin-top: var(--ds-space-6); }
@@ -134,6 +134,6 @@ html[data-web-page="index"] .ontos-caja__enlace a:hover { text-decoration: under
 }
 @media (max-width: 34rem) {
   html[data-web-page="index"] .ontos-caja { padding: var(--ds-space-5); }
-  html[data-web-page="index"] .ontos-caja__logo img { width: 184px; }
+  html[data-web-page="index"] .ontos-caja__logo img { width: 208px; }
   html[data-web-page="index"] .proximo { grid-template-columns: 1fr; }
 }

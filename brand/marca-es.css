@@ -511,7 +511,7 @@ html[data-ontos-web] .barra .marca__simbolo {
   vertical-align: baseline;
   width: var(--marca-simbolo);
   height: var(--marca-simbolo);
-  margin: 0 calc(var(--marca-simbolo) * .349) calc(var(--marca-centro) - var(--marca-simbolo) / 2) 0;
+  margin: 0 calc(var(--marca-simbolo) * .382) calc(var(--marca-centro) - var(--marca-simbolo) / 2) 0;
 }
 html[data-ontos-web] .barra .marca__nombre {
   font-family: var(--ds-font-corporativa);
