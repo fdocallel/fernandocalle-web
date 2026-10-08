@@ -125,9 +125,10 @@ html[data-web-page="index"] .edicion h3 { font-size: var(--ds-type-h2); line-hei
 html[data-web-page="index"] .edicion .desc { margin: 0; }
 html[data-web-page="index"] .edicion .verticales { margin: var(--ds-space-2) 0 0; font-size: var(--ds-type-note); color: var(--sec); }
 html[data-web-page="index"] .edicion .estado { margin: var(--ds-space-3) 0 0; font-size: var(--ds-type-note); color: var(--sec); font-style: italic; }
-html[data-web-page="index"] .ontos-caja__enlace { margin: var(--ds-space-5) 0 0; }
-html[data-web-page="index"] .ontos-caja__enlace a { min-height: 44px; display: inline-flex; align-items: center; color: var(--acento); font-weight: 600; text-decoration: none; }
-html[data-web-page="index"] .ontos-caja__enlace a:hover { text-decoration: underline; }
+/* La acción de la caja: el botón principal de la casa (.cta, el mismo de «Hablamos»), bajo las ediciones y alineado
+   a la izquierda con el texto; cierra la lectura de la caja. Foco: el común de la web (marca-es.css). */
+html[data-web-page="index"] .ontos-caja__accion { margin: var(--ds-space-6) 0 0; }
+html[data-web-page="index"] .ontos-caja__accion .cta { min-height: 48px; display: inline-flex; align-items: center; }
 @media (max-width: 56rem) {
   html[data-web-page="index"] .ontos-caja__cuerpo { grid-template-columns: minmax(0, 1fr); row-gap: var(--ds-space-5); }
   html[data-web-page="index"] .ontos-caja__logo { order: -1; }

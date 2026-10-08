@@ -16,6 +16,9 @@
     "portada.trabajos": {
       "definicion": "8-oct-2026: el ejemplo real de cada familia va al final de su tarjeta, con enlace propio.",
       "selector": "#familias .familia a.familia__ejemplo"
+    },
+    "comun.boton": {
+      "texto": "Cuéntame tu caso · Ver lo hecho · Conocer ontos · Cuéntame tu idea · Escríbeme a hola@ontosdigital.es"
     }
   }
 }

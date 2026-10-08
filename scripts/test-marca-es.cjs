@@ -176,11 +176,16 @@ function checkQueEs(html){
  assert.equal(p.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(),queEs.es,'Qué es ONTOS: texto de mensaje.json web.que_es');
  assert(/<img src="\/brand\/canon\/horizontal-color\.svg" alt="ontos"/.test(zona)&&zona.includes('srcset="/brand/canon/vertical-color.svg"'),'Próximamente: imagotipo del canon (horizontal; vertical en móvil)');
  assert(zona.includes('id="ontos-personal"')&&zona.includes('id="ontos-empresarial"')&&zona.includes('href="'+ONTOS_URL+'/"'),'Próximamente: dos ediciones y enlace a ontosdigital.es');
+ // 9-oct-2026 (Fernando: «crearía un botón más grande para conocer ontos»): la acción de la caja es el botón principal
+ // de la casa (.cta), último de la caja y tras las ediciones, hacia ontosdigital.es.
+ assert(/<div class="proximo">[\s\S]*?<\/div>\s*<p class="ontos-caja__accion"><a class="cta" href="https:\/\/ontosdigital\.es\/">Conocer ontos<\/a><\/p>\s*<\/div>\s*$/.test(zona),'Próximamente: botón «Conocer ontos» (.cta) a ontosdigital.es, tras las ediciones');
  const cta=JSON.parse(fs.readFileSync(path.join(ONTOS,'data/mensaje.json'),'utf8')).superficies.find(s=>s.id==='web.cta_trabajos');
  assert(html.includes('<a class="cta cta--secundaria" href="#familias">'+cta.es+'</a>'),'Panel: segundo botón de mensaje.json web.cta_trabajos hacia #familias (los ejemplos están en sus familias)');
 }
 checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8'));
 assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('Lo comprueba una máquina','Lo revisa una máquina')),/que_es/,'Caso rojo: un «Qué es» fuera del mensaje debe bloquear');
+assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<p class="ontos-caja__accion"><a class="cta" href="https://ontosdigital.es/">Conocer ontos</a></p>','<p class="ontos-caja__enlace"><a href="https://ontosdigital.es/">Conocer ontos ▸</a></p>')),/botón/,'Caso rojo: Próximamente sin botón (enlace de texto) debe bloquear');
+assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<a class="cta" href="https://ontosdigital.es/">Conocer ontos</a>','<a class="cta" href="contacto.html">Conocer ontos</a>')),/botón|ontosdigital/,'Caso rojo: botón de Próximamente que no va a ontosdigital.es debe bloquear');
 assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<section id="familias">','<section class="intro" id="que-es"><h2>Qué es</h2></section>\n<section id="familias">')),/#que-es/,'Caso rojo: la sección «Qué es» de vuelta en la portada debe bloquear');
 assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('src="/brand/canon/horizontal-color.svg"','src="/brand/logo.svg"')),/imagotipo/,'Caso rojo: un logotipo que no es el del canon debe bloquear');
 {
