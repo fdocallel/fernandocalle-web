@@ -9,6 +9,16 @@ const WEB=path.resolve(__dirname,'..');
 const MARCA_NOMBRE='Fernando Calle';
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Favicon raster (Fernando, 8-oct-2026): PNG por WebKit local, sin red, y un ICO con PNG embebidos.
+function rasterPng(html,w,h,root,transparent){
+  const runner=`const fs=require('node:fs');const {webkit}=require(process.env.ONTOS_BRAND_ROOT+'/scripts/verify/node_modules/playwright');(async()=>{const b=await webkit.launch();try{const p=await b.newPage({viewport:{width:${w},height:${h}},deviceScaleFactor:1});await p.route('**/*',r=>r.abort());await p.setContent(fs.readFileSync(0,'utf8'));process.stdout.write(await p.screenshot({type:'png',animations:'disabled',omitBackground:${transparent?'true':'false'}}));}finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1});`;
+  return require('node:child_process').execFileSync(process.execPath,['-e',runner],{input:html,env:{...process.env,ONTOS_BRAND_ROOT:root},timeout:30000,maxBuffer:5*1024*1024});
+}
+function icoDe(pngs){
+  const n=pngs.length,h=Buffer.alloc(6+16*n);h.writeUInt16LE(0,0);h.writeUInt16LE(1,2);h.writeUInt16LE(n,4);let off=6+16*n;
+  pngs.forEach(([px,b],i)=>{const e=6+16*i;h[e]=px%256;h[e+1]=px%256;h.writeUInt16LE(1,e+4);h.writeUInt16LE(32,e+6);h.writeUInt32LE(b.length,e+8);h.writeUInt32LE(off,e+12);off+=b.length;});
+  return Buffer.concat([h,...pngs.map(x=>x[1])]);
+}
 const put=(p,b,check,changed)=>{if(fs.existsSync(p)&&fs.readFileSync(p).equals(Buffer.from(b)))return;changed.push(path.relative(WEB,p));if(!check){fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,b);}};
 function artifacts(root){
   const {loadDesignSystem}=require(path.join(root,'scripts/lib/design-system-model'));
@@ -39,7 +49,18 @@ function artifacts(root){
   for(const layout of ['horizontal','vertical','wordmark','icon'])for(const tone of ['color','color-dark','positive','negative'])
     out[`brand/canon/${layout}-${tone}.svg`]='<!-- GENERADO por scripts/import-marca.cjs desde el manual ONTOS. -->\n'+marks.logo(layout,tone);
   const iconBody=svg.match(/<svg\b[^>]*>([\s\S]*?)<\/svg>/)[1].trim().replace(/(<circle\b[^>]*fill=)"#[0-9a-f]{6}"/i,'$1"'+tokens['brand-teja'].valor+'"');
-  out['brand/canon/favicon.svg']=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><style>svg{color:${tokens['brand-granito'].valor}}@media(prefers-color-scheme:dark){svg{color:${tokens['brand-logo-on-dark'].valor}}}</style>${iconBody}</svg>\n`;
+  // Favicon (manual 3.1.4, quinta versión por contexto; Fernando, 8-oct-2026): paso final de Arcilla, del canon de ONTOS.
+  if(typeof marks.faviconFile!=='function')throw Error('El manual ONTOS no exporta el favicon canónico (marks.faviconFile)');
+  const favSvg=marks.faviconFile(),hueso=tokens['support-hueso'].valor,OCUPA=0.8;
+  out['brand/canon/favicon.svg']=favSvg;
+  // PNG: 16/32/48 sobre disco hueso (se leen en pestaña clara y oscura); 180/192/512 sobre cuadrado hueso. Símbolo al 80 %.
+  const favPng=(px,disco)=>rasterPng(`<!doctype html><style>html,body{margin:0;width:${px}px;height:${px}px;background:transparent}div{width:${px}px;height:${px}px;display:grid;place-items:center;background:${hueso};border-radius:${disco?'50%':'0'}}img{display:block}</style><div><img width="${Math.round(px*OCUPA)}" height="${Math.round(px*OCUPA)}" src="data:image/svg+xml;base64,${Buffer.from(favSvg).toString('base64')}"></div>`,px,px,root,disco);
+  const pequenos=[16,32,48].map(px=>[px,favPng(px,true)]);
+  for(const [px,b] of pequenos)out[`brand/canon/favicon-${px}.png`]=b;
+  out['brand/canon/apple-touch-icon.png']=favPng(180,false);
+  for(const px of [192,512])out[`brand/canon/favicon-${px}.png`]=favPng(px,false);
+  out['brand/canon/favicon.ico']=icoDe(pequenos);
+  out['favicon.ico']=out['brand/canon/favicon.ico']; // ruta por defecto que piden navegadores y buscadores
   // El atributo marca las páginas de esta entrega. El editor puede cambiar de
   // idioma sin perder su interfaz; los espejos EN heredan el mismo atributo.
   let css=model.css.replaceAll('[data-ontos-ds]','html[data-ontos-web]').replace(/url\("([^"]+)"\)/g,(_,url)=>`url("fonts/${path.posix.basename(url)}")`);
@@ -76,7 +97,9 @@ function artifacts(root){
     const links=`<!-- MARCA:estilos · generado desde el canon; diseño ES/EN -->\n<link rel="stylesheet" href="${rel}/canon/tokens.css">\n<link rel="stylesheet" href="${rel}/marca-es.css">${motionScripts}\n<!-- /MARCA:estilos -->`;
     if(html.includes('<!-- MARCA:estilos'))html=html.replace(/<!-- MARCA:estilos[\s\S]*?<!-- \/MARCA:estilos -->/,links);
     else html=html.replace('</head>',links+'\n</head>');
-    html=html.replace(/(<link\b[^>]*rel="icon"[^>]*href=")[^"]*(")/g,'$1'+rel+'/canon/favicon.svg$2');
+    // Enlaces del favicon (8-oct-2026): un bloque generado sustituye cualquier icono anterior. Sin manifiesto: no existe en esta web.
+    html=html.replace(/<!-- MARCA:favicon[\s\S]*?<!-- \/MARCA:favicon -->\n?/,'').replace(/[ \t]*<link\b[^>]*rel="(?:icon|shortcut icon|apple-touch-icon)"[^>]*>\n?/g,'');
+    html=html.replace('<!-- MARCA:estilos',`<!-- MARCA:favicon · generado desde el canon (manual 3.1.4) -->\n<link rel="icon" type="image/svg+xml" href="${rel}/canon/favicon.svg">\n<link rel="icon" type="image/png" sizes="32x32" href="${rel}/canon/favicon-32.png">\n<link rel="icon" type="image/png" sizes="16x16" href="${rel}/canon/favicon-16.png">\n<link rel="apple-touch-icon" sizes="180x180" href="${rel}/canon/apple-touch-icon.png">\n<!-- /MARCA:favicon -->\n<!-- MARCA:estilos`);
     html=html.replace(/(<meta\b[^>]*(?:property="og:image"|name="twitter:image")[^>]*content=")https:\/\/ontosdigital\.es\/brand\/og\.png("[^>]*>)/g,'$1https://ontosdigital.es/brand/canon/og.png$2');
     // 8-oct-2026 (Fernando): «ontos» sale del menú de la barra; el puente queda en la portada y en Aplicaciones.
     html=html.replace(/\n[ \t]*<a class="item item--ontos"[^>]*>[\s\S]*?<\/a>/g,'');
