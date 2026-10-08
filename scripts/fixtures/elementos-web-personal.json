@@ -12,6 +12,10 @@
     "comun.firma": {
       "definicion": "Logotipo provisional de la consultoría (8-oct-2026): símbolo de ontos + «Fernando Calle» en Jost; lleva a la portada.",
       "selector": ".barra a.marca img.marca__simbolo[src$=\"canon/icon-color.svg\"][alt=\"\"] + .marca__nombre"
+    },
+    "portada.trabajos": {
+      "definicion": "8-oct-2026: el ejemplo real de cada familia va al final de su tarjeta, con enlace propio.",
+      "selector": "#familias .familia a.familia__ejemplo"
     }
   }
 }

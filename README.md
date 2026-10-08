@@ -19,10 +19,11 @@ página: ONTOS `docs/estudios/2026-10-08-separar-web-personal-y-ontos.md`.
   centro a 0,35 em sobre la línea de base (mitad de las mayúsculas), separación 0,349 × diámetro y borde izquierdo en
   `--web-content-left`. Barra móvil de 60 px también a 320 (huecos de 8/4 px bajo 24/22rem).
 - Portada (8-oct-2026): «Qué es ontos» sale como sección; su texto (mensaje.json `web.que_es`) va en la caja de
-  «Próximamente» (tras «Así empieza un encargo», antes de «Hablamos»): imagotipo del canon (96 px de símbolo), «Próximamente.»
-  y su bajada como primer texto, qué es ontos y las dos ediciones. Familias y casos comparten rejilla (4 · 2 × 2 · carriles
-  sincronizados en móvil, con los controles bajo los casos); los casos van pegados a sus familias, sin titular (queda como
-  `aria-label`), y el caso n es el «Ejemplo real» de la familia n (lo vigila `test-marca-es.cjs`).
+  «Próximamente» (tras «Así empieza un encargo», antes de «Hablamos»): «Próximamente.» como título, debajo el texto
+  (bajada + qué es ontos) y el imagotipo del canon en segunda columna (96 px de símbolo; en móvil, título, imagotipo,
+  texto), y las dos ediciones. Cada tarjeta de familia lleva al final su «Ejemplo real» (enlace propio; sin sección
+  #trabajos, «Ver lo hecho» va a #familias); subrejilla común para que el ejemplo empiece a la misma altura en las cuatro.
+  Lo vigila `test-marca-es.cjs`.
 - `brand/` es una copia; la canónica sigue en `ontosdigital-web` (la leen los scripts de ONTOS). El canon de marca
   se importa igual (`scripts/import-marca.cjs`).
 - Dominio en: `CNAME`, `robots.txt`, `gen-sitemap.sh` (`DOMINIO`), `i18n/gen-en.py` (`DOMINIO`),

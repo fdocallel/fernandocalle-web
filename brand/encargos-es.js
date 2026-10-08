@@ -17,9 +17,7 @@
 
   // Controles bajo el carril, centrados: flecha, un círculo por familia (lleno si se ve), flecha.
   // Sin JavaScript siguen ocultos en la cabecera; el estado textual queda para lectores de pantalla.
-  // 8-oct-2026: los casos van pegados a sus familias; los controles bajan bajo los casos (en móvil los dos carriles
-  // se siguen, así que mueven ambos). Sin casos, bajo el carril de familias.
-  (document.querySelector('#trabajos .trabajos') || track).after(controls);
+  track.after(controls);
   controls.classList.add('familias__controles--pie');
   track.classList.add('familias--pie');
   const dots = document.createElement('span');
@@ -196,60 +194,4 @@
     card.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') play(card, false); });
     card.addEventListener('focusin', () => play(card, false));
   });
-})();
-
-/* «Hecho y funcionando»: las cuatro tarjetas entran escalonadas la primera vez que se ven.
-   Una sola vez y sin bucles; sin JavaScript o con movimiento reducido quedan visibles y quietas. */
-(() => {
-  const grid = document.querySelector('#trabajos .trabajos');
-  if (!grid || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const top = grid.getBoundingClientRect().top;
-  if (top < innerHeight * .9) return; // ya en pantalla al cargar (ancla o recarga): sin entrada
-  grid.classList.add('trabajos--espera');
-  const observer = new IntersectionObserver(entries => {
-    if (!entries.some(e => e.isIntersecting)) return;
-    observer.disconnect();
-    grid.classList.add('trabajos--entra');
-    void grid.offsetWidth;
-    grid.classList.remove('trabajos--espera');
-    // Terminada la entrada, el gesto al pasar responde sin el retraso escalonado.
-    setTimeout(() => grid.classList.remove('trabajos--entra'), 900);
-  }, {threshold: .25});
-  observer.observe(grid);
-})();
-
-/* Móvil (< 40rem, 8-oct-2026): familias y «Hecho y funcionando» son dos carriles de una tarjeta.
-   Se siguen: al detenerse uno en la tarjeta N, el otro va a la N, así debajo de cada familia queda su
-   ejemplo real. Sin JavaScript, el número 01–04 sigue uniendo cada pareja. */
-(() => {
-  const familias = document.querySelector('[data-familias]');
-  const trabajos = document.querySelector('#trabajos .trabajos');
-  if (!familias || !trabajos) return;
-  const movil = matchMedia('(max-width: 40rem)');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const indice = track => {
-    const cards = [...track.children], base = cards[0].offsetLeft;
-    return cards.reduce((best, card, i) => Math.abs(card.offsetLeft - base - track.scrollLeft) < Math.abs(cards[best].offsetLeft - base - track.scrollLeft) ? i : best, 0);
-  };
-  const guiado = new Set();
-  function seguir(lider, otro) {
-    let espera = 0;
-    lider.addEventListener('scroll', () => {
-      if (!movil.matches || guiado.has(lider)) return;
-      clearTimeout(espera);
-      espera = setTimeout(() => {
-        const n = indice(lider);
-        if (n === indice(otro)) return;
-        const cards = [...otro.children];
-        guiado.add(otro);
-        otro.scrollTo({left: cards[n].offsetLeft - cards[0].offsetLeft, behavior: reduced.matches ? 'instant' : 'smooth'});
-        let quieto = 0;
-        const fin = () => { clearTimeout(quieto); quieto = setTimeout(() => { guiado.delete(otro); otro.removeEventListener('scroll', fin); }, 160); };
-        otro.addEventListener('scroll', fin, {passive: true});
-        fin();
-      }, 140);
-    }, {passive: true});
-  }
-  seguir(familias, trabajos);
-  seguir(trabajos, familias);
 })();

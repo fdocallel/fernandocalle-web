@@ -111,32 +111,10 @@
   .card h3 { font-size: 1.15rem; margin-bottom: 0.6rem; }
   .card p { font-size: 0.95rem; color: var(--sec); }
 
-  /* trabajos: una tarjeta por familia (canon ONTOS data/ontos-empresa.json#lineas), de aplicaciones.html */
-  .trabajos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2rem; }
-  .trabajo {
-    display: flex; flex-direction: column; overflow: hidden; text-decoration: none; color: var(--texto);
-    background: var(--panel); border: 1px solid var(--borde); border-radius: 14px;
-    transition: transform 0.15s ease, border-color 0.15s ease;
-  }
-  .trabajo:hover { transform: translateY(-4px); border-color: var(--teja); }
-  .trabajo img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-bottom: 1px solid var(--borde); }
-  .trabajo .texto { padding: 0.9rem 1.1rem 1.1rem; }
-  .trabajo .etiqueta { font-size: 0.72rem; color: var(--acento); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; }
-  .trabajo h3 { font-size: 1.15rem; margin: 0.4rem 0 0.4rem; line-height: 1.25; }
-  .trabajo p { font-size: 0.92rem; color: var(--sec); line-height: 1.5; }
   .mas { margin-top: 1.6rem; }
   .mas a { color: var(--acento); font-weight: 600; text-decoration: none; display: inline-block; padding: 0.5rem 0; }
   .mas a:hover { text-decoration: underline; }
-  /* Menos de tres columnas (28-sep-2026, Fernando: «más corto»): una fila que se desliza,
-     con la siguiente tarjeta asomando, en vez de tres tarjetas apiladas. */
-  @media (max-width: 52rem) {
-    .trabajos { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 0.9rem;
-      margin-inline: -1.5rem; padding: 0 1.5rem 0.6rem; scroll-padding-inline: 1.5rem; }
-    .trabajo { flex: 0 0 min(78%, 20rem); scroll-snap-align: start; }
-    .trabajo .texto { padding: 0.85rem 1rem 1rem; }
-    .trabajo h3 { font-size: 1.05rem; }
-  }
-  @media (prefers-reduced-motion: reduce) { .trabajo, .cta { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .cta { transition: none; } }
 
   /* quién: retrato + dos frases de fernando-calle.html */
 
@@ -194,7 +172,7 @@
     <h1>Data, processes and knowledge, in order.</h1>
     <div class="ctas">
       <a class="cta" href="/en/contacto.html" data-contacto>Tell me about your case</a>
-      <a class="cta cta--secundaria" href="#trabajos">See the work</a>
+      <a class="cta cta--secundaria" href="#familias">See the work</a>
     </div>
   </div>
 </div>
@@ -216,54 +194,42 @@
       <svg class="familia__figura" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><path d="M30 26h28l10 10v32H30z M58 26v10h10"></path><path d="M37 46h20m-20 8h24m-24 8h14"></path><rect x="30" y="86" width="38" height="28" rx="3"></rect><path d="M30 89l19 13 19-13"></path><path d="M30 136h13l4 5h21v29H30z"></path><path d="M72 48c18 0 20 24 38 24 M72 100h38 M72 154c18 0 20-26 38-26"></path><rect x="114" y="58" width="62" height="84" rx="6"></rect><path d="M114 86h62m-62 28h62"></path><path d="M124 72h6m6 0h22m-34 28h6m6 0h28m-40 28h6m6 0h16"></path><path d="M180 100h18"></path><circle cx="230" cy="100" r="30"></circle><path class="acento" d="M230 84q2 14 16 16q-14 2-16 16q-2-14-16-16q14-2 16-16z"></path></svg>
       <div class="familia__texto"><p>For people and businesses whose information is scattered across folders, inboxes and heads. We put what you know and have in order, and connect it to an AI that works from there, with sources you can check.</p>
         <ul class="enlaces"><li><a href="https://ontosdigital.es/en/">And I turn it into a product: ontos ▸</a></li></ul></div>
+      <a class="familia__ejemplo" href="https://ontosdigital.es/en/armario.html">
+        <span class="etiqueta">Real example</span>
+        <img src="/brand/servicios/armario.png" alt="Clothes hung on shelves sorted by colour: whites, greys, blacks" width="1240" height="698" decoding="async" loading="lazy">
+        <h4>Your clothes, catalogued and hung on shelves</h4>
+      </a>
     </article>
     <article class="familia">
       <div class="familia__titulo"><span class="num">02</span> <h3>Digital engineering</h3></div>
       <svg class="familia__figura" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><path d="M22 110h22c20 0 30 30 46 46c20 20 100 20 120 0c16-16 26-46 46-46h22"></path><path d="M22 126h20c20 0 30 28 46 44c22 14 102 14 124 0c16-16 26-44 46-44h20"></path><rect x="40" y="104" width="220" height="6" rx="1"></rect><path d="M84 150Q150 86 216 150m-124 2Q150 100 208 152"></path><path d="M106 110v22.2m22-22.2v11.6m22-11.6v8m22-8v11.6m22-11.6v22.2"></path><path d="M145 49l-33 47m43-47l33 47"></path><path class="acento" d="M142 34h16a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-16a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3z M139 40h-12v-8m34 8h12v-8m-55 0h20m32 0h20"></path></svg>
       <div class="familia__texto"><p>BIM, GIS and drone capture for engineering firms and public procurement: information requirements, coordination and deliverable control. It starts with a free BIM readiness check.</p></div>
+      <a class="familia__ejemplo" href="/en/modelado-3d.html">
+        <span class="etiqueta">Real example</span>
+        <img src="/brand/servicios/modelado-3d.png" alt="The same house in two versions: textured scan and simple geometry" width="1280" height="720" decoding="async" loading="lazy">
+        <h4>From a flight to a model</h4>
+      </a>
     </article>
     <article class="familia">
       <div class="familia__titulo"><span class="num">03</span> <h3>Custom tools</h3></div>
       <svg class="familia__figura" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><path d="M30 66v-8h46v62h-8"></path><rect x="22" y="66" width="46" height="62" rx="3"></rect><path d="M30 80h30m-30 10h24m-24 10h30m-30 10h18"></path><path d="M72 100h16"></path><path d="M124.7 97.2L128.9 97.8L128.9 102.2L124.7 102.8L123 107L125.5 110.4L122.4 113.5L119 111L114.8 112.7L114.2 116.9L109.8 116.9L109.2 112.7L105 111L101.6 113.5L98.5 110.4L101 107L99.3 102.8L95.1 102.2L95.1 97.8L99.3 97.2L101 93L98.5 89.6L101.6 86.5L105 89L109.2 87.3L109.8 83.1L114.2 83.1L114.8 87.3L119 89L122.4 86.5L125.5 89.6L123 93Z"></path><circle cx="112" cy="100" r="5"></circle><path d="M134 100h12m-4-4l4 4-4 4"></path><rect x="154" y="30" width="124" height="140" rx="9"></rect><path d="M154 52h124m-110-11h1m8 0h1m8 0h1"></path><rect x="168" y="66" width="14" height="14" rx="3"></rect><rect x="168" y="94" width="14" height="14" rx="3"></rect><rect x="168" y="122" width="14" height="14" rx="3"></rect><path d="M171 73l3 3 6-6m-9 31l3 3 6-6M192 73h62m-62 28h48"></path><path d="M192 129h56"></path><path class="acento" d="M164 128l7 7 14-16"></path></svg>
       <div class="familia__texto"><p>For teams that repeat operations or check documents by hand. Automations, checks and applications that turn a process or a collection into something people use: a PDF editor, a wardrobe app.</p></div>
+      <a class="familia__ejemplo" href="/editor-pdf/?lang=en">
+        <span class="etiqueta">Real example</span>
+        <img src="/brand/servicios/editor-pdf.png" alt="PDF editor with a three-page sample document" width="1280" height="720" decoding="async" loading="lazy">
+        <h4>A PDF editor that never takes your documents off your computer</h4>
+      </a>
     </article>
     <article class="familia">
       <div class="familia__titulo"><span class="num">04</span> <h3>Websites and experiences</h3></div>
       <svg class="familia__figura" viewBox="0 0 300 200" aria-hidden="true" focusable="false"><rect x="22" y="24" width="256" height="152" rx="10"></rect><path d="M22 50h256m-242-13h1m8 0h1m8 0h1"></path><rect x="84" y="31" width="132" height="12" rx="6"></rect><rect x="40" y="66" width="76" height="58" rx="2"></rect><rect x="48" y="74" width="60" height="42"></rect><path d="M48 116l17-21 10 12 8-8 25 17"></path><path d="M94 84a5 5 0 1 0 0.01 0z"></path><path d="M40 140h44m-44 12h28"></path><path d="M98 158l14-14 5 5-14 14h-5z"></path><circle cx="200" cy="113" r="20"></circle><path d="M180 113a20 7 0 0 0 40 0"></path><ellipse cx="200" cy="113" rx="58" ry="16" transform="rotate(-16 200 113)"></ellipse><ellipse cx="200" cy="113" rx="58" ry="16" transform="rotate(22 200 113)"></ellipse><circle cx="146.1" cy="122.8" r="5"></circle><circle class="acento" cx="245" cy="120.1" r="5"></circle></svg>
       <div class="familia__texto"><p>Websites to show a project or a body of work, which their owners can update without relying on anyone. And experiences to explore a brand or a place: 2D and 3D animation, games and navigable worlds.</p></div>
+      <a class="familia__ejemplo" href="https://josemariacasado.com" rel="noopener" target="_blank">
+        <span class="etiqueta">Real example</span>
+        <img src="/brand/servicios/web-jmcasado.png" alt="Homepage of painter José María Casado's website" width="1280" height="720" decoding="async" loading="lazy">
+        <h4>A website the client can maintain</h4>
+      </a>
     </article>
-  </div>
-</section>
-<section id="trabajos" aria-label="Built and working">
-  <div class="trabajos">
-    <a class="trabajo" href="https://ontosdigital.es/en/armario.html">
-      <span class="etiqueta">Real example</span>
-      <img src="/brand/servicios/armario.png" alt="Clothes hung on shelves sorted by colour: whites, greys, blacks" width="1240" height="698" decoding="async" loading="lazy">
-      <div class="texto">
-        <h3>Your clothes, catalogued and hung on shelves</h3>
-      </div>
-    </a>
-    <a class="trabajo" href="/en/modelado-3d.html">
-      <span class="etiqueta">Real example</span>
-      <img src="/brand/servicios/modelado-3d.png" alt="The same house in two versions: textured scan and simple geometry" width="1280" height="720" decoding="async" loading="lazy">
-      <div class="texto">
-        <h3>From a flight to a model</h3>
-      </div>
-    </a>
-    <a class="trabajo" href="/editor-pdf/?lang=en">
-      <span class="etiqueta">Real example</span>
-      <img src="/brand/servicios/editor-pdf.png" alt="PDF editor with a three-page sample document" width="1280" height="720" decoding="async" loading="lazy">
-      <div class="texto">
-        <h3>A PDF editor that never takes your documents off your computer</h3>
-      </div>
-    </a>
-    <a class="trabajo" href="https://josemariacasado.com" rel="noopener" target="_blank">
-      <span class="etiqueta">Real example</span>
-      <img src="/brand/servicios/web-jmcasado.png" alt="Homepage of painter José María Casado's website" width="1280" height="720" decoding="async" loading="lazy">
-      <div class="texto">
-        <h3>A website the client can maintain</h3>
-      </div>
-    </a>
   </div>
   <p class="mas"><a href="/en/aplicaciones.html">Explore the applications ▸</a></p>
 </section>
@@ -303,13 +269,17 @@
 
 <section id="proximamente" class="proximamente">
   <div class="ontos-caja">
-    <picture class="ontos-caja__logo">
-      <source media="(max-width: 34rem)" srcset="/brand/canon/vertical-color.svg" width="184" height="171">
-      <img src="/brand/canon/horizontal-color.svg" alt="ontos" width="392" height="96" decoding="async">
-    </picture>
     <h2 class="ontos-caja__titulo">Coming soon.</h2>
-    <p class="ontos-caja__bajada">I built the first digital twin for myself, and it is the proof that this works: a model of my entire life kept up to date every day with AI.</p>
-    <p class="ontos-caja__que-es"><em>ontos</em>, from the Greek ὄντος: <span class="serif">“that which is”</span>. Almost nobody has an information problem: what they have is an <strong>order</strong> problem. Data lives in folders, admin lives in your head and knowledge lives in each person's experience. ontos puts it in order and connects it to artificial intelligence, so that it works from your reality: in your daily life, in your project or in your company. A machine checks it. A person signs it.</p>
+    <div class="ontos-caja__cuerpo">
+      <div class="ontos-caja__texto">
+        <p class="ontos-caja__bajada">I built the first digital twin for myself, and it is the proof that this works: a model of my entire life kept up to date every day with AI.</p>
+        <p class="ontos-caja__que-es"><em>ontos</em>, from the Greek ὄντος: <span class="serif">“that which is”</span>. Almost nobody has an information problem: what they have is an <strong>order</strong> problem. Data lives in folders, admin lives in your head and knowledge lives in each person's experience. ontos puts it in order and connects it to artificial intelligence, so that it works from your reality: in your daily life, in your project or in your company. A machine checks it. A person signs it.</p>
+      </div>
+      <picture class="ontos-caja__logo">
+        <source media="(max-width: 34rem)" srcset="/brand/canon/vertical-color.svg" width="184" height="171">
+        <img src="/brand/canon/horizontal-color.svg" alt="ontos" width="392" height="96" decoding="async">
+      </picture>
+    </div>
     <div class="proximo">
       <article class="edicion" id="ontos-personal">
         <h3>ontos personal</h3>
