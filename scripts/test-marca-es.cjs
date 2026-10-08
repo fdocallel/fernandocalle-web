@@ -106,8 +106,11 @@ function checkTrabajos(html){
  assert(i>0&&i<html.indexOf('<section id="encargo"'),'Trabajos: antes de «Así empieza un encargo»');
  const texto=s=>s.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
  assert.equal(texto((zona.match(/<h2>([\s\S]*?)<\/h2>/)||[])[1]||''),proceso.trabajos_titulo,'Trabajos: título del canon');
- const tarjetas=[...zona.matchAll(/<a class="trabajo" href="([^"]*)"( rel="noopener" target="_blank")?>\s*<img src="([^"]*)" alt="([^"]*)"[\s\S]*?<span class="etiqueta">([\s\S]*?)<\/span>\s*<h3>([\s\S]*?)<\/h3>/g)].map(m=>[m[1],!!m[2],m[3],m[4],texto(m[5]),texto(m[6])]);
- assert.deepEqual(tarjetas,lineas.map(l=>[separa(l.portada_trabajo.href),!!l.portada_trabajo.externo,l.portada_trabajo.imagen,l.portada_trabajo.alt,l.nombre,l.portada_trabajo.titulo]),'Trabajos: tarjetas del canon (destino directo; externa en pestaña nueva)');
+ // 8-oct-2026 (Fernando): cada caso es el ejemplo real de la familia que tiene encima, por columnas.
+ // La tarjeta n es la de la familia n del canon (mismo orden) y #trabajos sigue a #familias sin nada entre medias.
+ assert(/<\/section>\s*<section id="trabajos">/.test(html)&&html.lastIndexOf('<section',i-1)===html.indexOf('<section id="familias">'),'Trabajos: justo debajo de las familias');
+ const tarjetas=[...zona.matchAll(/<a class="trabajo" href="([^"]*)"( rel="noopener" target="_blank")?>\s*<span class="etiqueta">([\s\S]*?)<\/span>\s*<img src="([^"]*)" alt="([^"]*)"[\s\S]*?<h3>([\s\S]*?)<\/h3>/g)].map(m=>[m[1],!!m[2],texto(m[3]),m[4],m[5],texto(m[6])]);
+ assert.deepEqual(tarjetas,lineas.map(l=>[separa(l.portada_trabajo.href),!!l.portada_trabajo.externo,'Ejemplo real',l.portada_trabajo.imagen,l.portada_trabajo.alt,l.portada_trabajo.titulo]),'Trabajos: tarjetas del canon en el orden de las familias (destino directo; externa en pestaña nueva)');
 }
 // Aplicaciones por baldas = canon (3-oct-2026; ONTOS/raw/marca/2026-10-03-web-aplicaciones-fernando.md):
 // una balda por familia en su orden, sus piezas en orden, tipo y título de cada pieza, «Producto» solo
@@ -155,15 +158,23 @@ assert.throws(()=>checkCatalogo(appsHtml.replace('href="'+ONTOS_URL+'/armario.ht
 assert.throws(()=>checkCatalogo(appsHtml.replace('href="'+ONTOS_URL+'/">Conocer','href="producto.html">Conocer')),/Separación/,'Caso rojo: un enlace relativo al producto debe bloquear');
 // «Qué es ONTOS» = mensaje.json web.que_es (3-oct-2026; ONTOS/raw/marca/2026-10-03-web-que-es-ontos-a-fernando.md).
 const queEs=JSON.parse(fs.readFileSync(path.join(ONTOS,'data/mensaje.json'),'utf8')).superficies.find(s=>s.id==='web.que_es');
+// 8-oct-2026 (Fernando): la sección «Qué es ontos» sale de la portada; su texto vive dentro de la caja de
+// «Próximamente» (al final, tras «Hablamos»), con el imagotipo del canon y el enlace a ontosdigital.es.
 function checkQueEs(html){
- const i=html.indexOf('<section class="intro" id="que-es">'),zona=html.slice(i,html.indexOf('</section>',i));
- const p=(zona.match(/<p>([\s\S]*?)<\/p>/)||[])[1]||'';
+ assert(!html.includes('id="que-es"')&&!html.includes('href="#que-es"'),'Qué es ONTOS: sin sección ni ancla #que-es en la portada');
+ const i=html.indexOf('<section id="proximamente"'),zona=html.slice(i,html.indexOf('</section>',i));
+ assert(i>html.indexOf('<section class="cierre" id="contacto">')&&i<html.indexOf('<footer'),'Próximamente: al final de la portada, tras «Hablamos»');
+ const p=(zona.match(/<p class="ontos-caja__que-es">([\s\S]*?)<\/p>/)||[])[1]||'';
  assert.equal(p.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(),queEs.es,'Qué es ONTOS: texto de mensaje.json web.que_es');
+ assert(/<img src="\/brand\/canon\/horizontal-color\.svg" alt="ontos"/.test(zona)&&zona.includes('srcset="/brand/canon/vertical-color.svg"'),'Próximamente: imagotipo del canon (horizontal; vertical en móvil)');
+ assert(zona.includes('id="ontos-personal"')&&zona.includes('id="ontos-empresarial"')&&zona.includes('href="'+ONTOS_URL+'/"'),'Próximamente: dos ediciones y enlace a ontosdigital.es');
  const cta=JSON.parse(fs.readFileSync(path.join(ONTOS,'data/mensaje.json'),'utf8')).superficies.find(s=>s.id==='web.cta_trabajos');
  assert(html.includes('<a class="cta cta--secundaria" href="#trabajos">'+cta.es+'</a>'),'Panel: segundo botón de mensaje.json web.cta_trabajos hacia #trabajos');
 }
 checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8'));
 assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('Lo comprueba una máquina','Lo revisa una máquina')),/que_es/,'Caso rojo: un «Qué es» fuera del mensaje debe bloquear');
+assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<section id="familias">','<section class="intro" id="que-es"><h2>Qué es</h2></section>\n<section id="familias">')),/#que-es/,'Caso rojo: la sección «Qué es» de vuelta en la portada debe bloquear');
+assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('src="/brand/canon/horizontal-color.svg"','src="/brand/logo.svg"')),/imagotipo/,'Caso rojo: un logotipo que no es el del canon debe bloquear');
 // Armario mínimo (3-oct-2026): la página es el probador y nada más.
 function checkArmario(html){
  const main=html.slice(html.indexOf('<main'),html.indexOf('</main>'));
@@ -197,7 +208,12 @@ for(const f of [...pages,...pages.filter(f=>f!=='editor-pdf/index.html').map(f=>
 assert.equal(ontosVisibles('<p>Hola ONTOS</p>'),1,'Caso rojo: «ONTOS» visible debe contarse');
 const homeHtml=fs.readFileSync(path.join(WEB,'index.html'),'utf8');
 checkTrabajos(fs.readFileSync(path.join(WEB,'index.html'),'utf8'));
-assert.throws(()=>checkTrabajos(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<span class="etiqueta">'+lineas[1].nombre+'</span>','<span class="etiqueta">Otra</span>')),/tarjetas/,'Caso rojo: una tarjeta fuera del canon debe bloquear');
+{
+ const home=fs.readFileSync(path.join(WEB,'index.html'),'utf8'),t=[...home.matchAll(/<a class="trabajo"[\s\S]*?<\/a>/g)].map(m=>m[0]);
+ assert.throws(()=>checkTrabajos(home.replace(t[0]+'\n    '+t[1],t[1]+'\n    '+t[0])),/tarjetas/,'Caso rojo: dos casos cambiados de columna (fuera del orden de las familias) deben bloquear');
+ assert.throws(()=>checkTrabajos(home.replace('<span class="etiqueta">Ejemplo real</span>','<span class="etiqueta">Otra</span>')),/tarjetas/,'Caso rojo: una tarjeta fuera del canon debe bloquear');
+ assert.throws(()=>checkTrabajos(home.replace('<section id="trabajos">','<section id="intermedia"><h2>X</h2></section>\n<section id="trabajos">')),/debajo/,'Caso rojo: una sección entre familias y casos debe bloquear');
+}
 checkEncargo(fs.readFileSync(path.join(WEB,'index.html'),'utf8'));
 assert.throws(()=>checkEncargo(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<h3>'+proceso.proceso[1].nombre+'</h3>','<h3>Otro paso</h3>')),/pasos/,'Caso rojo: un paso fuera del canon debe bloquear');
 checkFamilias(homeHtml);
@@ -333,7 +349,8 @@ function signature({html,baseline=false,file,subtitle,revision,description,sep})
   d.querySelector('section#familias')?.remove();
   d.querySelector('section#encargo')?.remove(); // 3-oct: cuatro pasos desde el canon (checkEncargo)
   d.querySelector('section#trabajos')?.remove(); // 3-oct: «Hecho y funcionando» desde el canon (checkTrabajos)
-  d.querySelector('section#que-es p')?.remove(); // 3-oct: «Qué es ONTOS» desde mensaje.json web.que_es (checkQueEs)
+  d.querySelector('section#que-es')?.remove(); // 8-oct: «Qué es ONTOS» sale de la portada; su texto (mensaje.json web.que_es) va en Próximamente (checkQueEs)
+  d.querySelector('section#proximamente')?.remove(); // 8-oct: Próximamente al final de la portada (checkQueEs)
   d.querySelector('.home-feature .cta--secundaria')?.remove(); // 3-oct: «Ver lo hecho» desde mensaje.json web.cta_trabajos (checkQueEs)
   if(baseline&&description){for(const m of d.querySelectorAll('meta[name=description]'))m.remove();const m=d.createElement('meta');m.name='description';m.content=description.replace(/ · ontos\.$/,'.');d.head.append(m);} // 8-oct-2026: sin «· ontos» (web personal)
  }

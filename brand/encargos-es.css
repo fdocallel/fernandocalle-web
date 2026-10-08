@@ -1,5 +1,11 @@
 /* Composiciones de esta revisión web. Identidad y escala desde el kit canónico. */
-html[data-web-page="index"] #familias { padding-bottom: var(--ds-space-8); }
+/* Familias y «Hecho y funcionando» comparten rejilla (8-oct-2026, Fernando): cada caso es el ejemplo real
+   de la familia que tiene encima. Mismas columnas y huecos en las dos secciones; poco aire entre ellas y sin filete.
+   ≥ 60rem: cuatro columnas · 40–60rem: dos (2 × 2 en ambas) · < 40rem: dos carriles de una tarjeta que se siguen
+   (encargos-es.js): al pasar de familia, debajo aparece su ejemplo. El número 01–04 une cada pareja. */
+html[data-web-page="index"] #familias { padding-bottom: var(--ds-space-6); }
+html[data-web-page="index"] #familias + #trabajos { padding-top: 0; border-top: 0; }
+html[data-web-page="index"] #trabajos h2 { margin-bottom: var(--ds-space-5); }
 html[data-web-page="index"] .familias__cabecera { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-5); margin-bottom: var(--ds-space-6); }
 html[data-web-page="index"] .familias__cabecera h2 { margin: 0; }
 html[data-web-page="index"] .familias__controles:not([hidden]) { display: flex; gap: var(--ds-space-2); align-items: center; }
@@ -8,7 +14,7 @@ html[data-web-page="index"] .familias__controles button { display: grid; place-i
 html[data-web-page="index"] .familias__controles button:hover:not(:disabled) { background: var(--ds-action); color: var(--ds-on-action); }
 html[data-web-page="index"] .familias__controles button:disabled { opacity: .35; cursor: default; }
 html[data-web-page="index"] .familias__controles svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-html[data-web-page="index"] .familias { display: grid; grid-auto-flow: column; --familias-asoma: 3rem; grid-auto-columns: calc((100% - 3 * var(--ds-space-5)) / 4); gap: var(--ds-space-5); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--borde) transparent; padding-block: var(--ds-space-1) var(--ds-space-4); }
+html[data-web-page="index"] .familias { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ds-space-5); padding-block: var(--ds-space-1) 0; }
 html[data-web-page="index"] .familia { min-width: 0; display: flex; flex-direction: column; padding: var(--ds-space-5); margin: 0; background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius); scroll-snap-align: start; transition: transform var(--web-motion-fast) ease; }
 /* Movimiento de las familias (propuesta 3-oct): figura trazada al entrar, gesto al pasar; controles al pie con un círculo por familia. */
 @media (hover: hover) { html[data-web-page="index"] .familia:hover { transform: translateY(-3px); } }
@@ -36,13 +42,8 @@ html[data-web-page="index"] .familia .enlaces a:hover { text-decoration: underli
 html[data-web-page="index"] .familia__figura { display: block; flex: none; width: 100%; height: 144px; margin-bottom: var(--ds-space-5); fill: none; stroke: var(--ds-brand-verde); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 html[data-web-page="index"] .familia__figura .acento { stroke: var(--teja); }
 html[data-web-page="index"] :where(.familias, .familias__controles button):focus-visible { outline: 3px solid var(--acento); outline-offset: 3px; }
-/* Las cuatro caben juntas en escritorio; por debajo, carril con flechas y círculos. */
-@media (max-width: 72rem) {
-  html[data-web-page="index"] .familias { grid-auto-columns: calc((100% - 2 * var(--ds-space-5) - var(--familias-asoma)) / 2); }
-}
 @media (max-width: 40rem) {
   html[data-web-page="index"] .familias__cabecera { gap: var(--ds-space-3); flex-wrap: wrap; }
-  html[data-web-page="index"] .familias { grid-auto-columns: 86%; gap: var(--ds-space-4); }
   html[data-web-page="index"] .familia__titulo { min-height: 88px; }
   html[data-web-page="index"] .familia__figura { height: 120px; }
 }
@@ -85,12 +86,22 @@ html[data-web-page="index"] .paso p { max-width: 34ch; margin: 0; }
    Cada imagen (16:9, como sus fuentes: sin recorte) va enmarcada igual (passe-partout del panel + filete), así capturas claras y fotos
    oscuras conviven con la misma densidad. Al pasar o con foco: leve elevación, título subrayado y flecha.
    Entrada escalonada al llegar con scroll (encargos-es.js); sin JS o con movimiento reducido, estático. */
-html[data-web-page="index"] .trabajos { counter-reset: trabajo; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ds-space-5); margin-top: 0; }
-@media (max-width: 72rem) { html[data-web-page="index"] .trabajos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+html[data-web-page="index"] .trabajos { counter-reset: trabajo; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ds-space-5); margin: 0; padding: var(--ds-space-1) 0 0; scroll-padding-inline: 0; }
+/* Rejilla común (después de las dos bases, para ganarles en cascada): cuatro en escritorio, 2 × 2 en tablet;
+   en móvil, dos carriles de una tarjeta (familias con flechas y círculos). */
+@media (max-width: 60rem) {
+  html[data-web-page="index"] :is(.familias, .trabajos) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 40rem) {
+  html[data-web-page="index"] :is(.familias, .trabajos) { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 86%; gap: var(--ds-space-4); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--borde) transparent; padding-bottom: var(--ds-space-4); }
+  html[data-web-page="index"] .familias { scroll-behavior: smooth; }
+}
 html[data-web-page="index"] .trabajo { counter-increment: trabajo; position: relative; display: flex; flex-direction: column; overflow: hidden; padding: var(--ds-space-2); background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius); color: var(--texto); text-decoration: none; transition: transform var(--web-motion-fast) ease, border-color var(--web-motion-fast) ease; }
 html[data-web-page="index"] .trabajo img { flex: none; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: center top; border: 1px solid var(--borde); border-radius: calc(var(--ds-radius) - var(--ds-space-1)); background: var(--bg); }
 html[data-web-page="index"] .trabajo .texto { display: flex; flex-direction: column; flex: 1; padding: var(--ds-space-4) var(--ds-space-3) var(--ds-space-3); }
-html[data-web-page="index"] .trabajo .etiqueta { display: flex; align-items: baseline; gap: var(--ds-space-2); font-size: var(--ds-type-note); line-height: 1.3; color: var(--sec); letter-spacing: .12em; }
+html[data-web-page="index"] .trabajo { scroll-snap-align: start; }
+/* «01 · Ejemplo real» encima de la imagen: el mismo número, tamaño y color que .familia .num. */
+html[data-web-page="index"] .trabajo .etiqueta { display: flex; align-items: baseline; gap: var(--ds-space-2); padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-3); font-size: var(--ds-type-note); line-height: 1.3; color: var(--sec); letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
 html[data-web-page="index"] .trabajo .etiqueta::before { content: counter(trabajo, decimal-leading-zero); color: var(--acento); letter-spacing: 0; font-variant-numeric: tabular-nums; }
 html[data-web-page="index"] .trabajo h3 { font-size: var(--ds-type-h3); line-height: 1.3; margin: var(--ds-space-2) 0 0; text-decoration: underline transparent; text-decoration-thickness: 1px; text-underline-offset: .22em; transition: text-decoration-color var(--web-motion-fast) ease; }
 html[data-web-page="index"] .trabajo h3::after { content: '\00a0\25B8'; display: inline-block; color: var(--acento); opacity: 0; transform: translateX(-4px); transition: opacity var(--web-motion-fast) ease, transform var(--web-motion-fast) ease; }
@@ -119,6 +130,26 @@ html[data-web-page="index"] #trabajos .mas { margin-top: var(--ds-space-5); }
   html[data-web-page="index"] .paso::after { transition: none; }
 }
 
-@media (max-width: 52rem) {
-  html[data-web-page="index"] .trabajos { margin-inline: 0; padding-inline: 0; padding-top: var(--ds-space-1); scroll-padding-inline: 0; }
+/* Próximamente (8-oct-2026): vuelve de Aplicaciones como cierre de la portada. Una sola caja para ontos:
+   imagotipo del canon (horizontal; vertical en móvil) al mínimo digital del manual 3.1.6 (N5 de 96 px visibles),
+   con su área de protección x = B/6 (≈ 19 px) libre; debajo, qué es ontos y sus dos ediciones. */
+html[data-web-page="index"] .proximamente .bajada { max-width: 46rem; margin: 0 0 var(--ds-space-6); font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading); text-align: start; hyphens: manual; }
+html[data-web-page="index"] .ontos-caja { padding: var(--ds-space-7); background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius); }
+html[data-web-page="index"] .ontos-caja__logo, html[data-web-page="index"] .ontos-caja__logo img { display: block; }
+html[data-web-page="index"] .ontos-caja__logo img { width: 392px; max-width: none; height: auto; }
+html[data-web-page="index"] .ontos-caja__que-es { max-width: 46rem; margin: var(--ds-space-6) 0 0; font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading); }
+html[data-web-page="index"] .ontos-caja__que-es strong { font-weight: 600; }
+html[data-web-page="index"] .proximo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-5); margin-top: var(--ds-space-6); }
+html[data-web-page="index"] .edicion { padding-top: var(--ds-space-4); border-top: 1px solid var(--borde); border-radius: 0; background: none; }
+html[data-web-page="index"] .edicion h3 { font-size: var(--ds-type-h2); line-height: var(--ds-type-h2-leading); margin: 0 0 var(--ds-space-2); }
+html[data-web-page="index"] .edicion .desc { margin: 0; }
+html[data-web-page="index"] .edicion .verticales { margin: var(--ds-space-2) 0 0; font-size: var(--ds-type-note); color: var(--sec); }
+html[data-web-page="index"] .edicion .estado { margin: var(--ds-space-3) 0 0; font-size: var(--ds-type-note); color: var(--sec); font-style: italic; }
+html[data-web-page="index"] .ontos-caja__enlace { margin: var(--ds-space-5) 0 0; }
+html[data-web-page="index"] .ontos-caja__enlace a { min-height: 44px; display: inline-flex; align-items: center; color: var(--acento); font-weight: 600; text-decoration: none; }
+html[data-web-page="index"] .ontos-caja__enlace a:hover { text-decoration: underline; }
+@media (max-width: 34rem) {
+  html[data-web-page="index"] .ontos-caja { padding: var(--ds-space-5); }
+  html[data-web-page="index"] .ontos-caja__logo img { width: 184px; }
+  html[data-web-page="index"] .proximo { grid-template-columns: 1fr; }
 }

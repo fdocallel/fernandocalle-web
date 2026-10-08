@@ -12,8 +12,15 @@ página: ONTOS `docs/estudios/2026-10-08-separar-web-personal-y-ontos.md`.
 - Se quedan en ontosdigital.es (y aquí se podaron): `producto.html`, los casos, los clips, `armario.html`,
   `entrar.html`, `solicitud.html` y `producto/`. Los enlaces a ellas apuntan a `https://ontosdigital.es/<ruta>`
   (en /en/, a su espejo `/en/` de allí).
-- La barra firma «Fernando Calle» en texto (tipografía corporativa del manual de marca de ontos, que se mantiene)
-  y lleva un enlace discreto «ontos» a ontosdigital.es. Sin logotipo ni movimiento Arcilla.
+- La barra firma con el **logotipo provisional** de la consultoría (8-oct-2026): símbolo de ontos (`brand/canon/icon-color.svg`,
+  decorativo, `alt=""`) + «Fernando Calle» en Jost, un solo enlace a `/`, y un enlace discreto «ontos» a ontosdigital.es.
+  Lo escribe `import-marca.cjs`; medidas en `brand/marca-es.css`: símbolo a la altura de los ascendentes (0,78 em),
+  separación del imagotipo horizontal del canon (0,349 × diámetro) y borde izquierdo en `--web-content-left`. Sin Arcilla.
+  Ojo: queda por debajo del mínimo digital del símbolo del manual (3.1.6, 96 px); es provisional, a decidir por Fernando.
+- Portada (8-oct-2026): «Qué es ontos» sale como sección; su texto (mensaje.json `web.que_es`) va en la caja de
+  «Próximamente», al final tras «Hablamos», con el imagotipo del canon (96 px de símbolo, mínimo del manual) y las dos
+  ediciones. Familias y «Hecho y funcionando» comparten rejilla (4 · 2 × 2 · carriles sincronizados en móvil) y el caso n
+  es el «Ejemplo real» de la familia n (lo vigila `test-marca-es.cjs`).
 - `brand/` es una copia; la canónica sigue en `ontosdigital-web` (la leen los scripts de ONTOS). El canon de marca
   se importa igual (`scripts/import-marca.cjs`).
 - Dominio en: `CNAME`, `robots.txt`, `gen-sitemap.sh` (`DOMINIO`), `i18n/gen-en.py` (`DOMINIO`),

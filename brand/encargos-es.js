@@ -215,3 +215,39 @@
   }, {threshold: .25});
   observer.observe(grid);
 })();
+
+/* Móvil (< 40rem, 8-oct-2026): familias y «Hecho y funcionando» son dos carriles de una tarjeta.
+   Se siguen: al detenerse uno en la tarjeta N, el otro va a la N, así debajo de cada familia queda su
+   ejemplo real. Sin JavaScript, el número 01–04 sigue uniendo cada pareja. */
+(() => {
+  const familias = document.querySelector('[data-familias]');
+  const trabajos = document.querySelector('#trabajos .trabajos');
+  if (!familias || !trabajos) return;
+  const movil = matchMedia('(max-width: 40rem)');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const indice = track => {
+    const cards = [...track.children], base = cards[0].offsetLeft;
+    return cards.reduce((best, card, i) => Math.abs(card.offsetLeft - base - track.scrollLeft) < Math.abs(cards[best].offsetLeft - base - track.scrollLeft) ? i : best, 0);
+  };
+  const guiado = new Set();
+  function seguir(lider, otro) {
+    let espera = 0;
+    lider.addEventListener('scroll', () => {
+      if (!movil.matches || guiado.has(lider)) return;
+      clearTimeout(espera);
+      espera = setTimeout(() => {
+        const n = indice(lider);
+        if (n === indice(otro)) return;
+        const cards = [...otro.children];
+        guiado.add(otro);
+        otro.scrollTo({left: cards[n].offsetLeft - cards[0].offsetLeft, behavior: reduced.matches ? 'instant' : 'smooth'});
+        let quieto = 0;
+        const fin = () => { clearTimeout(quieto); quieto = setTimeout(() => { guiado.delete(otro); otro.removeEventListener('scroll', fin); }, 160); };
+        otro.addEventListener('scroll', fin, {passive: true});
+        fin();
+      }, 140);
+    }, {passive: true});
+  }
+  seguir(familias, trabajos);
+  seguir(trabajos, familias);
+})();

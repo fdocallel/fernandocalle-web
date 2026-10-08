@@ -4,7 +4,8 @@
 // Solo exporta fuentes, vectores y tokens; ningún dato personal o documento privado.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const WEB=path.resolve(__dirname,'..');
-// Firma de la web personal: el nombre en texto (tipografía corporativa del manual, brand/marca-es.css), sin logotipo.
+// Firma de la web personal (logotipo provisional, 8-oct-2026): símbolo de ontos (icon-color.svg, decorativo) + el nombre
+// en texto con la tipografía corporativa del manual; medidas y alineación en brand/marca-es.css.
 const MARCA_NOMBRE='Fernando Calle';
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -77,7 +78,7 @@ function artifacts(root){
     else html=html.replace('</head>',links+'\n</head>');
     html=html.replace(/(<link\b[^>]*rel="icon"[^>]*href=")[^"]*(")/g,'$1'+rel+'/canon/favicon.svg$2');
     html=html.replace(/(<meta\b[^>]*(?:property="og:image"|name="twitter:image")[^>]*content=")https:\/\/ontosdigital\.es\/brand\/og\.png("[^>]*>)/g,'$1https://ontosdigital.es/brand/canon/og.png$2');
-    html=html.replace(/<a\b([^>]*class="marca"[^>]*)>[\s\S]*?<\/a>/g,(_,attrs)=>`<a${attrs}><span class="marca__nombre">${MARCA_NOMBRE}</span></a>`);
+    html=html.replace(/<a\b([^>]*class="marca"[^>]*)>[\s\S]*?<\/a>/g,(_,attrs)=>`<a${attrs}><img class="marca__simbolo" src="${rel}/canon/icon-color.svg" alt="" width="84" height="84"><span class="marca__nombre">${MARCA_NOMBRE}</span></a>`);
     // Restantes sellos/escenas: conservar atributos, identidad de DOM y animaciones.
     html=html.replace(/<svg\b([^>]*)>([\s\S]*?)<\/svg>/g,(all,attrs,body)=>{
       if(!/viewBox="0 0 100 100"/.test(attrs)||!/<circle\b[^>]*r="16\.5"/.test(body)||(body.match(/<path\b/g)||[]).length!==8)return all;

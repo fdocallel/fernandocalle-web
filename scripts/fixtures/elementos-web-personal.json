@@ -1,7 +1,20 @@
 {
   "_doc": "Web personal (separación del 8-oct-2026): diferencias con el catálogo de elementos de ontosdigital.es (ONTOS data/web-elementos.json). Lo que no aparece aquí se comprueba igual que allí.",
   "cambian": {
-    "comun.menu": { "texto": "Aplicaciones · Sobre mí · ontos" },
-    "aplicaciones.proximamente": { "selector": "#producto a[href^=\"https://ontosdigital.es/\"]" }
+    "comun.menu": {
+      "texto": "Aplicaciones · Sobre mí · ontos"
+    },
+    "aplicaciones.proximamente": {
+      "selector": "#producto a[href^=\"https://ontosdigital.es/\"]"
+    },
+    "portada.que-es": {
+      "nombre": "Qué es ontos (en Próximamente)",
+      "definicion": "8-oct-2026: la sección sale de la portada; su texto va en la caja de «Próximamente», al final, con el imagotipo y las dos ediciones.",
+      "selector": "#proximamente .ontos-caja__que-es"
+    },
+    "comun.firma": {
+      "definicion": "Logotipo provisional de la consultoría (8-oct-2026): símbolo de ontos + «Fernando Calle» en Jost; lleva a la portada.",
+      "selector": ".barra a.marca img.marca__simbolo[src$=\"canon/icon-color.svg\"][alt=\"\"] + .marca__nombre"
+    }
   }
 }

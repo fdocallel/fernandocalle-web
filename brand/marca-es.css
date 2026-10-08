@@ -480,17 +480,36 @@ html[data-ontos-web] .barra-menu { display: none; }
   html[data-ontos-web].barra-menu-js { --web-logo-width: 120px; --web-logo-height: 40px; }
   html[data-ontos-web].barra-menu-js .barra nav { gap: 0 var(--ds-space-2); }
 }
-/* Web personal (8-oct-2026): la firma de la barra es «Fernando Calle» en texto, con la tipografía
-   corporativa del manual de marca de ontos (Jost); sin logotipo ni pliegue. El enlace a ontos va como un item más, discreto. */
+/* Web personal (8-oct-2026): la firma de la barra es el logotipo provisional de la consultoría:
+   símbolo de ontos (isotipo N5, variante color para fondo claro, brand/canon/icon-color.svg) + «Fernando Calle»
+   en Jost, la tipografía corporativa del manual. Un solo enlace a /; el símbolo es decorativo (alt="").
+   - Altura: el diámetro visible del símbolo = altura de los ascendentes de Jost 500 (0,78 em, medida con
+     canvas: «d» 14,35 px a 18,4 px), apoyado en la línea de base: no sobresale del texto.
+   - Separación: la del imagotipo horizontal del canon, proporcional al diámetro visible (0,349 D:
+     29,3 u entre tinta del N5 y tinta del logotipo con D = 84 u en horizontal-color.svg).
+   - Alineación: el borde izquierdo del símbolo cae en --web-content-left (guía de títulos y párrafos);
+     el viewBox del icono (8 8 84 84) recorta a la tinta, sin sangrado óptico que compensar. */
 html[data-ontos-web] .barra .marca:has(.marca__nombre) {
+  --marca-simbolo: .78em;
   width: auto;
   min-width: 0;
+  min-height: 0;
+  align-items: baseline;
+  gap: calc(var(--marca-simbolo) * .349);
+  margin-left: var(--web-logo-leading-space);
+  font-size: 1.15rem;
   text-decoration: none;
+}
+html[data-ontos-web] .barra .marca__simbolo {
+  display: block;
+  flex: none;
+  width: var(--marca-simbolo);
+  height: var(--marca-simbolo);
 }
 html[data-ontos-web] .barra .marca__nombre {
   font-family: var(--ds-font-corporativa);
   font-weight: 500;
-  font-size: 1.15rem;
+  font-size: 1em;
   letter-spacing: .01em;
   line-height: 1;
   white-space: nowrap;
@@ -498,3 +517,8 @@ html[data-ontos-web] .barra .marca__nombre {
 }
 html[data-ontos-web] .barra a.item.item--ontos { opacity: .8; }
 html[data-ontos-web] .barra a.item.item--ontos:hover { opacity: 1; }
+/* 320 px: firma (símbolo + nombre), contacto, idioma y menú en una fila; la firma baja a 1rem
+   (el símbolo escala con ella y sigue a la altura de los ascendentes). */
+@media (max-width: 22rem) {
+  html[data-ontos-web] .barra .marca:has(.marca__nombre) { font-size: 1rem; }
+}
