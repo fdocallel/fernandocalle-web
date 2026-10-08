@@ -4,7 +4,7 @@
 // Solo exporta fuentes, vectores y tokens; ningún dato personal o documento privado.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const WEB=path.resolve(__dirname,'..');
-// Firma de la web personal (logotipo provisional, 8-oct-2026): símbolo de ontos (icon-color.svg, decorativo) + el nombre
+// Firma de la web personal (logotipo provisional, 8-oct-2026): favicon de Arcilla en color fijo (favicon-cabecera.svg, decorativo) + el nombre
 // en texto con la tipografía corporativa del manual; medidas y alineación en brand/marca-es.css.
 const MARCA_NOMBRE='Fernando Calle';
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
@@ -53,6 +53,11 @@ function artifacts(root){
   if(typeof marks.faviconFile!=='function')throw Error('El manual ONTOS no exporta el favicon canónico (marks.faviconFile)');
   const favSvg=marks.faviconFile(),hueso=tokens['support-hueso'].valor,OCUPA=0.8;
   out['brand/canon/favicon.svg']=favSvg;
+  // Cabecera (logotipo provisional, Fernando 8-oct-2026: «al lado, utiliza el favicon»): el mismo SVG con color fijo.
+  // La barra es siempre clara; el @media (prefers-color-scheme:dark) del favicon pondría el anillo en hueso, invisible.
+  const favCabecera=favSvg.replace(/@media\s*\([^)]*prefers-color-scheme[^)]*\)\s*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g,'');
+  if(favCabecera===favSvg||/prefers-color-scheme|@media/.test(favCabecera)||!/svg\{color:#[0-9a-f]{6}\}/i.test(favCabecera))throw Error('favicon-cabecera: no se pudo fijar el color del favicon canónico (¿cambió su <style>?)');
+  out['brand/canon/favicon-cabecera.svg']=favCabecera;
   // PNG: 16/32/48 sobre disco hueso (se leen en pestaña clara y oscura); 180/192/512 sobre cuadrado hueso. Símbolo al 80 %.
   const favPng=(px,disco)=>rasterPng(`<!doctype html><style>html,body{margin:0;width:${px}px;height:${px}px;background:transparent}div{width:${px}px;height:${px}px;display:grid;place-items:center;background:${hueso};border-radius:${disco?'50%':'0'}}img{display:block}</style><div><img width="${Math.round(px*OCUPA)}" height="${Math.round(px*OCUPA)}" src="data:image/svg+xml;base64,${Buffer.from(favSvg).toString('base64')}"></div>`,px,px,root,disco);
   const pequenos=[16,32,48].map(px=>[px,favPng(px,true)]);
@@ -103,7 +108,7 @@ function artifacts(root){
     html=html.replace(/(<meta\b[^>]*(?:property="og:image"|name="twitter:image")[^>]*content=")https:\/\/ontosdigital\.es\/brand\/og\.png("[^>]*>)/g,'$1https://ontosdigital.es/brand/canon/og.png$2');
     // 8-oct-2026 (Fernando): «ontos» sale del menú de la barra; el puente queda en la portada y en Aplicaciones.
     html=html.replace(/\n[ \t]*<a class="item item--ontos"[^>]*>[\s\S]*?<\/a>/g,'');
-    html=html.replace(/<a\b([^>]*class="marca"[^>]*)>[\s\S]*?<\/a>/g,(_,attrs)=>`<a${attrs}><img class="marca__simbolo" src="${rel}/canon/icon-color.svg" alt="" width="84" height="84"><span class="marca__nombre">${MARCA_NOMBRE}</span></a>`);
+    html=html.replace(/<a\b([^>]*class="marca"[^>]*)>[\s\S]*?<\/a>/g,(_,attrs)=>`<a${attrs}><img class="marca__simbolo" src="${rel}/canon/favicon-cabecera.svg" alt="" width="84" height="84"><span class="marca__nombre">${MARCA_NOMBRE}</span></a>`);
     // Restantes sellos/escenas: conservar atributos, identidad de DOM y animaciones.
     html=html.replace(/<svg\b([^>]*)>([\s\S]*?)<\/svg>/g,(all,attrs,body)=>{
       if(!/viewBox="0 0 100 100"/.test(attrs)||!/<circle\b[^>]*r="16\.5"/.test(body)||(body.match(/<path\b/g)||[]).length!==8)return all;

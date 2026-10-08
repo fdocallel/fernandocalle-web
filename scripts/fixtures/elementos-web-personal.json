@@ -10,8 +10,8 @@
       "selector": "#proximamente .ontos-caja__que-es"
     },
     "comun.firma": {
-      "definicion": "Logotipo provisional de la consultoría (8-oct-2026): símbolo de ontos + «Fernando Calle» en Jost; lleva a la portada.",
-      "selector": ".barra a.marca img.marca__simbolo[src$=\"canon/icon-color.svg\"][alt=\"\"] + .marca__nombre"
+      "definicion": "Logotipo provisional de la consultoría (8-oct-2026): favicon de Arcilla en color fijo + «Fernando Calle» en Jost; lleva a la portada.",
+      "selector": ".barra a.marca img.marca__simbolo[src$=\"canon/favicon-cabecera.svg\"][alt=\"\"] + .marca__nombre"
     },
     "portada.trabajos": {
       "definicion": "8-oct-2026: el ejemplo real de cada familia va al final de su tarjeta, con enlace propio.",

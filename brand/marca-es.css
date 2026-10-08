@@ -481,16 +481,18 @@ html[data-ontos-web] .barra-menu { display: none; }
   html[data-ontos-web].barra-menu-js .barra nav { gap: 0 var(--ds-space-2); }
 }
 /* Web personal (8-oct-2026): la firma de la barra es el logotipo provisional de la consultoría:
-   símbolo de ontos (isotipo N5, variante color para fondo claro, brand/canon/icon-color.svg) + «Fernando Calle»
-   en Jost, la tipografía corporativa del manual. Un solo enlace a /; el símbolo es decorativo (alt="").
-   Excepción del manual 3.1.6.3 (isotipo de la cabecera de la web personal).
+   favicon de Arcilla (paso final: 8 dovelas sin radios + núcleo teja) en color fijo eucalipto,
+   brand/canon/favicon-cabecera.svg (lo genera import-marca.cjs desde favicon.svg sin su @media oscuro: la barra
+   es siempre clara) + «Fernando Calle» en Jost, la tipografía corporativa del manual. Un solo enlace a /;
+   el símbolo es decorativo (alt=""). Excepción del manual 3.1.6.3 (símbolo de la cabecera de la web personal).
    - Diámetro visible: 1,48 em del nombre (27,2 px a 18,4 px), ≈ 1,9 × la altura de las letras altas de Jost 500
      (0,78 em, «d» 14,35 px medida con canvas).
    - Centrado óptico: el centro del símbolo cae a --marca-centro sobre la línea de base.
-   - Separación: la del imagotipo horizontal del canon, proporcional al diámetro visible (0,349 D:
-     29,3 u entre tinta del N5 y tinta del logotipo con D = 84 u en horizontal-color.svg).
+   - Separación: la del imagotipo horizontal vigente del canon, proporcional al diámetro visible (0,382 D entre
+     tinta del símbolo y tinta del logotipo en horizontal-color.svg). El favicon tiene el mismo contorno exterior
+     que el isotipo (anillo de 84 u), así que la medida se conserva; su protección x = B/6 (0,198 D) cabe dentro.
    - Alineación: el borde izquierdo del símbolo cae en --web-content-left (guía de títulos y párrafos);
-     el viewBox del icono (8 8 84 84) recorta a la tinta, sin sangrado óptico que compensar. */
+     el viewBox (8 8 84 84) recorta a la tinta del anillo, sin sangrado óptico que compensar. */
 html[data-ontos-web] .barra .marca:has(.marca__nombre) {
   --marca-simbolo: 1.48em;
   --marca-centro: .35em;

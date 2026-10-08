@@ -12,11 +12,12 @@ página: ONTOS `docs/estudios/2026-10-08-separar-web-personal-y-ontos.md`.
 - Se quedan en ontosdigital.es (y aquí se podaron): `producto.html`, los casos, los clips, `armario.html`,
   `entrar.html`, `solicitud.html` y `producto/`. Los enlaces a ellas apuntan a `https://ontosdigital.es/<ruta>`
   (en /en/, a su espejo `/en/` de allí).
-- La barra firma con el **logotipo provisional** de la consultoría (8-oct-2026): símbolo de ontos (`brand/canon/icon-color.svg`,
-  decorativo, `alt=""`) + «Fernando Calle» en Jost, un solo enlace a `/`. Lo escribe `import-marca.cjs` (que además retira
+- La barra firma con el **logotipo provisional** de la consultoría (8-oct-2026): favicon de Arcilla en color fijo
+  (`brand/canon/favicon-cabecera.svg`, generado por `import-marca.cjs` desde `favicon.svg` sin su `@media` oscuro, porque la
+  barra es siempre clara; decorativo, `alt=""`) + «Fernando Calle» en Jost, un solo enlace a `/`. Lo escribe `import-marca.cjs` (que además retira
   cualquier `item--ontos`: «ontos» ya no está en el menú; el puente queda en la portada y en Aplicaciones). Medidas en
   `brand/marca-es.css`, excepción 3.1.6.3 del manual: diámetro 1,48 em (27,2 px a 18,4 px; ≈ 1,9 × letras altas),
-  centro a 0,35 em sobre la línea de base (mitad de las mayúsculas), separación 0,349 × diámetro y borde izquierdo en
+  centro a 0,35 em sobre la línea de base (mitad de las mayúsculas), separación 0,382 × diámetro (la del imagotipo horizontal vigente) y borde izquierdo en
   `--web-content-left`. Barra móvil de 60 px también a 320 (huecos de 8/4 px bajo 24/22rem).
 - Portada (8-oct-2026): «Qué es ontos» sale como sección; su texto (mensaje.json `web.que_es`) va en la caja de
   «Próximamente» (tras «Así empieza un encargo», antes de «Hablamos»): «Próximamente.» como título, debajo el texto

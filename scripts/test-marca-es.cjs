@@ -199,6 +199,24 @@ function checkBarraSinOntos(html,f){
 for(const f of [...fs.readdirSync(WEB).filter(x=>x.endsWith('.html')),...fs.readdirSync(path.join(WEB,'en')).filter(x=>x.endsWith('.html')).map(x=>'en/'+x),'editor-pdf/index.html'])
  checkBarraSinOntos(fs.readFileSync(path.join(WEB,f),'utf8'),f);
 assert.throws(()=>checkBarraSinOntos(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<a class="item icono-contacto"','<a class="item item--ontos" href="https://ontosdigital.es/">ontos</a>\n    <a class="item icono-contacto"'),'index.html'),/sin enlace a ontos/,'Caso rojo: «ontos» de vuelta en el menú debe bloquear');
+// Firma de la barra (Fernando, 8-oct-2026: «al lado, utiliza el favicon»): el favicon de Arcilla en color fijo,
+// generado desde el canon sin su @media oscuro (la barra es siempre clara). Ni el isotipo con radios ni favicon.svg.
+function checkFirma(html,f,svg){
+ for(const h of html.match(/<header class="barra">[\s\S]*?<\/header>/g)||[]){
+  const m=h.match(/<a class="marca"[^>]*><img class="marca__simbolo" src="([^"]*)" alt="" width="84" height="84"><span class="marca__nombre">Fernando Calle<\/span><\/a>/);
+  assert(m&&/(^|\/)canon\/favicon-cabecera\.svg$/.test(m[1]),'Firma: favicon-cabecera.svg + «Fernando Calle» en la barra ('+f+')');
+ }
+ assert(!/prefers-color-scheme|@media/.test(svg)&&/svg\{color:#[0-9a-f]{6}\}/i.test(svg)&&/<circle[^>]*fill="#[0-9a-f]{6}"/i.test(svg),'Firma: favicon de la cabecera en color fijo, sin @media');
+}
+const favCab=fs.readFileSync(path.join(WEB,'brand/canon/favicon-cabecera.svg'),'utf8');
+for(const f of [...fs.readdirSync(WEB).filter(x=>x.endsWith('.html')),...fs.readdirSync(path.join(WEB,'en')).filter(x=>x.endsWith('.html')).map(x=>'en/'+x),'editor-pdf/index.html'])
+ checkFirma(fs.readFileSync(path.join(WEB,f),'utf8'),f,favCab);
+{
+ const home=fs.readFileSync(path.join(WEB,'index.html'),'utf8');
+ assert.throws(()=>checkFirma(home.replace('canon/favicon-cabecera.svg"','canon/icon-color.svg"'),'index.html',favCab),/Firma: favicon-cabecera/,'Caso rojo: cabecera con el isotipo con radios (icon-color) debe bloquear');
+ assert.throws(()=>checkFirma(home.replace('canon/favicon-cabecera.svg"','canon/favicon.svg"'),'index.html',favCab),/Firma: favicon-cabecera/,'Caso rojo: cabecera con favicon.svg (con @media) debe bloquear');
+ assert.throws(()=>checkFirma(home,'index.html',fs.readFileSync(path.join(WEB,'brand/canon/favicon.svg'),'utf8')),/color fijo/,'Caso rojo: favicon de cabecera con @media oscuro debe bloquear');
+}
 // Armario mínimo (3-oct-2026): la página es el probador y nada más.
 function checkArmario(html){
  const main=html.slice(html.indexOf('<main'),html.indexOf('</main>'));
