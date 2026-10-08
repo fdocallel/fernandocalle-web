@@ -1,0 +1,234 @@
+/* ONTOS — tokens de marca (fuente única; paleta definida en colores.md, 21-jul-2026).
+ * Claro por defecto desde el remodelado v2 (19-ago-2026): el comprador B2B lee de día.
+ * Oscuro via prefers-color-scheme. Las demos (caso-90s etc.) NO cargan este fichero:
+ * son cine, siempre noche. */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("fraunces.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --teja: #d4713b;          /* fija: la clave del logo y fondo de CTA */
+  --bg: #faf8f5;            /* hueso */
+  --panel: #ffffff;
+  --borde: #e3ddd2;
+  --texto: #1c1a17;         /* tinta */
+  --sec: #6b6257;           /* granito */
+  --acento: #b0532a;        /* teja-quemada: texto/enlace sobre claro (AA) */
+  --realce: #b0532a;
+  --piedra-logo: #4a443a;
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0e0c;          /* noche */
+    --panel: #171512;
+    --borde: #2a261f;
+    --texto: #ece7de;
+    --sec: #a39a8c;         /* granito-claro */
+    --acento: #d4713b;      /* teja sobre oscuro */
+    --realce: #e8956a;      /* teja-clara */
+    --piedra-logo: #3a352c;
+  }
+}
+
+/* Ritmo y alto de barra (web v5, 24-sep-2026; spec data/_cache/web-estilo-anthropic-2026-09-24.md §3).
+   --sp-sec: aire vertical de sección, 56 px en móvil y 96 px desde 56em (entre el «medium» y el
+   «main» de anthropic.com; ONTOS tiene menos contenido). --nav-h: alto fijo de la barra, para que
+   el logo que se pliega tenga un contenedor estable y los saltos a #ancla no queden debajo. */
+:root { --sp-sec: 3.5rem; --nav-h: 4rem; }
+@media (min-width: 56em) { :root { --sp-sec: 6rem; } }
+
+/* Barra de navegación compartida (todas las páginas con <header class="barra">).
+   v5: marca · Consultoría (= inicio) · Aplicaciones · Sobre mí · icono de contacto · EN.
+   Comportamiento (logo que se pliega, diálogo de contacto): brand/barra.js. */
+.barra {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(12px) saturate(140%); -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border-bottom: 1px solid var(--borde);
+}
+/* La barra es pegajosa: sin esto, un salto a #familias/#escritos deja el principio de la
+   sección debajo de ella. */
+:target, section[id] { scroll-margin-top: calc(var(--nav-h) + 0.5rem); }
+.barra nav {
+  max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; min-height: var(--nav-h);
+  display: flex; align-items: center; gap: 1.6rem;
+}
+/* Wordmark: Fraunces, decisión de Fernando 1-sep-2026 (draft data/_cache/estilo-wordmark).
+   Sin punto teja en la barra (brand/colores.md). */
+.barra .marca {
+  display: flex; align-items: center;
+  font-family: var(--serif); font-weight: 600; letter-spacing: 0.02em; text-decoration: none;
+  color: var(--texto); font-size: 1.05rem; margin-right: auto;
+}
+.barra .marca svg { width: 22px; height: 22px; flex: none; color: var(--piedra-logo); }
+/* El logo se pliega al hacer scroll (html.is-condensado lo pone brand/barra.js): solo la
+   palabra se estrecha y se funde; el símbolo no se mueve ni cambia de tamaño. */
+.barra .marca__word {
+  display: inline-block; overflow: hidden; white-space: nowrap;
+  max-width: 5.5em; margin-left: 0.55rem; opacity: 1;
+  transition: max-width 0.3s ease, margin-left 0.3s ease, opacity 0.22s ease;
+}
+.is-condensado .barra .marca__word { max-width: 0; margin-left: 0; opacity: 0; }
+.nav-sentinel { height: 1px; margin-top: -1px; pointer-events: none; }
+.barra a.item {
+  color: var(--sec); text-decoration: none; font-size: 0.92rem;
+  padding: 0.25rem 0; border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.barra a.item:hover, .barra a.item[aria-current="page"] {
+  color: var(--acento); border-bottom-color: var(--acento);
+}
+/* Contacto: un icono de sobre (trazo, sin relleno, mismo lenguaje que el arco), no la palabra
+   (Fernando, 24-sep-2026). Es un enlace a contacto.html; con JS abre el diálogo. */
+.barra a.icono-contacto {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.25rem; height: 2.25rem; margin: 0 -0.35rem; padding: 0;
+  border: 0; border-radius: 999px; color: var(--sec);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.barra a.icono-contacto svg {
+  width: 21px; height: 21px; fill: none; stroke: currentColor;
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+.barra a.icono-contacto:hover, .barra a.icono-contacto[aria-current="page"] {
+  color: var(--acento); background: color-mix(in srgb, var(--teja) 12%, transparent);
+}
+.barra a.item:focus-visible, .barra .marca:focus-visible { outline: 2px solid var(--acento); outline-offset: 3px; border-radius: 4px; }
+/* El conmutador de idioma no es una sección más: es un interruptor. Píldora corta. */
+.barra a.item.idioma {
+  border: 1px solid var(--borde); border-radius: 999px;
+  padding: 0.1rem 0.45rem; font-size: 0.78rem; letter-spacing: 0.06em;
+}
+.barra a.item.idioma:hover { color: var(--acento); border-color: var(--acento); }
+@media (prefers-reduced-motion: reduce) {
+  .barra .marca__word, .barra a.icono-contacto { transition: none; }
+}
+/* Móvil: dos filas. Medido en WebKit el 24-sep-2026 con la barra v5 (tres enlaces + icono + EN):
+   en una fila hacen falta 472 px con la palabra ONTOS y 400 px plegada, a 390/360/320 no cabe. Arriba marca, icono de contacto e idioma; debajo los tres enlaces,
+   a tamaño legible (≥ 13 px). El salto lo fuerza el ::after de ancho completo. */
+@media (max-width: 34rem) {
+  :root { --nav-h: 5.6rem; }
+  .barra nav {
+    flex-wrap: wrap; justify-content: space-between; gap: 0 0.9rem;
+    padding: 0.35rem 1rem 0.2rem; min-height: 0;
+  }
+  .barra nav::after { content: ''; order: 1; flex-basis: 100%; height: 0; }
+  .barra .marca { order: 0; font-size: 1.05rem; margin-right: auto; min-height: 44px; }
+  .barra .marca svg { width: 22px; height: 22px; }
+  .barra a.item { order: 2; font-size: 0.9rem; }
+  .barra a.item.icono-contacto { order: 1; margin: 0; }
+  .barra a.item.idioma { order: 1; padding: 0.08rem 0.45rem; font-size: 0.82rem; }
+  /* Área táctil de 44 px (25-ago-2026): se agranda con un pseudo-elemento y NO con padding,
+     que movería el subrayado del enlace activo. */
+  .barra a.item, .barra .marca { position: relative; }
+  .barra a.item::after, .barra .marca::after {
+    content: ''; position: absolute; left: 0; right: 0;
+    top: 50%; transform: translateY(-50%); height: 44px;
+  }
+  .barra a.item:not(.idioma):not(.icono-contacto) { padding: 0.55rem 0 0.4rem; }
+  /* El pie se quedaba en 12,8 px y ahí van los enlaces legales. En móvil, mínimo 13,6.
+     Va con `body footer` a propósito: cada página redefine `footer` en su <style> propio. */
+  body footer { font-size: 0.85rem; }
+  /* Pie (Aviso legal, Privacidad) a 20 px de alto; píldora de idioma a 36 de ancho
+     (auditoría móvil 28-sep-2026). Área de toque ampliada sin mover la maqueta. */
+  body footer a { display: inline-block; padding: 0.35rem 0; }
+  .barra a.item.idioma::after { left: -4px; right: -4px; }
+}
+
+/* ---- Diálogo de contacto (brand/barra.js copia aquí el formulario de contacto.html) ---- */
+html:has(dialog.dlg-contacto[open]) { overflow: hidden; }
+.dlg-contacto {
+  width: min(34rem, calc(100vw - 1.5rem)); max-height: calc(100dvh - 1.5rem);
+  margin: auto; padding: 0; overflow: auto;
+  border: 1px solid var(--borde); border-radius: 16px;
+  background: var(--bg); color: var(--texto);
+  font-family: var(--sans); font-size: 1rem; line-height: 1.55;
+  box-shadow: 0 24px 80px rgba(20, 16, 12, 0.28);
+}
+.dlg-contacto[open] { animation: dlg-entra 0.22s ease; }
+@keyframes dlg-entra { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.dlg-contacto::backdrop { background: rgba(20, 16, 12, 0.48); }
+.dlg-contacto .dlg-cuerpo { position: relative; padding: 2rem 1.75rem 1.6rem; }
+.dlg-contacto h2 {
+  font-family: var(--serif); font-weight: 600; font-size: 1.9rem; line-height: 1.15;
+  letter-spacing: -0.01em; text-transform: none; color: var(--texto); margin: 0 2.5rem 0.6rem 0;
+}
+.dlg-contacto .dlg-lema { color: var(--sec); margin: 0 0 1.4rem; font-size: 0.98rem; }
+.dlg-contacto .dlg-cerrar {
+  position: absolute; top: 0.9rem; right: 0.9rem; width: 44px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 999px; background: none; color: var(--sec); cursor: pointer;
+}
+.dlg-contacto .dlg-cerrar:hover { color: var(--acento); background: color-mix(in srgb, var(--teja) 12%, transparent); }
+.dlg-contacto .dlg-cerrar svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.dlg-contacto form { display: grid; gap: 0.85rem; margin: 0; }
+.dlg-contacto label { font-size: 0.85rem; color: var(--sec); display: block; margin-bottom: 0.3rem; }
+.dlg-contacto input[type="text"], .dlg-contacto input[type="email"], .dlg-contacto select, .dlg-contacto textarea {
+  width: 100%; padding: 0.7rem 0.9rem; border-radius: 10px; box-sizing: border-box;
+  border: 1px solid var(--borde); background: var(--panel); color: var(--texto);
+  font: inherit; font-size: 1rem;
+}
+.dlg-contacto select {
+  -webkit-appearance: none; appearance: none; cursor: pointer; padding-right: 2.4rem;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23d4713b' stroke-width='1.8'/></svg>");
+  background-repeat: no-repeat; background-position: right 0.9rem center;
+}
+.dlg-contacto select:invalid { color: var(--sec); }
+.dlg-contacto input:focus, .dlg-contacto select:focus, .dlg-contacto textarea:focus { outline: 2px solid var(--teja); outline-offset: 1px; border-color: transparent; }
+.dlg-contacto textarea { min-height: 6.5rem; resize: vertical; }
+.dlg-contacto .cta {
+  justify-self: start; display: inline-block; padding: 0.8rem 1.8rem; border: 0; border-radius: 999px;
+  background: var(--teja); color: #14100c; font: inherit; font-weight: 600; cursor: pointer;
+}
+.dlg-contacto .form-nota { font-size: 0.8rem; color: var(--sec); margin: 0; }
+.dlg-contacto .form-nota a { color: inherit; }
+.dlg-contacto .alt-mail { margin: 1.4rem 0 0; font-size: 0.92rem; color: var(--sec); display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
+.dlg-contacto .alt-mail a { color: var(--acento); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--acento); }
+.dlg-contacto .copiar {
+  padding: 0.35rem 0.9rem; border-radius: 999px; font: inherit; font-size: 0.8rem;
+  border: 1px solid var(--borde); background: none; color: var(--sec); cursor: pointer;
+}
+@media (pointer: coarse) { .dlg-contacto .copiar { min-height: 44px; } }
+@media (max-width: 34rem) {
+  .dlg-contacto .dlg-cuerpo { padding: 1.5rem 1.2rem 1.3rem; }
+  .dlg-contacto h2 { font-size: 1.6rem; }
+}
+@media (prefers-reduced-motion: reduce) { .dlg-contacto[open] { animation: none; } }
+
+/* ---- Dock móvil (brand/barra.js §3, 28-sep-2026): contacto + compartir abajo ----
+   Solo ≤ 34rem. Oculto con visibility (fuera del orden de tabulación) hasta que barra.js
+   pone html.dock-activo. Respeta la zona segura del iPhone. */
+.dock-movil { display: none; }
+@media (max-width: 34rem) {
+  .dock-movil {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    display: flex; gap: 0.6rem; align-items: center;
+    padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom, 0px));
+    background: color-mix(in srgb, var(--bg) 94%, transparent);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px); backdrop-filter: saturate(1.4) blur(10px);
+    border-top: 1px solid var(--borde);
+    transform: translateY(110%); visibility: hidden;
+    transition: transform 0.25s ease, visibility 0s linear 0.25s;
+  }
+  .dock-activo .dock-movil { transform: none; visibility: visible; transition: transform 0.25s ease; }
+  .dock-movil .dock-cta {
+    flex: 1; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+    background: var(--ds-action, var(--teja)); color: var(--ds-on-action, #fff); border-radius: var(--ds-radius-s, 6px); font-weight: 600; text-decoration: none;
+  }
+  .dock-movil .dock-compartir {
+    flex: none; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid var(--borde); border-radius: 999px; background: transparent; color: var(--sec); padding: 0;
+  }
+  .dock-movil .dock-compartir svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .dock-movil :focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+  /* Que el final de la página no quede bajo el dock. */
+  .dock-activo body { padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) { .dock-movil, .dock-activo .dock-movil { transition: none; } }

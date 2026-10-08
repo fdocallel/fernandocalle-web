@@ -1,0 +1,37 @@
+#!/bin/sh
+# Hook del repo web. Instalar con: git config core.hooksPath hooks
+# La ruta relativa usa el hook del worktree activo, también en ramas separadas.
+# 1) regenera el espejo inglés  2) regenera el sitemap  3) re-añade SOLO lo que ya estaba staged
+# OJO (1-sep-2026): antes hacía `git add en ./*.html` y coló en un commit la portada v3 que
+# estaba a propósito sin publicar. Lo generado solo entra si su fuente entraba en este commit.
+set -e
+raiz=$(git rev-parse --show-toplevel)
+cd "$raiz"
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+# Canon de ONTOS desde su último commit, no desde su árbol de trabajo (scripts/ontos-canon.sh, 3-oct-2026).
+if [ -z "${ONTOS_BRAND_ROOT:-}" ]; then
+  ONTOS_BRAND_ROOT=$(scripts/ontos-canon.sh)
+  export ONTOS_BRAND_ROOT
+fi
+# Fase explícita ES: no regenerar ni añadir el espejo inglés.
+# La comprobación conserva texto, rutas, medios y los recursos que EN utiliza.
+if [ "${ONTOS_WEB_SCOPE:-all}" = "es" ]; then
+  ./gen-sitemap.sh --es
+  git add sitemap.xml
+  node scripts/test-marca-es.cjs
+else
+  ./i18n/gen-en.py
+  ./gen-sitemap.sh
+  git add sitemap.xml
+  node scripts/test-marca-es.cjs --bilingue
+fi
+# Catálogo de elementos (manual 4.3, ONTOS data/web-elementos.json): selectores vivos.
+node scripts/test-elementos.cjs
+for f in $staged; do
+  if [ -f "$f" ]; then git add "$f"; fi           # la página staged, con el hreflang que inyecta el generador
+  case "$f" in
+    i18n/en/experiencias-runtime.json|i18n/gen-en.py)
+      if [ -f "experiencias/i18n.js" ]; then git add experiencias/i18n.js; fi ;;
+    *.html) if [ "${ONTOS_WEB_SCOPE:-all}" != "es" ] && [ -f "en/$f" ]; then git add "en/$f"; fi ;;   # y su espejo inglés recién regenerado
+  esac
+done

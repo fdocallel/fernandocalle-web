@@ -1,0 +1,20 @@
+{
+  "_doc": "Reviewed snapshots. Regenerate only with scripts/import-experiencias.py; Segovia mesh is allowlisted and loaded only for mundo=segovia; mesh adaptation CC BY-SA 4.0. 3-oct-2026: visible brand name lowercased in place (same source); import-experiencias.py applies it on the next import.",
+  "engines": {
+    "juego-2d.js": {
+      "source": "ONTOS/app/lib/ontos-vivo.js",
+      "source_sha256": "2aabd186c5985758bca4579676ee8efda4f3872fb8785943eb8bdf18ab8ce8d2",
+      "public_sha256": "4e3a02ce0ce15c3ed1801723cd73461353c31129b333d943b02000fe5e045f56"
+    },
+    "mundo-3d.js": {
+      "source": "ONTOS/app/lib/ontos-tierra.js",
+      "source_sha256": "8950e743315135b4683415c2456fcedf506fa9f6c48c675f5e5487d7c086fa8e",
+      "public_sha256": "5a08386995683bd8dff4ece8af369c8193d98d71583e1a2f9d9801d22987c3b9"
+    },
+    "ontos-alcazar.json": {
+      "source": "ONTOS/app/lib/ontos-alcazar.json",
+      "source_sha256": "b5c5d83129101f4db8166dc703f4b39fab48c217c2cbf6554e6c2be484add97a",
+      "public_sha256": "efda7bf4eb409b1cbe82a04e06a9ea69fa2ef9c75dcc8a07a5be82f44b46e0db"
+    }
+  }
+}

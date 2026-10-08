@@ -1,0 +1,5 @@
+{
+  "_doc": "Traducción al inglés de consultoria.html. La estructura vive en la página española; aquí solo el texto. Genera con ./i18n/gen-en.py",
+  "Consultoría · Fernando Calle": "Consulting · Fernando Calle",
+  "La consultoría está ahora en el <a href=\"./\">inicio</a>.": "Consulting is now on the <a href=\"./\">homepage</a>."
+}

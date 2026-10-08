@@ -1,0 +1,15 @@
+{
+  "_doc": "Traducción al inglés de 404.html. La estructura vive en la página española; aquí solo el texto. Genera con ./i18n/gen-en.py",
+  "Página no encontrada · Fernando Calle": "Page not found · Fernando Calle",
+  "Saltar al contenido": "Skip to content",
+  "Fernando Calle": "Fernando Calle",
+  "Aplicaciones": "Applications",
+  "Sobre mí": "About me",
+  "ontos": "ontos",
+  "Contacto": "Contact",
+  "Esta página no existe": "This page does not exist",
+  "El enlace está roto o la dirección no es correcta.": "The link is broken or the address is not correct.",
+  "Inicio": "Home",
+  "Oficina BIM": "BIM Office",
+  "© 2026 Fernando Calle · La Lastrilla (Segovia) · <a href=\"/aviso-legal.html\">Aviso legal</a> · <a href=\"/privacidad.html\">Privacidad</a> · Web sin cookies · recuento de visitas anónimo.": "© 2026 Fernando Calle · La Lastrilla (Segovia) · <a href=\"/aviso-legal.html\">Legal notice</a> · <a href=\"/privacidad.html\">Privacy</a> · Cookie-free website · anonymous visit count."
+}

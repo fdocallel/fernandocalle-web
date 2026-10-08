@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es" data-ontos-web data-web-page="visita-3d">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visita 3D · Fernando Calle</title>
+<meta property="og:title" content="Visita 3D · Fernando Calle">
+<meta property="og:description" content="Recorre el pequeño planeta de ontos o pasea por una miniatura de Segovia. Una experiencia 3D con teclado, ratón y controles táctiles.">
+<meta property="og:url" content="https://fernandocalle.es/visita-3d.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:image" content="https://fernandocalle.es/brand/canon/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Recorre el pequeño planeta de ontos o pasea por una miniatura de Segovia. Una experiencia 3D con teclado, ratón y controles táctiles.">
+<link rel="icon" href="brand/canon/favicon.svg">
+<link rel="stylesheet" href="/experiencias/demo.css">
+<style>
+:root{--wrap:var(--wrap-datos)}
+/* The bottom-right controls occupy the shared chat corner (SPEC-13 §7). */
+#ontos-chat-fab{display:none!important}
+body #ontos-demo{top:var(--sp-2);bottom:auto}
+.ot-wrap .btn{display:inline-flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-s);padding:var(--sp-2) var(--sp-3);font:600 var(--fs-sec)/1.2 var(--serif);letter-spacing:.04em;color:var(--text);text-decoration:none;cursor:pointer}.ot-wrap .btn:hover{background:var(--soft);border-color:var(--accent)}.ot-wrap .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ot-top{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-4);border-bottom:3px double var(--border);padding-bottom:var(--sp-4);margin-bottom:var(--sp-4)}
+.ot-top h1{font:400 var(--fs-h1)/1.2 var(--serif);margin:0}.ot-label{font-size:var(--fs-micro);text-transform:uppercase;letter-spacing:.1em;color:var(--accent)}
+.ot-tools{display:flex;gap:var(--sp-2);flex-wrap:wrap;padding-right:var(--sp-7)}.ot-wrap button,.ot-wrap a.btn{min-height:44px}.ot-stage{position:relative;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.ot-canvas{display:block;width:100%;height:clamp(390px,67vh,780px);touch-action:none;outline-offset:-4px;cursor:grab}.ot-canvas:active{cursor:grabbing}
+.ot-hud{position:absolute;inset:var(--sp-4) var(--sp-4) auto;display:flex;justify-content:space-between;gap:var(--sp-3);pointer-events:none;font-size:var(--fs-nota)}.ot-hud span{background:var(--surface);border:1px solid var(--border);padding:var(--sp-2) var(--sp-3);border-radius:999px;color:var(--accent)}
+.ot-overlay{position:absolute;inset:0;display:grid;place-content:center;padding:var(--sp-5);text-align:center;background:color-mix(in oklab,var(--surface) 90%,transparent)}.ot-overlay[hidden]{display:none}.ot-overlay strong{font:400 var(--fs-h1)/1.2 var(--serif)}
+.ot-caption{border-top:1px solid var(--border);padding:var(--sp-3) var(--sp-4);font-size:var(--fs-sec);min-height:48px;color:var(--accent)}
+.ot-zoom{display:flex;gap:var(--sp-2);margin-top:var(--sp-3);flex-wrap:wrap}.ot-controls{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-4);margin-top:var(--sp-3)}.ot-pad{display:grid;grid-template-columns:repeat(3,44px);gap:var(--sp-2)}.ot-pad button:first-child{grid-column:2}.ot-pad button:nth-child(2){grid-column:1}.ot-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:var(--sp-2)}.ot-controls button{touch-action:none;user-select:none;-webkit-user-select:none}.ot-controls [aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.ot-help{margin-top:var(--sp-3);color:var(--muted);font-size:var(--fs-nota)}.ot-help summary{min-height:44px;cursor:pointer}.ot-help p{margin-top:0}.ot-help kbd{font-family:var(--mono)}
+@media(max-width:640px){.ot-wrap{padding:var(--sp-3);padding-top:var(--sp-8)}.ot-top{align-items:center;flex-wrap:wrap;gap:var(--sp-2)}.ot-label{white-space:nowrap}.ot-tools{padding-right:0;gap:var(--sp-2);width:100%}.ot-tools .btn{padding:var(--sp-2);font-size:var(--fs-micro)}.ot-canvas{height:49vh;min-height:330px}.ot-hud{inset:var(--sp-2) var(--sp-2) auto;font-size:var(--fs-micro)}.ot-hud span{padding:var(--sp-2)}.ot-controls{gap:var(--sp-2)}.ot-actions{max-width:190px}.ot-actions .btn{padding:var(--sp-2);font-size:var(--fs-micro)}.ot-caption{padding:var(--sp-3);min-height:64px}}
+</style>
+<link rel="canonical" href="https://fernandocalle.es/visita-3d.html">
+<!-- i18n:alt -->
+<link rel="alternate" hreflang="es" href="https://fernandocalle.es/visita-3d.html">
+<link rel="alternate" hreflang="en" href="https://fernandocalle.es/en/visita-3d.html">
+<link rel="alternate" hreflang="x-default" href="https://fernandocalle.es/visita-3d.html">
+<!-- /i18n:alt -->
+<!-- MARCA:estilos · generado desde el canon; diseño ES/EN -->
+<link rel="stylesheet" href="brand/canon/tokens.css">
+<link rel="stylesheet" href="brand/marca-es.css">
+<!-- /MARCA:estilos -->
+</head>
+<body>
+<nav class="demo-nav" aria-label="Navegación"><a href="aplicaciones.html">← Aplicaciones</a><a class="idioma" data-i18n-alt href="/en/visita-3d.html" aria-label="View this page in English">EN</a></nav>
+<main class="wrap ot-wrap">
+<header class="ot-top"><div><span class="ot-label">ontos vivo · un mundo para explorar</span><h1>Nuestro pequeño mundo.</h1></div><div class="ot-tools"><a class="btn" href="visita-3d.html?mundo=normal">Mundo normal</a><a class="btn" href="visita-3d.html?mundo=segovia">Mundo Segovia</a><a class="btn" href="juego-2d.html">2D</a><a class="btn" href="animacion-3d.html">Figurita 3D</a><button class="btn" id="ot-pause" aria-pressed="false">Pausa</button><button class="btn" id="ot-center">Centrar</button><button class="btn" id="ot-reset">Reiniciar</button></div></header>
+<section class="ot-stage" aria-label="El jardín tridimensional de ontos">
+<noscript><style>.ot-stage > :not(noscript), main button, .ot-controls,.ot-zoom,.ot-help:not(#ot-segovia-credit) {display:none!important}</style><p style="padding:24px">Esta experiencia interactiva necesita JavaScript. Actívalo para usarla o <a href="aplicaciones.html">vuelve a Aplicaciones</a> para consultar el resto de trabajos.</p></noscript>
+<canvas class="ot-canvas" id="ot-world" tabindex="0" aria-label="Jardín 3D. WASD o flechas para caminar; espacio saltar; Mayús turbo; E coger o plantar; H saludar. Arrastra para mirar alrededor.">El jardín necesita WebGL. Puedes volver al <a href="juego-2d.html">patio 2D</a>.</canvas>
+<div class="ot-hud"><span id="ot-objective">I · Encuentra la semilla</span><span id="ot-score">Destellos 0 / 8</span></div>
+<div class="ot-overlay" id="ot-overlay" hidden><strong id="ot-overlay-title">Un pequeño respiro.</strong><p id="ot-overlay-text">Pulsa Continuar o P para volver al jardín.</p><a class="btn" href="juego-2d.html">Abrir el patio 2D</a></div>
+<div class="ot-caption" id="ot-message" role="status" aria-live="polite">Un mundo pequeño, sin bordes. Camina alrededor o aléjate para verlo entero.</div>
+</section>
+<div class="ot-zoom" aria-label="Distancia de cámara"><button class="btn" id="ot-segovia">Ver Segovia</button><button class="btn" id="ot-near" aria-label="Acercar cámara">＋ Acercar</button><button class="btn" id="ot-far" aria-label="Alejar cámara">− Alejar</button><button class="btn" id="ot-overview" aria-pressed="false">Ver planeta</button></div>
+<div class="ot-controls" aria-label="Controles táctiles">
+<div class="ot-pad"><button class="btn" data-ot-hold="forward" aria-label="Avanzar" aria-pressed="false">↑</button><button class="btn" data-ot-hold="left" aria-label="Ir a la izquierda" aria-pressed="false">←</button><button class="btn" data-ot-hold="back" aria-label="Retroceder" aria-pressed="false">↓</button><button class="btn" data-ot-hold="right" aria-label="Ir a la derecha" aria-pressed="false">→</button></div>
+<div class="ot-actions"><button class="btn" data-ot-hold="boost" aria-pressed="false">Turbo ⇧</button><button class="btn" data-ot-action="jump">Saltar</button><button class="btn" data-ot-action="grab">Coger / plantar</button><button class="btn" data-ot-action="wave">Saludar</button></div>
+</div>
+<details class="ot-help"><summary>Cómo jugar · teclado, cámara y objetivo</summary><p><kbd>WASD / ↑↓←→</kbd> moverse hacia donde miras · <kbd>Espacio</kbd> saltar · <kbd>Mayús</kbd> hacerse rueda · <kbd>E</kbd> coger, dejar o plantar · <kbd>H</kbd> saludar · <kbd>P</kbd> pausa. Arrastra el paisaje para girar la cámara; rueda del ratón para acercarte o alejarte.  Ver planeta muestra la esfera entera; Seguir a ontos vuelve al paseo. En móvil, mantén una flecha y usa el otro pulgar para saltar o arrastrar el paisaje. Pellizca con dos dedos para cambiar la distancia.</p><p>Lleva la semilla al pedestal entre los arcos. Los ocho destellos son un paseo opcional. Puedes dar la vuelta completa: la gravedad te mantiene sobre la esfera. Reiniciar comienza un jardín nuevo.</p><a class="btn" href="juego-2d.html">Volver al patio 2D</a></details>
+<details class="ot-help" id="ot-segovia-credit"><summary>Alcázar · créditos y descarga</summary><p>Fotogrametría de Néstor F. Marqués / Virtuanostrum, publicada por Alcázar de Segovia en <a href="https://commons.wikimedia.org/wiki/File:Alc%C3%A1zar_de_Segovia.stl">Wikimedia Commons</a>. Malla original y adaptación bajo <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p><p>Adaptación ontos: simplificación, recorte, giro, escala y coloración sin texturas. Catedral y acueducto: geometría propia simplificada. Es una miniatura escénica.</p><a href="/experiencias/ontos-alcazar.json" download>Descargar malla adaptada y créditos</a></details>
+</main>
+<script src="/experiencias/i18n.js"></script>
+<script src="/experiencias/mundo-3d.js"></script>
+<script>
+if(new URLSearchParams(location.search).get('mundo')==='segovia'){
+ document.querySelector('h1').textContent=window.ONTOS_DEMO_TRANSLATE('Un paseo por Segovia.');
+ document.querySelector('[data-i18n-alt]').search='?mundo=segovia';
+}
+</script>
+
+<script>
+// Aggregate pageviews by supported world, independently of the SEO canonical URL.
+window.goatcounter = {
+ path: location.pathname + '?mundo=' + (new URLSearchParams(location.search).get('mundo') === 'segovia' ? 'segovia' : 'normal')
+};
+</script>
+<script data-goatcounter="https://fernandocalle.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

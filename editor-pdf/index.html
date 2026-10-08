@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="es" data-ontos-web data-web-page="editor-pdf">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editor PDF — une, escanea y ordena PDFs sin que salgan de tu ordenador | Fernando Calle</title>
+<meta property="og:title" content="Editor PDF — une, escanea y ordena PDFs sin que salgan de tu ordenador | Fernando Calle">
+<meta property="og:description" content="Une, gira y reordena páginas de PDF, y convierte fotos de folios en páginas A4 limpias. Gratis, sin registro, sin marca de agua: todo ocurre en tu navegador y ningún archivo sale de tu ordenador.">
+<meta property="og:url" content="https://fernandocalle.es/editor-pdf/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:image" content="https://fernandocalle.es/brand/canon/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Une, gira y reordena páginas de PDF, y convierte fotos de folios en páginas A4 limpias. Gratis, sin registro, sin marca de agua: todo ocurre en tu navegador y ningún archivo sale de tu ordenador.">
+<link rel="canonical" href="https://fernandocalle.es/editor-pdf/">
+<link rel="icon" type="image/svg+xml" href="../brand/canon/favicon.svg">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/brand/tokens.css">
+<style>
+  /* Mapa de las variables de la app a los tokens de marca (fuente única: /brand/tokens.css).
+     --bg y --panel ya vienen con esos nombres del propio tokens.css, claro y oscuro. */
+  :root {
+    --border: var(--borde); --text: var(--texto); --muted: var(--sec);
+    --accent: var(--acento);
+    --accent-soft: color-mix(in srgb, var(--acento) 16%, var(--panel));
+    --danger: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+  #top { position: sticky; top: 0; z-index: 10; }
+  #top .barra { position: static; }
+  #top .barra nav { max-width: none; padding: 0.55rem 16px; gap: 1rem; }
+  .titulo-app { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--text); margin: 0; }
+  .titulo-app span { color: var(--accent); }
+  #btnLang {
+    margin-left: auto; border: 1px solid var(--border); border-radius: 999px;
+    padding: 2px 10px; font-size: 12px; background: transparent; color: var(--muted);
+  }
+  #btnLang:hover { color: var(--accent); border-color: var(--accent); background: transparent; }
+  #toolbar {
+    background: var(--panel); border-bottom: 1px solid var(--border);
+    padding: 8px 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  button {
+    font: inherit; font-size: 13px; padding: 7px 12px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--panel); color: var(--text);
+    cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  }
+  button:hover:not(:disabled) { background: color-mix(in srgb, var(--text) 6%, var(--panel)); }
+  button:disabled { opacity: .4; cursor: default; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.primary:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 84%, black); }
+  button.danger:hover:not(:disabled) { background: color-mix(in srgb, var(--danger) 12%, var(--panel)); border-color: var(--danger); color: var(--danger); }
+  #status { margin-left: auto; font-size: 12px; color: var(--muted); }
+
+  main { flex: 1; padding: 16px; }
+
+  #dropzone {
+    border: 2px dashed var(--border); border-radius: 16px; background: var(--panel);
+    min-height: 60vh; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 12px; color: var(--muted); text-align: center;
+    padding: 40px; cursor: pointer; transition: border-color .15s, background .15s;
+  }
+  #dropzone.over, body.dragging #grid { outline: 3px dashed var(--accent); outline-offset: -3px; border-radius: 12px; }
+  #dropzone .big { font-size: 48px; }
+  #dropzone strong { font-size: 18px; color: var(--text); }
+
+  #grid { display: none; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--panel); border: 2px solid var(--border); border-radius: 12px;
+    padding: 8px; cursor: grab; position: relative; user-select: none;
+    transition: border-color .1s, box-shadow .1s;
+  }
+  .card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .card.drag-over-left  { box-shadow: -4px 0 0 0 var(--accent); }
+  .card.drag-over-right { box-shadow:  4px 0 0 0 var(--accent); }
+  .card.ghost { opacity: .35; }
+  .thumb-box { height: 190px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .thumb-box canvas { max-width: 100%; max-height: 100%; box-shadow: 0 1px 4px rgba(0,0,0,.25); transition: transform .15s; }
+  .card .label { text-align: center; font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .card .badge {
+    position: absolute; top: 6px; left: 6px; background: rgba(28,26,23,.78); color: #fff;
+    font-size: 11px; padding: 2px 7px; border-radius: 10px; pointer-events: none;
+  }
+  .card .mini {
+    position: absolute; top: 6px; right: 6px; display: none; gap: 4px;
+  }
+  .card:hover .mini, .card:focus-within .mini { display: flex; }
+  .card .mini { max-width: calc(100% - 12px); flex-wrap: wrap; justify-content: flex-end; }
+  .mini button { padding: 4px 7px; font-size: 12px; border-radius: 6px; background: color-mix(in srgb, var(--panel) 95%, transparent); }
+  .thumb-box[role="button"] { cursor: pointer; border-radius: 6px; }
+  .thumb-box[role="button"]:focus-visible, .mini button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  footer { padding: 8px 16px; font-size: 12px; color: var(--muted); text-align: center; }
+  input[type=file] { display: none; }
+
+  #cornerModal {
+    display: none; position: fixed; inset: 0; z-index: 50;
+    background: rgba(15, 14, 12, .88);
+    align-items: center; justify-content: center; flex-direction: column; gap: 14px;
+  }
+  #cornerModal.open { display: flex; }
+  #cornerWrap { position: relative; touch-action: none; box-shadow: 0 8px 40px rgba(0,0,0,.6); }
+  #cornerCanvas { display: block; }
+  #cornerSvg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #cornerSvg polygon { fill: color-mix(in srgb, var(--teja) 18%, transparent); stroke: var(--teja); stroke-width: 2.5; }
+  #cornerSvg circle { fill: #fff; stroke: var(--teja); stroke-width: 4; cursor: grab; }
+  #cornerModal .hint { color: #cbc4b8; font-size: 13px; }
+
+  /* ---- firma digital ---- */
+  #signModal {
+    display: none; position: fixed; inset: 0; z-index: 60;
+    background: rgba(15, 14, 12, .88); align-items: center; justify-content: center;
+  }
+  #signModal.open { display: flex; }
+  #signPanel {
+    background: var(--panel); border-radius: 14px; padding: 14px 16px;
+    display: flex; gap: 16px; max-height: 94vh; box-shadow: 0 10px 50px rgba(0,0,0,.5);
+  }
+  #signLeft { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  #signWrap { position: relative; background: var(--border); touch-action: none; line-height: 0; }
+  #signWrap canvas { display: block; box-shadow: 0 1px 6px rgba(0,0,0,.3); }
+  #signBox {
+    position: absolute; border: 2px solid var(--accent); background: color-mix(in srgb, var(--teja) 14%, transparent);
+    cursor: move; box-sizing: border-box;
+  }
+  #signBox::after {
+    content: attr(data-lbl); position: absolute; left: 4px; top: 2px;
+    font: 11px "Segoe UI", sans-serif; color: var(--accent); line-height: 1.2;
+  }
+  #signGrip {
+    position: absolute; right: -6px; bottom: -6px; width: 13px; height: 13px;
+    background: #fff; border: 2px solid var(--accent); border-radius: 3px; cursor: nwse-resize;
+  }
+  #signSide { width: 268px; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+  #signSide h2 { font-size: 15px; }
+  #signSide label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 3px; }
+  #signSide input[type=text], #signSide select {
+    font: inherit; font-size: 13px; width: 100%; padding: 6px 8px;
+    border: 1px solid var(--border); border-radius: 7px; background: var(--panel); color: var(--text);
+  }
+  #signSide .chk { display: flex; align-items: center; gap: 6px; color: var(--text); }
+  #signNav { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  #signHint { font-size: 12px; color: var(--muted); text-align: center; }
+  #signCert { font-size: 11px; color: var(--muted); line-height: 1.35; }
+  #signMsg { font-size: 12px; color: var(--accent); min-height: 16px; }
+  /* Móvil (28-sep-2026): el panel de firma se apila (el lateral fijo de 268 px dejaba ~74 px
+     al PDF a 390), los campos a 16 px para que iOS no amplíe y botones de 44 px de alto. */
+  @media (max-width: 700px) {
+    #signPanel { flex-direction: column; max-height: 94dvh; overflow: auto; width: calc(100vw - 16px); box-sizing: border-box; }
+    #signSide { width: auto; }
+    #signSide input[type=text], #signSide select { font-size: 16px; }
+    button { min-height: 44px; }
+  }
+  /* Sin bloque oscuro propio: marca-es.css fija la superficie clara del manual en ambos
+     esquemas, y el texto oscuro sobre el verde de acción dejaba el botón ilegible. */
+  .pie-marca { margin-top: 2px; }
+  .pie-marca a { color: var(--accent); text-decoration: none; }
+  .pie-marca a:hover { text-decoration: underline; }
+</style>
+<!-- MARCA:estilos · generado desde el canon; diseño ES/EN -->
+<link rel="stylesheet" href="../brand/canon/tokens.css">
+<link rel="stylesheet" href="../brand/marca-es.css">
+<!-- /MARCA:estilos -->
+<style>
+  /* Pulido de la interfaz (3-oct-2026): va después de marca-es.css para ganarle en cascada sin
+     !important. Solo tokens del canon: verde de acción, arena de línea, hueso de panel; la teja
+     queda en el símbolo. Jerarquía: una acción principal (Abrir sin documento, Guardar con él),
+     secundarias agrupadas, versión de escritorio deshabilitada pero legible. */
+  html[data-ontos-web][data-web-page="editor-pdf"] {
+    --ep-linea: color-mix(in srgb, var(--ds-brand-arena) 70%, var(--ds-support-hueso));
+    --ep-mesa: color-mix(in srgb, var(--ds-brand-arena) 26%, var(--ds-support-hueso));
+    --ep-tinte: color-mix(in srgb, var(--ds-brand-verde) 8%, var(--ds-support-hueso));
+    --ep-suave: color-mix(in srgb, var(--ds-brand-verde) 62%, var(--ds-support-hueso));
+  }
+  /* Cabecera: título de herramienta a escala de aplicación, junto a la marca. */
+  #top .barra .marca { margin-right: 0; }
+  #top .titulo-app {
+    font-size: var(--ds-type-h2); line-height: 1.2; font-weight: 500; letter-spacing: -.01em;
+    margin: 0 auto 0 0; padding-left: var(--ds-space-4);
+    border-left: 1px solid var(--ep-linea); white-space: nowrap;
+  }
+  #top .titulo-app span { font-weight: 600; }
+  #top #btnLang { margin-left: 0; min-height: 32px; padding: 0 var(--ds-space-3); border-color: var(--ep-linea); color: var(--texto); }
+
+  /* Barra de herramientas */
+  #top #toolbar {
+    gap: var(--ds-space-2) var(--ds-space-3); padding-top: var(--ds-space-3); padding-bottom: var(--ds-space-3);
+    background: var(--ds-support-hueso); border-bottom: 1px solid var(--ep-linea);
+  }
+  /* Grupos sin envoltorio (el test de conservación compara la estructura): los separadores
+     marcan el corte y girar/quitar y seleccionar se pegan como controles segmentados. */
+  #toolbar .sep { width: 1px; height: 24px; margin: 0 var(--ds-space-1); background: var(--ep-linea); }
+  #toolbar :is(#btnAdd, #btnRotR, #btnDel, #btnNone, #btnSaveOcr, #btnSign) { margin-left: calc(var(--ds-space-1) - var(--ds-space-3)); }
+  #toolbar :is(#btnRotR, #btnDel, #btnNone) { margin-left: calc(-1px - var(--ds-space-3)); }
+  /* Hasta 1500 px, guardar abre segunda fila con la opción de escáner y el estado: así la
+     fila no se parte a mitad de grupo. */
+  @media (max-width: 1500px) { #toolbar div.sep:nth-of-type(3) { flex-basis: 100%; height: 0; margin: 0; } }
+  #toolbar button {
+    min-height: 36px; padding: 0 var(--ds-space-3); font-size: 14px; font-weight: 500; line-height: 1;
+    border: 1px solid var(--ep-linea); border-radius: var(--ds-radius-s);
+    background: var(--ds-support-hueso); color: var(--ds-brand-verde);
+    transition: background-color var(--web-motion-fast), border-color var(--web-motion-fast), color var(--web-motion-fast);
+  }
+  #toolbar :is(#btnRotL, #btnRotR, #btnDel, #btnAll, #btnNone) { background: var(--ds-surface-page); border-radius: 0; }
+  #toolbar :is(#btnRotL, #btnAll) { border-radius: var(--ds-radius-s) 0 0 var(--ds-radius-s); }
+  #toolbar :is(#btnDel, #btnNone) { border-radius: 0 var(--ds-radius-s) var(--ds-radius-s) 0; }
+  #toolbar :is(#btnRotL, #btnRotR, #btnDel, #btnAll, #btnNone):focus-visible { position: relative; z-index: 1; }
+  #toolbar button:hover:not(:disabled) { background: var(--ep-tinte); border-color: var(--ep-suave); }
+  #toolbar button:disabled { opacity: 1; color: color-mix(in srgb, var(--ds-brand-verde) 42%, var(--ds-support-hueso)); cursor: not-allowed; }
+  #toolbar #btnDel:hover:not(:disabled) { color: var(--ds-brand-rojo); background: color-mix(in srgb, var(--ds-brand-rojo) 8%, var(--ds-support-hueso)); }
+  /* Acción principal: verde lleno. Sin documento manda Abrir; con documento, Guardar. */
+  #toolbar :is(#btnOpen, #btnSave:not(:disabled)) {
+    background: var(--ds-action); border-color: var(--ds-action); color: var(--ds-on-action); font-weight: 600; box-shadow: none;
+  }
+  #toolbar :is(#btnOpen, #btnSave:not(:disabled)):hover { background: color-mix(in srgb, var(--ds-action) 86%, var(--ds-web-technical-black)); border-color: transparent; color: var(--ds-on-action); box-shadow: none; }
+  #toolbar:has(#btnSave:not(:disabled)) #btnOpen { background: var(--ds-support-hueso); border-color: var(--ep-linea); color: var(--ds-brand-verde); font-weight: 500; }
+  #toolbar:has(#btnSave:not(:disabled)) #btnOpen:hover { background: var(--ep-tinte); border-color: var(--ep-suave); color: var(--ds-brand-verde); }
+  #toolbar #btnSave:disabled { background: transparent; }
+  /* OCR y firma son de la versión de escritorio: discretos, con su explicación en el title. */
+  #toolbar button.escritorio:disabled { background: transparent; border-style: dashed; cursor: help; }
+  #toolbar .opcion-escaner {
+    display: inline-flex; align-items: center; gap: var(--ds-space-2); min-height: 36px;
+    font-size: 14px; color: var(--ds-brand-verde); cursor: pointer;
+  }
+  #toolbar .opcion-escaner input { width: 16px; height: 16px; accent-color: var(--ds-brand-verde); }
+  #top #status { font-size: 13px; color: var(--ds-brand-verde); font-variant-numeric: tabular-nums; }
+  #top #status:not(:empty) { padding: 4px var(--ds-space-3); border-radius: 999px; background: var(--ep-tinte); }
+
+  /* Área de trabajo */
+  main#contenido { padding: var(--ds-space-5) 0 var(--ds-space-6); }
+  main#contenido:focus { outline: none; }
+  #dropzone {
+    min-height: clamp(320px, 58vh, 600px); gap: var(--ds-space-3); padding: var(--ds-space-7) var(--ds-space-5);
+    border: 1.5px dashed var(--ep-suave); border-radius: var(--ds-radius); background: var(--ds-support-hueso);
+    color: var(--ds-brand-verde); transition: background-color var(--web-motion-fast), border-color var(--web-motion-fast);
+  }
+  #dropzone:hover, #dropzone.over { border-color: var(--ds-brand-verde); background: var(--ep-tinte); }
+  #dropzone.over { border-style: solid; outline: none; }
+  #dropzone > span[aria-hidden="true"] { margin-bottom: var(--ds-space-2); }
+  #dropzone strong { font-size: var(--ds-type-h2); font-weight: 600; letter-spacing: -.01em; color: var(--ds-brand-verde); }
+  #dropzone strong + span { max-width: 68ch; font-size: var(--ds-type-body); line-height: 1.65; color: color-mix(in srgb, var(--ds-brand-verde) 82%, var(--ds-support-hueso)); }
+  body.dragging #grid { outline: 2px dashed var(--ds-brand-verde); outline-offset: 6px; border-radius: var(--ds-radius); }
+
+  /* Miniaturas: la página sobre una mesa arena, número en pastilla, selección en verde. */
+  #grid { grid-template-columns: repeat(auto-fill, minmax(188px, 1fr)); gap: var(--ds-space-5) var(--ds-space-4); }
+  #grid .card {
+    padding: var(--ds-space-2); border: 1px solid var(--ep-linea); border-radius: var(--ds-radius);
+    background: var(--ds-support-hueso); box-shadow: none;
+    transition: border-color var(--web-motion-fast), box-shadow var(--web-motion-fast), background-color var(--web-motion-fast);
+  }
+  #grid .card:hover { border-color: var(--ep-suave); }
+  #grid .thumb-box { height: 212px; padding: var(--ds-space-4); border-radius: var(--ds-radius-s); background: var(--ep-mesa); }
+  #grid .thumb-box canvas { box-shadow: 0 0 0 1px color-mix(in srgb, var(--ds-brand-verde) 10%, transparent), 0 2px 6px color-mix(in srgb, var(--ds-brand-verde) 16%, transparent); }
+  #grid .card.selected { border-color: var(--ds-brand-verde); box-shadow: 0 0 0 1px var(--ds-brand-verde); background: var(--ep-tinte); }
+  #grid .card.selected .thumb-box { background: color-mix(in srgb, var(--ds-brand-verde) 16%, var(--ds-support-hueso)); }
+  #grid .card.drag-over-left { box-shadow: -5px 0 0 0 var(--ds-brand-verde); }
+  #grid .card.drag-over-right { box-shadow: 5px 0 0 0 var(--ds-brand-verde); }
+  #grid .card .label { margin-top: var(--ds-space-2); font-size: 13px; font-weight: 500; color: var(--ds-brand-verde); font-variant-numeric: tabular-nums; }
+  #grid .card .badge {
+    top: 14px; left: 14px; min-width: 24px; padding: 2px 8px; text-align: center;
+    font-size: 12px; font-weight: 600; line-height: 18px; border-radius: 999px;
+    background: var(--ds-support-hueso); color: var(--ds-brand-verde); border: 1px solid var(--ep-linea);
+  }
+  #grid .card.selected .badge { background: var(--ds-brand-verde); border-color: var(--ds-brand-verde); color: var(--ds-on-action); }
+  #grid .card .mini { top: 12px; right: 12px; gap: 2px; padding: 2px; border: 1px solid var(--ep-linea); border-radius: var(--ds-radius-s); background: var(--ds-support-hueso); }
+  #grid .mini button { min-width: 28px; min-height: 28px; padding: 0 6px; justify-content: center; border: 0; border-radius: 6px; background: transparent; color: var(--ds-brand-verde); }
+  #grid .mini button:hover:not(:disabled) { background: var(--ep-tinte); }
+  #grid .mini button:disabled { color: color-mix(in srgb, var(--ds-brand-verde) 30%, var(--ds-support-hueso)); }
+  #grid .thumb-box[role="button"]:focus-visible { outline: 3px solid var(--ds-action); outline-offset: 3px; }
+  #grid .mini button:focus-visible { outline: 2px solid var(--ds-action); outline-offset: 1px; }
+  /* Sin ratón, la página seleccionada enseña sus mandos (girar, mover, quitar). */
+  @media (hover: none) { #grid .card.selected .mini { display: flex; } }
+
+  footer { padding-top: var(--ds-space-4); padding-bottom: var(--ds-space-5); border-top: 1px solid var(--ep-linea); color: color-mix(in srgb, var(--ds-brand-verde) 82%, var(--ds-support-hueso)); }
+  .pie-marca a { color: var(--ds-brand-verde); text-decoration: underline; text-decoration-color: var(--ep-suave); text-underline-offset: 3px; }
+
+  @media (max-width: 700px) {
+    #top { position: static; }
+    #top .titulo-app { font-size: var(--ds-type-h3); }
+    #top #toolbar { gap: var(--ds-space-2); padding: var(--ds-space-3) var(--ds-space-4); }
+    /* En móvil cada separador corta la fila: un grupo por fila, botones a todo el ancho. */
+    #toolbar .sep { flex-basis: 100%; height: 0; margin: 0; background: none; }
+    #toolbar button { flex: 1 1 auto; justify-content: center; font-size: 13.5px; padding: 0 var(--ds-space-2); }
+    #toolbar :is(#btnAdd, #btnSaveOcr, #btnSign) { margin-left: 0; }
+    #toolbar :is(#btnRotR, #btnDel, #btnNone) { margin-left: calc(-1px - var(--ds-space-2)); }
+    #toolbar button, #toolbar .opcion-escaner { min-height: 44px; }
+    #top #status { margin-left: 0; }
+    main#contenido { padding: var(--ds-space-4) 0; }
+    #dropzone { min-height: 300px; padding: var(--ds-space-6) var(--ds-space-4); }
+    #grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-3); }
+    #grid .thumb-box { height: 168px; padding: var(--ds-space-3); }
+    #grid .card .badge { top: 12px; left: 12px; }
+    #grid .card .mini { left: 12px; right: 12px; top: auto; bottom: 36px; max-width: none; flex-wrap: nowrap; }
+    #grid .mini button { min-height: 36px; min-width: 0; padding: 0; flex: 1 1 0; }
+    footer { padding-top: var(--ds-space-4); padding-bottom: var(--ds-space-4); }
+  }
+  @media (max-width: 34rem) {
+    #top .barra nav { flex-wrap: wrap; }
+    #top .titulo-app { order: 3; flex-basis: 100%; padding: 0 0 var(--ds-space-2); border: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #toolbar button, #dropzone, #grid .card { transition: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#contenido" data-i18n="skipContent">Saltar al contenido</a>
+<div id="top">
+<header class="barra">
+  <nav>
+    <a class="marca" href="https://fernandocalle.es/"><span class="marca__nombre">Fernando Calle</span></a>
+    <h1 class="titulo-app" data-i18n-html="h1">Editor de páginas <span>PDF</span></h1>
+    <button id="btnLang" title="Change language / Cambiar idioma">🌐 English</button>
+  </nav>
+</header>
+<div id="toolbar" role="region" aria-label="Herramientas del documento" data-i18n-aria="toolbar">
+  <button id="btnOpen" class="primary" data-i18n="open">📂 Abrir PDF</button>
+  <button id="btnAdd" disabled data-i18n="add">➕ Añadir otro PDF</button>
+  <div class="sep"></div>
+  <button id="btnRotL" disabled data-i18n="rotL" data-i18n-title="rotLT">⟲ Girar izq.</button>
+  <button id="btnRotR" disabled data-i18n="rotR" data-i18n-title="rotRT">⟳ Girar der.</button>
+  <button id="btnDel" class="danger" disabled data-i18n="del" data-i18n-title="delT">🗑 Quitar</button>
+  <div class="sep"></div>
+  <button id="btnAll" disabled data-i18n="selAll">Seleccionar todo</button>
+  <button id="btnNone" disabled data-i18n="selNone">Quitar selección</button>
+  <div class="sep"></div>
+  <button id="btnSave" class="primary" disabled data-i18n="save">💾 Guardar PDF</button>
+  <button id="btnSaveOcr" class="escritorio" disabled data-i18n="saveOcr">🔍 Guardar con OCR</button>
+  <button id="btnSign" class="escritorio" disabled data-i18n="sign">✍️ Firmar</button>
+  <label class="opcion-escaner" data-i18n-title="scanT">
+    <input type="checkbox" id="chkScan" checked> <span data-i18n="scan">🖨 Efecto escáner en fotos</span>
+  </label>
+  <span id="status" role="status" aria-live="polite"></span>
+</div>
+</div>
+
+<main id="contenido" tabindex="-1">
+  <noscript>
+    <style>
+      #toolbar, #dropzone, #grid, #btnLang { display: none !important; }
+      .nojs-notice { max-width: 42rem; margin: 2rem auto; padding: 1.5rem; border: 1px solid var(--border); border-radius: 12px; background: var(--panel); color: var(--text); }
+      .nojs-notice p + p { margin-top: 1rem; }
+    </style>
+    <div class="nojs-notice">
+      <p lang="es">El Editor PDF necesita JavaScript para abrir y procesar archivos. Actívalo para usar la herramienta o <a href="../aplicaciones.html">vuelve a Aplicaciones</a>.</p>
+      <p lang="en">The PDF editor needs JavaScript to open and process files. Enable it to use the tool or <a href="../en/aplicaciones.html">return to Applications</a>.</p>
+    </div>
+  </noscript>
+  <div id="dropzone">
+    <span style="width:84px;height:84px;display:block;color:var(--piedra-logo)" aria-hidden="true"><svg style="width:100%;height:100%" viewBox="0 0 100 100" aria-hidden="true"><path d="M35.29,10.66 A42,42 0 0 1 64.71,10.66 L60.3,22.46 A29.4,29.4 0 0 0 39.7,22.46 Z" fill="currentColor"/>
+<path d="M67.42,11.78 A42,42 0 0 1 88.22,32.58 L76.75,37.81 A29.4,29.4 0 0 0 62.19,23.25 Z" fill="currentColor"/>
+<path d="M89.34,35.29 A42,42 0 0 1 89.34,64.71 L77.54,60.3 A29.4,29.4 0 0 0 77.54,39.7 Z" fill="currentColor"/>
+<path d="M88.22,67.42 A42,42 0 0 1 67.42,88.22 L62.19,76.75 A29.4,29.4 0 0 0 76.75,62.19 Z" fill="currentColor"/>
+<path d="M64.71,89.34 A42,42 0 0 1 35.29,89.34 L39.7,77.54 A29.4,29.4 0 0 0 60.3,77.54 Z" fill="currentColor"/>
+<path d="M32.58,88.22 A42,42 0 0 1 11.78,67.42 L23.25,62.19 A29.4,29.4 0 0 0 37.81,76.75 Z" fill="currentColor"/>
+<path d="M10.66,64.71 A42,42 0 0 1 10.66,35.29 L22.46,39.7 A29.4,29.4 0 0 0 22.46,60.3 Z" fill="currentColor"/>
+<path d="M11.78,32.58 A42,42 0 0 1 32.58,11.78 L37.81,23.25 A29.4,29.4 0 0 0 23.25,37.81 Z" fill="currentColor"/>
+<line x1="50.00" y1="34.50" x2="50.00" y2="20.60" stroke="currentColor" stroke-width="3.2"/>
+<line x1="60.96" y1="39.04" x2="70.79" y2="29.21" stroke="currentColor" stroke-width="3.2"/>
+<line x1="65.50" y1="50.00" x2="79.40" y2="50.00" stroke="currentColor" stroke-width="3.2"/>
+<line x1="60.96" y1="60.96" x2="70.79" y2="70.79" stroke="currentColor" stroke-width="3.2"/>
+<line x1="50.00" y1="65.50" x2="50.00" y2="79.40" stroke="currentColor" stroke-width="3.2"/>
+<line x1="39.04" y1="60.96" x2="29.21" y2="70.79" stroke="currentColor" stroke-width="3.2"/>
+<line x1="34.50" y1="50.00" x2="20.60" y2="50.00" stroke="currentColor" stroke-width="3.2"/>
+<line x1="39.04" y1="39.04" x2="29.21" y2="29.21" stroke="currentColor" stroke-width="3.2"/>
+<circle cx="50" cy="50" r="14" fill="#D4713B"/></svg></span>
+    <strong data-i18n="dzTitle">Arrastra aquí un PDF o fotos (JPG/PNG)</strong>
+    <span data-i18n-html="dzText">o haz clic para elegir archivos. Las fotos se convierten en páginas (con efecto escáner opcional).<br>Después: haz clic en las páginas para seleccionarlas, arrástralas para reordenar,<br>y usa los botones para girar, quitar o añadir hojas de otro PDF.</span>
+  </div>
+  <div id="grid"></div>
+</main>
+
+<footer>
+  <div data-i18n="footer">Todo se procesa en tu ordenador: ningún archivo se sube a internet. Atajos: clic = seleccionar · arrastrar = reordenar · R / L = girar · Supr = quitar</div>
+  <div class="pie-marca" data-i18n-html="pieMarca">Una herramienta de <a href="https://fernandocalle.es">Fernando Calle · fernandocalle.es</a></div>
+</footer>
+
+<input type="file" id="fileInput" accept="application/pdf,image/jpeg,image/png,image/webp" multiple>
+<input type="file" id="fileInputAdd" accept="application/pdf,image/jpeg,image/png,image/webp" multiple>
+
+<div id="cornerModal">
+  <div class="hint" data-i18n="ceHint">Arrastra los 4 tiradores hasta las esquinas del folio y pulsa «Aplicar recorte»</div>
+  <div id="cornerWrap">
+    <canvas id="cornerCanvas"></canvas>
+    <svg id="cornerSvg"></svg>
+  </div>
+  <div style="display:flex; gap:8px">
+    <button id="ceAuto" data-i18n="ceAuto">🔍 Detectar auto</button>
+    <button id="ceFull" data-i18n="ceFull">⬜ Hoja completa</button>
+    <button id="ceCancel" data-i18n="cancel">Cancelar</button>
+    <button id="ceApply" class="primary" data-i18n="ceApply">✔ Aplicar recorte</button>
+  </div>
+</div>
+
+<div id="signModal">
+  <div id="signPanel">
+    <div id="signLeft">
+      <div id="signNav">
+        <button id="sgPrev">‹</button>
+        <span id="sgPageLbl">Página 1 de 1</span>
+        <button id="sgNext">›</button>
+        <span style="margin-left:10px" data-i18n="sgHint">Arrastra el recuadro donde quieras la firma; la esquina lo agranda.</span>
+      </div>
+      <div id="signWrap">
+        <canvas id="signCanvas"></canvas>
+        <div id="signBox" data-lbl="firma"><div id="signGrip"></div></div>
+      </div>
+    </div>
+    <div id="signSide">
+      <h2 data-i18n="sgTitle">✍️ Firmar digitalmente</h2>
+      <div>
+        <label data-i18n="lblCert">Certificado</label>
+        <select id="sgCert"></select>
+        <div id="signCert"></div>
+      </div>
+      <div>
+        <label data-i18n="lblMotivo">Motivo (opcional)</label>
+        <input type="text" id="sgMotivo" data-i18n-ph="phMotivo" placeholder="Ej.: Conforme con el contenido">
+      </div>
+      <div>
+        <label data-i18n="lblLugar">Lugar (opcional)</label>
+        <input type="text" id="sgLugar" data-i18n-ph="phLugar" placeholder="Ej.: Segovia">
+      </div>
+      <label class="chk"><input type="checkbox" id="sgVisible" checked> <span data-i18n="chkVisible">Poner recuadro visible</span></label>
+      <label class="chk" data-i18n-title="chkSelloT">
+        <input type="checkbox" id="sgSello" checked> <span data-i18n="chkSello">Sello de tiempo</span>
+      </label>
+      <div id="signMsg"></div>
+      <div style="margin-top:auto; display:flex; gap:8px; justify-content:flex-end">
+        <button id="sgCancel" data-i18n="cancel">Cancelar</button>
+        <button id="sgOk" class="primary" data-i18n="sgOk">✍️ Firmar y guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="lib/pdf.min.js"></script>
+<script src="lib/pdf-lib.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'lib/pdf.worker.min.js';
+
+// ---------- idioma (español / inglés) ----------
+const I18N = {
+  es: {
+    docTitle: 'Editor de páginas PDF',
+    skipContent: 'Saltar al contenido', toolbar: 'Herramientas del documento',
+    h1: 'Editor de páginas <span>PDF</span>',
+    pieMarca: 'Una herramienta de <a href="https://fernandocalle.es">Fernando Calle · fernandocalle.es</a>',
+    open: '📂 Abrir PDF', add: '➕ Añadir otro PDF',
+    rotL: '⟲ Girar izq.', rotLT: 'Girar 90° a la izquierda (tecla L)',
+    rotR: '⟳ Girar der.', rotRT: 'Girar 90° a la derecha (tecla R)',
+    del: '🗑 Quitar', delT: 'Eliminar páginas seleccionadas (tecla Supr)',
+    selAll: 'Seleccionar todo', selNone: 'Quitar selección',
+    save: '💾 Guardar PDF', saveOcr: '🔍 Guardar con OCR', sign: '✍️ Firmar',
+    scan: '🖨 Efecto escáner en fotos',
+    scanT: 'Convierte las fotos a blanco y negro con contraste, como un escáner',
+    langBtn: '🌐 English',
+    dzTitle: 'Arrastra aquí un PDF o fotos (JPG/PNG)',
+    dzText: 'o haz clic para elegir archivos. Las fotos se convierten en páginas (con efecto escáner opcional).<br>Después: haz clic en las páginas para seleccionarlas, arrástralas para reordenar,<br>y usa los botones para girar, quitar o añadir hojas de otro PDF.',
+    footer: 'Todo se procesa en tu ordenador: ningún archivo se sube a internet. Atajos: clic = seleccionar · arrastrar = reordenar · R / L = girar · Supr = quitar',
+    ceHint: 'Arrastra los 4 tiradores hasta las esquinas del folio y pulsa «Aplicar recorte»',
+    ceAuto: '🔍 Detectar auto', ceFull: '⬜ Hoja completa', ceApply: '✔ Aplicar recorte',
+    cancel: 'Cancelar',
+    sgHint: 'Arrastra el recuadro donde quieras la firma; la esquina lo agranda.',
+    sgTitle: '✍️ Firmar digitalmente', sgOk: '✍️ Firmar y guardar', sgBox: 'firma',
+    lblCert: 'Certificado', lblMotivo: 'Motivo (opcional)', lblLugar: 'Lugar (opcional)',
+    phMotivo: 'Ej.: Conforme con el contenido', phLugar: 'Ej.: Segovia',
+    chkVisible: 'Poner recuadro visible', chkSello: 'Sello de tiempo',
+    chkSelloT: 'Añade una fecha certificada por un tercero (necesita internet)',
+    ocrOn: 'Guarda el PDF con una capa de texto invisible: se podrá buscar con Ctrl+F y copiar el texto',
+    ocrOff: 'El OCR va en la versión completa, la de escritorio. Si te interesa, escríbeme',
+    signOn: 'Firma el documento con tu certificado digital (FNMT, DNIe…)',
+    signOff: 'La firma con certificado digital va en la versión completa, la de escritorio. Si te interesa, escríbeme',
+    miniCorners: 'Ajustar esquinas del recorte', miniRot: 'Girar esta página', miniDel: 'Quitar esta página',
+    selectPage: i => 'Seleccionar página ' + i,
+    movePrev: i => 'Mover página ' + i + ' antes', moveNext: i => 'Mover página ' + i + ' después',
+    movedPage: (from, to) => 'Página ' + from + ' movida a la posición ' + to,
+    sufEdit: '-editado.pdf', sufOcr: '-editado OCR.pdf', sufSign: '-firmado.pdf',
+    pages: n => n + (n === 1 ? ' página' : ' páginas'),
+    selCount: n => ' · ' + n + (n === 1 ? ' seleccionada' : ' seleccionadas'),
+    cardPage: (i, rot) => 'Página ' + i + (rot ? ' · ' + rot + '°' : ''),
+    pageOf: (i, n) => 'Página ' + i + ' de ' + n,
+    loading: f => 'Cargando ' + f + '…',
+    loadingPage: (f, i, n) => 'Cargando ' + f + '… página ' + i + ' de ' + n,
+    genPdf: 'Generando PDF…', reproc: 'Reprocesando fotos…', applyCrop: 'Aplicando recorte…',
+    saved: n => 'PDF guardado ✔ (' + n + ' páginas)',
+    applyingOcr: 'Aplicando OCR… (unos segundos por página)',
+    savedOcr: n => 'PDF con OCR guardado ✔ (' + n + ' páginas, texto buscable)',
+    preparing: 'Preparando la vista previa…',
+    signing: 'Firmando… (Windows puede pedirte permiso para usar el certificado)',
+    signed: (quien, sello) => 'PDF firmado ✔ ' + quien + (sello ? ' · con sello de tiempo' : ' · sin sello de tiempo (sin conexión)'),
+    certInfo: (em, cad) => 'Emitido por ' + em + ' · caduca el ' + cad,
+    noCerts: '— ningún certificado instalado —',
+    errImg: (f, m) => 'No se pudo abrir la imagen "' + f + '".\n' + m,
+    errPdf: (f, m) => 'No se pudo abrir "' + f + '". ¿Es un PDF válido?\n' + m,
+    errGen: m => 'Error al generar el PDF: ' + m,
+    errOcr: m => 'No se pudo aplicar el OCR: ' + m + '\n\nAbre la app con el acceso directo "Editor PDF" del escritorio para que el OCR esté disponible.',
+    errNoCert: 'No hay ningún certificado de firma instalado en Windows.\n\nInstala tu certificado (FNMT, DNIe…) en el almacén personal del usuario y vuelve a abrir la app.',
+    errSign: m => 'No se pudo firmar:\n\n' + m
+  },
+  en: {
+    docTitle: 'PDF page editor',
+    skipContent: 'Skip to content', toolbar: 'Document tools',
+    h1: '<span>PDF</span> page editor',
+    pieMarca: 'A tool by <a href="https://fernandocalle.es/en/">Fernando Calle · fernandocalle.es</a>',
+    open: '📂 Open PDF', add: '➕ Add another PDF',
+    rotL: '⟲ Rotate left', rotLT: 'Rotate 90° counter-clockwise (key L)',
+    rotR: '⟳ Rotate right', rotRT: 'Rotate 90° clockwise (key R)',
+    del: '🗑 Remove', delT: 'Remove the selected pages (Del key)',
+    selAll: 'Select all', selNone: 'Clear selection',
+    save: '💾 Save PDF', saveOcr: '🔍 Save with OCR', sign: '✍️ Sign',
+    scan: '🖨 Scanner effect on photos',
+    scanT: 'Turns photos into high-contrast black and white, like a scanner',
+    langBtn: '🌐 Español',
+    dzTitle: 'Drop a PDF or photos (JPG/PNG) here',
+    dzText: 'or click to choose files. Photos are turned into pages (with optional scanner effect).<br>Then: click pages to select them, drag them to reorder,<br>and use the buttons to rotate, remove or add sheets from another PDF.',
+    footer: 'Everything runs on your computer: no file is uploaded to the internet. Shortcuts: click = select · drag = reorder · R / L = rotate · Del = remove',
+    ceHint: 'Drag the 4 handles to the corners of the sheet and press “Apply crop”',
+    ceAuto: '🔍 Auto-detect', ceFull: '⬜ Whole photo', ceApply: '✔ Apply crop',
+    cancel: 'Cancel',
+    sgHint: 'Drag the box wherever you want the signature; the corner resizes it.',
+    sgTitle: '✍️ Sign digitally', sgOk: '✍️ Sign and save', sgBox: 'signature',
+    lblCert: 'Certificate', lblMotivo: 'Reason (optional)', lblLugar: 'Location (optional)',
+    phMotivo: 'e.g.: I agree with the content', phLugar: 'e.g.: Sydney',
+    chkVisible: 'Draw a visible box', chkSello: 'Timestamp',
+    chkSelloT: 'Adds a date certified by a third party (needs internet)',
+    ocrOn: 'Saves the PDF with an invisible text layer: searchable with Ctrl+F and copyable',
+    ocrOff: 'OCR ships in the full desktop version. Message me if you want it',
+    signOn: 'Sign the document with your digital certificate (FNMT, DNIe…)',
+    signOff: 'Certificate signing ships in the full desktop version. Message me if you want it',
+    miniCorners: 'Adjust the crop corners', miniRot: 'Rotate this page', miniDel: 'Remove this page',
+    selectPage: i => 'Select page ' + i,
+    movePrev: i => 'Move page ' + i + ' earlier', moveNext: i => 'Move page ' + i + ' later',
+    movedPage: (from, to) => 'Page ' + from + ' moved to position ' + to,
+    sufEdit: '-edited.pdf', sufOcr: '-edited OCR.pdf', sufSign: '-signed.pdf',
+    pages: n => n + (n === 1 ? ' page' : ' pages'),
+    selCount: n => ' · ' + n + ' selected',
+    cardPage: (i, rot) => 'Page ' + i + (rot ? ' · ' + rot + '°' : ''),
+    pageOf: (i, n) => 'Page ' + i + ' of ' + n,
+    loading: f => 'Loading ' + f + '…',
+    loadingPage: (f, i, n) => 'Loading ' + f + '… page ' + i + ' of ' + n,
+    genPdf: 'Building PDF…', reproc: 'Reprocessing photos…', applyCrop: 'Applying crop…',
+    saved: n => 'PDF saved ✔ (' + n + ' pages)',
+    applyingOcr: 'Running OCR… (a few seconds per page)',
+    savedOcr: n => 'PDF with OCR saved ✔ (' + n + ' pages, searchable text)',
+    preparing: 'Preparing the preview…',
+    signing: 'Signing… (Windows may ask for permission to use the certificate)',
+    signed: (quien, sello) => 'PDF signed ✔ ' + quien + (sello ? ' · with timestamp' : ' · no timestamp (offline)'),
+    certInfo: (em, cad) => 'Issued by ' + em + ' · expires ' + cad,
+    noCerts: '— no certificate installed —',
+    errImg: (f, m) => 'Could not open the image "' + f + '".\n' + m,
+    errPdf: (f, m) => 'Could not open "' + f + '". Is it a valid PDF?\n' + m,
+    errGen: m => 'Error building the PDF: ' + m,
+    errOcr: m => 'OCR failed: ' + m + '\n\nOpen the app with the "Editor PDF" desktop shortcut so that OCR is available.',
+    errNoCert: 'There is no signing certificate installed in Windows.\n\nInstall your certificate (FNMT, DNIe…) in the user\'s personal store and reopen the app.',
+    errSign: m => 'Could not sign:\n\n' + m
+  }
+};
+
+// El enlace de idioma tiene prioridad; la preferencia local es el respaldo.
+const requestedLang = new URLSearchParams(location.search).get('lang');
+let savedLang = null;
+try { savedLang = localStorage.getItem('pdfeditor-lang'); } catch {}
+let lang = ['es', 'en'].includes(requestedLang) ? requestedLang : savedLang === 'en' ? 'en' : 'es';
+let T = I18N[lang];
+
+function aplicarIdioma() {
+  T = I18N[lang];
+  document.documentElement.lang = lang;
+  document.querySelector('.barra .marca').href = 'https://fernandocalle.es/' + (lang === 'en' ? 'en/' : '');
+  document.title = T.docTitle;
+  const poner = (sel, attr, prop) => document.querySelectorAll('[' + sel + ']').forEach(e => {
+    const v = T[e.dataset[attr]];
+    if (v !== undefined) e[prop] = v;
+  });
+  poner('data-i18n', 'i18n', 'textContent');
+  poner('data-i18n-html', 'i18nHtml', 'innerHTML');
+  poner('data-i18n-title', 'i18nTitle', 'title');
+  poner('data-i18n-ph', 'i18nPh', 'placeholder');
+  document.querySelectorAll('[data-i18n-aria]').forEach(e => e.setAttribute('aria-label', T[e.dataset.i18nAria]));
+  $('btnLang').textContent = T.langBtn;
+  $('signBox').dataset.lbl = T.sgBox;
+  $('sgPageLbl').textContent = T.pageOf(fm.page + 1, fm.n);
+  render();
+  pintarCertificados();
+}
+
+function cambiarIdioma() {
+  lang = lang === 'es' ? 'en' : 'es';
+  try { localStorage.setItem('pdfeditor-lang', lang); } catch {}
+  const url = new URL(location.href);
+  url.searchParams.set('lang', lang);
+  try { history.replaceState(null, '', url); } catch {}
+  aplicarIdioma();
+}
+
+const docs = [];   // { bytes: Uint8Array }
+let pages = [];    // { doc, page, rot, canvas, w, h }
+let selected = new Set();
+let baseName = 'documento';
+let dragIndex = null;
+
+const $ = id => document.getElementById(id);
+const grid = $('grid'), dropzone = $('dropzone'), status = $('status');
+
+function setStatus(t) { status.textContent = t; }
+
+const isImage = f => /^image\//.test(f.type) || /\.(jpe?g|png|webp)$/i.test(f.name);
+
+// ---------- escaneado de fotos: homografia + warp + limpieza ----------
+const A4W = 1754, A4H = 2480; // ~212 ppp
+
+function solveH(src, dst) {
+  // homografia 3x3 (h9=1) que lleva src[i] -> dst[i]; gauss con pivoteo
+  const A = [], b = [];
+  for (let i = 0; i < 4; i++) {
+    const [x, y] = src[i], [u, v] = dst[i];
+    A.push([x, y, 1, 0, 0, 0, -u * x, -u * y]); b.push(u);
+    A.push([0, 0, 0, x, y, 1, -v * x, -v * y]); b.push(v);
+  }
+  for (let col = 0; col < 8; col++) {
+    let piv = col;
+    for (let r = col + 1; r < 8; r++) if (Math.abs(A[r][col]) > Math.abs(A[piv][col])) piv = r;
+    [A[col], A[piv]] = [A[piv], A[col]]; [b[col], b[piv]] = [b[piv], b[col]];
+    for (let r = 0; r < 8; r++) {
+      if (r === col || Math.abs(A[col][col]) < 1e-12) continue;
+      const f = A[r][col] / A[col][col];
+      for (let k = col; k < 8; k++) A[r][k] -= f * A[col][k];
+      b[r] -= f * b[col];
+    }
+  }
+  return b.map((v, i) => v / A[i][i]);
+}
+
+const bitmapOf = p => createImageBitmap(new Blob([p.bytes]), { imageOrientation: 'from-image' });
+const fullCorners = bmp => [[0, 0], [bmp.width - 1, 0], [bmp.width - 1, bmp.height - 1], [0, bmp.height - 1]];
+
+const areaQuad = q => Math.abs(
+  q.reduce((a, p, i) => a + p[0] * q[(i+1)%4][1] - q[(i+1)%4][0] * p[1], 0)) / 2;
+
+function grisYOtsu(bmp, W) {
+  // version reducida en gris + umbral de Otsu
+  const s = W / bmp.width, H = Math.max(2, Math.round(bmp.height * s));
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const cx = c.getContext('2d'); cx.drawImage(bmp, 0, 0, W, H);
+  const d = cx.getImageData(0, 0, W, H).data;
+  const N = W * H, g = new Uint8Array(N), hist = new Float64Array(256);
+  for (let i = 0; i < N; i++) { const v = (d[i*4]*0.299 + d[i*4+1]*0.587 + d[i*4+2]*0.114) | 0; g[i] = v; hist[v]++; }
+  let sum = 0; for (let t = 0; t < 256; t++) sum += t * hist[t];
+  let sumB = 0, wB = 0, bestVar = 0, otsu = 127;
+  for (let t = 0; t < 256; t++) {
+    wB += hist[t]; if (!wB) continue;
+    const wF = N - wB; if (!wF) break;
+    sumB += t * hist[t];
+    const mB = sumB / wB, mF = (sum - sumB) / wF, v = wB * wF * (mB - mF) * (mB - mF);
+    if (v > bestVar) { bestVar = v; otsu = t; }
+  }
+  return { g, W, H, N, s, otsu };
+}
+
+function mayorComponente(D, thr, pasos) {
+  // mayor mancha clara con umbral `thr`. Se erosiona `pasos` veces para cortar
+  // los puentes finos entre el papel y un fondo claro, y luego se dilata otras
+  // tantas: si no, la mascara queda encogida y las esquinas salen metidas hacia
+  // dentro (era la causa de que el recorte quedara torcido).
+  const { g, W, H, N } = D;
+  const mask = new Uint8Array(N), tmp = new Uint8Array(N);
+
+  const morfo = (dilatar) => {
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      let v = dilatar ? 0 : 1;
+      if (!dilatar && (y === 0 || y === H - 1 || x === 0 || x === W - 1)) v = 0;
+      else {
+        for (let dy = -1; dy <= 1 && v === (dilatar ? 0 : 1); dy++) {
+          const yy = y + dy; if (yy < 0 || yy >= H) continue;
+          for (let dx = -1; dx <= 1; dx++) {
+            const xx = x + dx; if (xx < 0 || xx >= W) continue;
+            const m = mask[yy * W + xx];
+            if (dilatar ? m : !m) { v = dilatar ? 1 : 0; break; }
+          }
+        }
+      }
+      tmp[i] = v;
+    }
+    mask.set(tmp);
+  };
+
+  for (let i = 0; i < N; i++) mask[i] = g[i] > thr ? 1 : 0;
+  for (let k = 0; k < pasos; k++) morfo(false);
+
+  const lab = new Int32Array(N).fill(-1), stack = new Int32Array(N);
+  let bestSize = 0, bestId = -1, id = 0;
+  for (let i = 0; i < N; i++) {
+    if (!mask[i] || lab[i] !== -1) continue;
+    let sp = 0, size = 0; stack[sp++] = i; lab[i] = id;
+    while (sp) {
+      const p = stack[--sp]; size++;
+      const px = p % W;
+      if (px > 0 && mask[p-1] && lab[p-1] === -1) { lab[p-1] = id; stack[sp++] = p-1; }
+      if (px < W-1 && mask[p+1] && lab[p+1] === -1) { lab[p+1] = id; stack[sp++] = p+1; }
+      if (p >= W && mask[p-W] && lab[p-W] === -1) { lab[p-W] = id; stack[sp++] = p-W; }
+      if (p < N-W && mask[p+W] && lab[p+W] === -1) { lab[p+W] = id; stack[sp++] = p+W; }
+    }
+    if (size > bestSize) { bestSize = size; bestId = id; }
+    id++;
+  }
+  if (bestId < 0 || bestSize < N * 0.12) return null;
+
+  for (let i = 0; i < N; i++) mask[i] = lab[i] === bestId ? 1 : 0;
+  for (let k = 0; k < pasos; k++) morfo(true);   // devolver a la mascara su tamaño
+
+  let tl, tr, br, bl, vtl = 1e9, vbr = -1e9, vtr = -1e9, vbl = 1e9;
+  let sumIn = 0, nIn = 0, sumOut = 0, nOut = 0;
+  for (let i = 0; i < N; i++) {
+    if (mask[i]) {
+      sumIn += g[i]; nIn++;
+      const px = i % W, py = (i / W) | 0, a = px + py, bb = px - py;
+      if (a < vtl) { vtl = a; tl = [px, py]; }
+      if (a > vbr) { vbr = a; br = [px, py]; }
+      if (bb > vtr) { vtr = bb; tr = [px, py]; }
+      if (bb < vbl) { vbl = bb; bl = [px, py]; }
+    } else { sumOut += g[i]; nOut++; }
+  }
+  const quad = [tl, tr, br, bl], qa = areaQuad(quad), areaFrac = qa / N;
+  if (areaFrac < 0.15 || areaFrac > 0.96) return null;
+  if (nIn / qa < 0.42) return null;  // quad poco "lleno" (el texto oscuro deja huecos)
+  const dist = (a, b) => Math.hypot(a[0]-b[0], a[1]-b[1]);
+  const wa = (dist(tl, tr) + dist(bl, br)) / 2, ha = (dist(tl, bl) + dist(tr, br)) / 2;
+  const ratio = Math.max(wa, ha) / Math.min(wa, ha);
+  if (ratio < 1.02 || ratio > 2.2) return null;
+  const contrast = (sumIn / nIn - (nOut ? sumOut / nOut : 0)) / 255;
+  return { quad, mask, score: contrast * (1 - Math.abs(ratio - 1.414) * 0.3) };
+}
+
+function rectaPCA(ps) {
+  // recta por minimos cuadrados totales (PCA); devuelve n·p = c con |n| = 1
+  const n = ps.length;
+  let mx = 0, my = 0;
+  for (const p of ps) { mx += p[0]; my += p[1]; }
+  mx /= n; my /= n;
+  let sxx = 0, sxy = 0, syy = 0;
+  for (const p of ps) { const dx = p[0] - mx, dy = p[1] - my; sxx += dx*dx; sxy += dx*dy; syy += dy*dy; }
+  const th = 0.5 * Math.atan2(2 * sxy, sxx - syy);
+  const dx = Math.cos(th), dy = Math.sin(th);
+  return { nx: -dy, ny: dx, c: -dy * mx + dx * my };
+}
+
+function ajustarRecta(ps) {
+  // ajuste robusto: se ajusta, se tira el 30 % de puntos mas alejados y se
+  // repite. Si una zona del papel queda en sombra, la mascara se corta en
+  // diagonal y esos puntos falsos torcerian la recta.
+  if (ps.length < 12) return null;
+  let act = ps;
+  for (let k = 0; k < 3; k++) {
+    const r = rectaPCA(act);
+    if (act.length < 16) return r;
+    const dd = act.map(p => ({ p, d: Math.abs(r.nx * p[0] + r.ny * p[1] - r.c) }));
+    dd.sort((a, b) => a.d - b.d);
+    act = dd.slice(0, Math.max(12, Math.round(dd.length * 0.7))).map(o => o.p);
+  }
+  return rectaPCA(act);
+}
+
+function cortarRectas(r1, r2) {
+  const det = r1.nx * r2.ny - r1.ny * r2.nx;
+  if (Math.abs(det) < 1e-7) return null;
+  return [(r1.c * r2.ny - r1.ny * r2.c) / det, (r1.nx * r2.c - r1.c * r2.nx) / det];
+}
+
+function afinarEsquinas(quad, mask, W, H) {
+  // Ajusta una recta a cada uno de los 4 lados del papel y toma las esquinas
+  // como el corte de rectas contiguas. Asi una esquina en sombra, que la
+  // mascara se deja, se recupera a partir de los dos lados que la forman.
+  const borde = [];
+  for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) {
+    const i = y * W + x;
+    if (mask[i] && (!mask[i-1] || !mask[i+1] || !mask[i-W] || !mask[i+W])) borde.push([x, y]);
+  }
+  if (borde.length < 60) return quad;
+
+  const diag = Math.hypot(W, H);
+  let q = quad.map(p => [...p]);
+  for (let iter = 0; iter < 3; iter++) {
+    const banda = iter === 0 ? diag * 0.030 : diag * 0.014;
+    const lados = [[], [], [], []];
+    for (const p of borde) {
+      let mejor = -1, dmin = 1e9, tMejor = 0;
+      for (let k = 0; k < 4; k++) {
+        const a = q[k], b = q[(k+1) % 4];
+        const vx = b[0]-a[0], vy = b[1]-a[1], L = Math.hypot(vx, vy);
+        if (L < 1) continue;
+        const t = ((p[0]-a[0]) * vx + (p[1]-a[1]) * vy) / (L*L);
+        const d = Math.abs((p[0]-a[0]) * vy - (p[1]-a[1]) * vx) / L;
+        if (d < dmin) { dmin = d; mejor = k; tMejor = t; }
+      }
+      if (mejor >= 0 && dmin < banda && tMejor > 0.10 && tMejor < 0.90) lados[mejor].push(p);
+    }
+    const rectas = lados.map(ps => ajustarRecta(ps));
+    if (rectas.some(r => !r)) break;
+    const nq = [];
+    for (let k = 0; k < 4; k++) {
+      const p = cortarRectas(rectas[(k + 3) % 4], rectas[k]);
+      // si el corte se dispara (rectas casi paralelas), conservar la esquina
+      nq.push(p && Math.hypot(p[0] - q[k][0], p[1] - q[k][1]) < diag * 0.20 ? p : q[k]);
+    }
+    q = nq;
+  }
+  const a0 = areaQuad(quad), a1 = areaQuad(q);
+  if (!(a1 > a0 * 0.6 && a1 < a0 * 1.6)) return quad;   // el ajuste se ha ido: descartar
+  return q;
+}
+
+function autoCorners(bmp) {
+  // 1) barrido rapido de umbrales (Otsu escalonado) en pequeño para elegir cual
+  //    separa mejor el papel del fondo; 2) segunda pasada con mas resolucion y
+  //    ajuste de rectas a los 4 lados para clavar las esquinas.
+  const chico = grisYOtsu(bmp, 220);
+  let mejorDelta = null, mejorPunt = -1e9, mejorChico = null;
+  for (const delta of [-30, -20, -10, 0, 10, 20, 30, 40]) {
+    const cand = mayorComponente(chico, Math.min(chico.otsu + delta, 250), 2);
+    if (cand && cand.score > mejorPunt) { mejorPunt = cand.score; mejorDelta = delta; mejorChico = cand; }
+  }
+  if (mejorDelta === null) return fullCorners(bmp);
+
+  const W2 = Math.min(480, bmp.width);
+  const grande = W2 > 260 ? grisYOtsu(bmp, W2) : null;
+  let fino = grande && mayorComponente(grande, Math.min(grande.otsu + mejorDelta, 250),
+                                       Math.max(2, Math.round(2 * grande.W / chico.W)));
+  const D = fino ? grande : chico;
+  const res = fino || mejorChico;
+
+  const q = afinarEsquinas(res.quad, res.mask, D.W, D.H);
+  return q.map(([px, py]) => [
+    Math.max(0, Math.min(bmp.width - 1, px / D.s)),
+    Math.max(0, Math.min(bmp.height - 1, py / D.s))
+  ]);
+}
+
+function warpPhoto(bmp, corners, scanBW) {
+  const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+  const wAvg = (dist(corners[0], corners[1]) + dist(corners[3], corners[2])) / 2;
+  const hAvg = (dist(corners[0], corners[3]) + dist(corners[1], corners[2])) / 2;
+  const [W, H] = hAvg >= wAvg ? [A4W, A4H] : [A4H, A4W];
+  const [h0, h1, h2, h3, h4, h5, h6, h7] = solveH([[0, 0], [W - 1, 0], [W - 1, H - 1], [0, H - 1]], corners);
+  const sw = bmp.width, sh = bmp.height;
+  const sc = document.createElement('canvas'); sc.width = sw; sc.height = sh;
+  const sctx = sc.getContext('2d'); sctx.drawImage(bmp, 0, 0);
+  const sd = sctx.getImageData(0, 0, sw, sh).data;
+  const out = new ImageData(W, H), od = out.data;
+  let k = 0;
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++, k += 4) {
+      const wq = h6 * x + h7 * y + 1;
+      let sx = (h0 * x + h1 * y + h2) / wq, sy = (h3 * x + h4 * y + h5) / wq;
+      if (sx < 0) sx = 0; else if (sx > sw - 1.001) sx = sw - 1.001;
+      if (sy < 0) sy = 0; else if (sy > sh - 1.001) sy = sh - 1.001;
+      const x0 = sx | 0, y0 = sy | 0, fx = sx - x0, fy = sy - y0;
+      const i00 = (y0 * sw + x0) * 4, i10 = i00 + 4, i01 = i00 + sw * 4, i11 = i01 + 4;
+      od[k]   = sd[i00]*(1-fx)*(1-fy) + sd[i10]*fx*(1-fy) + sd[i01]*(1-fx)*fy + sd[i11]*fx*fy;
+      od[k+1] = sd[i00+1]*(1-fx)*(1-fy) + sd[i10+1]*fx*(1-fy) + sd[i01+1]*(1-fx)*fy + sd[i11+1]*fx*fy;
+      od[k+2] = sd[i00+2]*(1-fx)*(1-fy) + sd[i10+2]*fx*(1-fy) + sd[i01+2]*(1-fx)*fy + sd[i11+2]*fx*fy;
+      od[k+3] = 255;
+    }
+  }
+  const oc = document.createElement('canvas'); oc.width = W; oc.height = H;
+  oc.getContext('2d').putImageData(out, 0, 0);
+  return scanBW ? cleanBW(oc) : oc;
+}
+
+function cleanBW(canvas) {
+  // fondo blanco uniforme + texto negro: divide por el fondo estimado y estira niveles
+  const W = canvas.width, H = canvas.height, ctx = canvas.getContext('2d');
+  const img = ctx.getImageData(0, 0, W, H), d = img.data, N = W * H;
+  // fondo a escala reducida: dilatacion 3x3 x2 + blur de caja x2
+  const bw = 200, bh = Math.max(2, Math.round(H * bw / W));
+  const bc = document.createElement('canvas'); bc.width = bw; bc.height = bh;
+  const bctx = bc.getContext('2d'); bctx.drawImage(canvas, 0, 0, bw, bh);
+  const bd = bctx.getImageData(0, 0, bw, bh).data;
+  let gb = new Float32Array(bw * bh);
+  for (let i = 0; i < bw * bh; i++) gb[i] = bd[i*4]*0.299 + bd[i*4+1]*0.587 + bd[i*4+2]*0.114;
+  const dil = src => {
+    const dst = new Float32Array(src.length);
+    for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) {
+      let m = 0;
+      for (let dy = -1; dy <= 1; dy++) {
+        const yy = y + dy; if (yy < 0 || yy >= bh) continue;
+        for (let dx = -1; dx <= 1; dx++) {
+          const xx = x + dx; if (xx < 0 || xx >= bw) continue;
+          const v = src[yy * bw + xx]; if (v > m) m = v;
+        }
+      }
+      dst[y * bw + x] = m;
+    }
+    return dst;
+  };
+  const blur = src => {
+    const R = 3, tmp = new Float32Array(src.length), dst = new Float32Array(src.length);
+    for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) {
+      let s = 0, n = 0;
+      for (let dx = -R; dx <= R; dx++) { const xx = x + dx; if (xx >= 0 && xx < bw) { s += src[y*bw+xx]; n++; } }
+      tmp[y * bw + x] = s / n;
+    }
+    for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) {
+      let s = 0, n = 0;
+      for (let dy = -R; dy <= R; dy++) { const yy = y + dy; if (yy >= 0 && yy < bh) { s += tmp[yy*bw+x]; n++; } }
+      dst[y * bw + x] = s / n;
+    }
+    return dst;
+  };
+  gb = blur(blur(dil(dil(gb))));
+  // reescalar el fondo a tamano completo con el propio canvas
+  const gc = document.createElement('canvas'); gc.width = bw; gc.height = bh;
+  const gimg = gc.getContext('2d').createImageData(bw, bh);
+  for (let i = 0; i < bw * bh; i++) { const v = gb[i]; gimg.data[i*4] = v; gimg.data[i*4+1] = v; gimg.data[i*4+2] = v; gimg.data[i*4+3] = 255; }
+  gc.getContext('2d').putImageData(gimg, 0, 0);
+  const fc = document.createElement('canvas'); fc.width = W; fc.height = H;
+  const fctx = fc.getContext('2d'); fctx.imageSmoothingEnabled = true;
+  fctx.drawImage(gc, 0, 0, W, H);
+  const fd = fctx.getImageData(0, 0, W, H).data;
+  const lut = new Uint8ClampedArray(256);
+  for (let i = 0; i < 256; i++) lut[i] = Math.max(0, Math.min(255, (i - 100) * 255 / 135));
+  for (let i = 0; i < N; i++) {
+    const gray = d[i*4]*0.299 + d[i*4+1]*0.587 + d[i*4+2]*0.114;
+    const bg = Math.max(1, fd[i*4]);
+    const v = lut[Math.min(255, gray / bg * 255) | 0];
+    d[i*4] = d[i*4+1] = d[i*4+2] = v; d[i*4+3] = 255;
+  }
+  const oc = document.createElement('canvas'); oc.width = W; oc.height = H;
+  oc.getContext('2d').putImageData(img, 0, 0);
+  return oc;
+}
+
+function thumbOf(processed) {
+  const scale = 260 / Math.max(processed.width, processed.height);
+  const t = document.createElement('canvas');
+  t.width = Math.round(processed.width * scale);
+  t.height = Math.round(processed.height * scale);
+  t.getContext('2d').drawImage(processed, 0, 0, t.width, t.height);
+  return t;
+}
+
+async function reprocessImgPage(p) {
+  const bmp = await bitmapOf(p);
+  p.processed = warpPhoto(bmp, p.corners, $('chkScan').checked);
+  bmp.close();
+  p.canvas = thumbOf(p.processed);
+}
+
+async function loadImage(file, append) {
+  setStatus(T.loading(file.name));
+  try {
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const bmp = await createImageBitmap(new Blob([bytes]), { imageOrientation: 'from-image' });
+    if (!append) { pages = []; selected.clear(); baseName = file.name.replace(/\.[^.]+$/, ''); }
+    const p = { type: 'img', bytes, rot: 0, corners: autoCorners(bmp) };
+    p.processed = warpPhoto(bmp, p.corners, $('chkScan').checked);
+    p.canvas = thumbOf(p.processed);
+    bmp.close();
+    pages.push(p);
+    render();
+  } catch (e) {
+    console.error(e);
+    setStatus('');
+    alert(T.errImg(file.name, e.message));
+  }
+}
+
+// embudo de uso (GoatCounter, solo contadores: ni ficheros ni datos de nadie salen del navegador)
+let gcUsado = false;
+function gcEvento(p) { try { if (window.goatcounter && goatcounter.count) goatcounter.count({ path: p, event: true }); } catch (e) {} }
+
+async function loadPdf(file, append) {
+  if (!gcUsado) { gcUsado = true; gcEvento('editor-pdf-uso'); }
+  if (isImage(file)) return loadImage(file, append);
+  setStatus(T.loading(file.name));
+  try {
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const pdf = await pdfjsLib.getDocument({ data: bytes.slice(), isEvalSupported: false }).promise;
+    const docIdx = docs.length;
+    docs.push({ bytes });
+    if (!append) { pages = []; selected.clear(); baseName = file.name.replace(/\.pdf$/i, ''); }
+    const newPages = [];
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const vp = page.getViewport({ scale: 1 });
+      const scale = 260 / Math.max(vp.width, vp.height);
+      const v = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = v.width; canvas.height = v.height;
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport: v, intent: 'print' }).promise;
+      newPages.push({ doc: docIdx, page: i - 1, rot: 0, canvas });
+      setStatus(T.loadingPage(file.name, i, pdf.numPages));
+    }
+    pages.push(...newPages);
+    render();
+    setStatus(T.pages(pages.length));
+  } catch (e) {
+    console.error(e);
+    setStatus('');
+    alert(T.errPdf(file.name, e.message));
+  }
+}
+
+function movePage(i, delta) {
+  const to = i + delta;
+  if (to < 0 || to >= pages.length) return;
+  [pages[i], pages[to]] = [pages[to], pages[i]];
+  selected = new Set([...selected].map(s => s === i ? to : s === to ? i : s));
+  render();
+  grid.querySelector('.card[data-i="' + to + '"] .thumb-box[role="button"]')?.focus();
+  setStatus(T.movedPage(i + 1, to + 1));
+}
+
+function render() {
+  const has = pages.length > 0;
+  dropzone.style.display = has ? 'none' : 'flex';
+  grid.style.display = has ? 'grid' : 'none';
+  ['btnAdd','btnAll','btnSave'].forEach(id => $(id).disabled = !has);
+  $('btnSaveOcr').disabled = !has || !ocrOk;
+  $('btnSaveOcr').title = ocrOk ? T.ocrOn : T.ocrOff;
+  $('btnSign').disabled = !has || !ocrOk;
+  $('btnSign').title = ocrOk ? T.signOn : T.signOff;
+  $('btnNone').disabled = selected.size === 0;
+  ['btnRotL','btnRotR','btnDel'].forEach(id => $(id).disabled = selected.size === 0);
+
+  grid.innerHTML = '';
+  pages.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'card' + (selected.has(i) ? ' selected' : '');
+    card.draggable = true;
+    card.dataset.i = i;
+    card.setAttribute('role', 'group');
+    card.setAttribute('aria-label', T.pageOf(i + 1, pages.length));
+
+    const box = document.createElement('div');
+    box.className = 'thumb-box';
+    box.setAttribute('role', 'button');
+    box.tabIndex = 0;
+    box.setAttribute('aria-label', T.selectPage(i + 1));
+    box.setAttribute('aria-pressed', selected.has(i) ? 'true' : 'false');
+    let t = 'rotate(' + p.rot + 'deg)';
+    if (p.rot % 180 !== 0) {
+      const s = Math.min(p.canvas.width / p.canvas.height, p.canvas.height / p.canvas.width);
+      t += ' scale(' + s.toFixed(3) + ')';
+    }
+    p.canvas.style.transform = t;
+    box.appendChild(p.canvas);
+    card.appendChild(box);
+
+    const badge = document.createElement('div');
+    badge.className = 'badge'; badge.textContent = (i + 1) + (p.type === 'img' ? ' · 📷' : '');
+    card.appendChild(badge);
+
+    const mini = document.createElement('div');
+    mini.className = 'mini';
+    const addMini = (action, label, glyph, fn, disabled = false) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.action = action;
+      button.textContent = glyph;
+      button.title = label;
+      button.setAttribute('aria-label', label);
+      button.disabled = disabled;
+      button.onclick = e => { e.stopPropagation(); fn(); };
+      mini.append(button);
+    };
+    if (p.type === 'img') {
+      addMini('corners', T.miniCorners, '📐', () => openCornerEditor(i));
+    }
+    addMini('rotate', T.miniRot, '⟳', () => {
+      p.rot = (p.rot + 90) % 360;
+      render();
+      grid.querySelector('.card[data-i="' + i + '"] .mini [data-action="rotate"]')?.focus();
+    });
+    addMini('prev', T.movePrev(i + 1), '←', () => movePage(i, -1), i === 0);
+    addMini('next', T.moveNext(i + 1), '→', () => movePage(i, 1), i === pages.length - 1);
+    addMini('delete', T.miniDel, '🗑', () => {
+      pages.splice(i, 1);
+      remapSelection(i);
+      render();
+      grid.querySelector('.card[data-i="' + Math.min(i, pages.length - 1) + '"] .thumb-box[role="button"]')?.focus();
+    });
+    card.appendChild(mini);
+
+    const label = document.createElement('div');
+    label.className = 'label';
+    label.textContent = T.cardPage(i + 1, p.rot);
+    card.appendChild(label);
+
+    const toggleSelection = (restoreFocus = false) => {
+      selected.has(i) ? selected.delete(i) : selected.add(i);
+      render();
+      if (restoreFocus) grid.querySelector('.card[data-i="' + i + '"] .thumb-box[role="button"]')?.focus();
+    };
+    card.onclick = () => toggleSelection();
+    box.onkeydown = e => {
+      if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+      e.preventDefault();
+      e.stopPropagation();
+      toggleSelection(true);
+    };
+
+    card.ondragstart = e => { dragIndex = i; e.dataTransfer.effectAllowed = 'move'; setTimeout(() => card.classList.add('ghost'), 0); };
+    card.ondragend = () => { dragIndex = null; render(); };
+    card.ondragover = e => {
+      if (dragIndex === null) return;
+      e.preventDefault();
+      const before = e.offsetX < card.offsetWidth / 2;
+      card.classList.toggle('drag-over-left', before);
+      card.classList.toggle('drag-over-right', !before);
+    };
+    card.ondragleave = () => card.classList.remove('drag-over-left', 'drag-over-right');
+    card.ondrop = e => {
+      if (dragIndex === null) return;
+      e.preventDefault(); e.stopPropagation();
+      const before = e.offsetX < card.offsetWidth / 2;
+      let to = i + (before ? 0 : 1);
+      const [moved] = pages.splice(dragIndex, 1);
+      if (dragIndex < to) to--;
+      pages.splice(to, 0, moved);
+      selected.clear();
+      render();
+    };
+
+    grid.appendChild(card);
+  });
+  if (pages.length) setStatus(T.pages(pages.length) + (selected.size ? T.selCount(selected.size) : ''));
+}
+
+function remapSelection(removedIdx) {
+  const ns = new Set();
+  selected.forEach(s => { if (s < removedIdx) ns.add(s); else if (s > removedIdx) ns.add(s - 1); });
+  selected = ns;
+}
+
+function applySelected(fn) { [...selected].forEach(i => fn(pages[i])); render(); }
+
+$('btnOpen').onclick = () => $('fileInput').click();
+$('btnAdd').onclick = () => $('fileInputAdd').click();
+$('fileInput').onchange = async e => {
+  const fs = [...e.target.files];
+  for (let i = 0; i < fs.length; i++) await loadPdf(fs[i], i > 0);
+  e.target.value = '';
+};
+$('chkScan').onchange = async () => {
+  setStatus(T.reproc);
+  for (const p of pages) if (p.type === 'img') await reprocessImgPage(p);
+  render();
+};
+
+// ---------- editor de esquinas ----------
+const ce = { idx: -1, bmp: null, corners: null, scale: 1, drag: -1 };
+
+async function openCornerEditor(i) {
+  const p = pages[i];
+  ce.idx = i;
+  ce.bmp = await bitmapOf(p);
+  ce.corners = p.corners.map(c => [...c]);
+  const maxW = window.innerWidth * 0.82, maxH = window.innerHeight * 0.74;
+  ce.scale = Math.min(maxW / ce.bmp.width, maxH / ce.bmp.height);
+  const cv = $('cornerCanvas');
+  cv.width = Math.round(ce.bmp.width * ce.scale);
+  cv.height = Math.round(ce.bmp.height * ce.scale);
+  cv.getContext('2d').drawImage(ce.bmp, 0, 0, cv.width, cv.height);
+  $('cornerModal').classList.add('open');
+  drawCornerOverlay();
+}
+
+function drawCornerOverlay() {
+  const svg = $('cornerSvg');
+  const pts = ce.corners.map(([x, y]) => [x * ce.scale, y * ce.scale]);
+  svg.setAttribute('viewBox', '0 0 ' + $('cornerCanvas').width + ' ' + $('cornerCanvas').height);
+  svg.innerHTML = '<polygon points="' + pts.map(p => p.join(',')).join(' ') + '"/>' +
+    pts.map((p, i) => '<circle data-i="' + i + '" cx="' + p[0] + '" cy="' + p[1] + '" r="11"/>').join('');
+  svg.querySelectorAll('circle').forEach(c => {
+    c.onpointerdown = e => { ce.drag = +c.dataset.i; c.setPointerCapture(e.pointerId); e.preventDefault(); };
+  });
+}
+
+$('cornerSvg').addEventListener('pointermove', e => {
+  if (ce.drag < 0) return;
+  const r = $('cornerCanvas').getBoundingClientRect();
+  const x = Math.max(0, Math.min(ce.bmp.width - 1, (e.clientX - r.left) / r.width * ce.bmp.width));
+  const y = Math.max(0, Math.min(ce.bmp.height - 1, (e.clientY - r.top) / r.height * ce.bmp.height));
+  ce.corners[ce.drag] = [x, y];
+  drawCornerOverlay();
+});
+$('cornerSvg').addEventListener('pointerup', () => ce.drag = -1);
+
+function closeCornerEditor() {
+  $('cornerModal').classList.remove('open');
+  if (ce.bmp) ce.bmp.close();
+  ce.bmp = null; ce.idx = -1; ce.drag = -1;
+}
+
+$('ceCancel').onclick = closeCornerEditor;
+$('ceFull').onclick = () => { ce.corners = fullCorners(ce.bmp); drawCornerOverlay(); };
+$('ceAuto').onclick = () => { ce.corners = autoCorners(ce.bmp); drawCornerOverlay(); };
+$('ceApply').onclick = async () => {
+  const p = pages[ce.idx];
+  p.corners = ce.corners.map(c => [...c]);
+  setStatus(T.applyCrop);
+  await reprocessImgPage(p);
+  closeCornerEditor();
+  render();
+};
+$('fileInputAdd').onchange = async e => { for (const f of e.target.files) await loadPdf(f, true); e.target.value = ''; };
+
+$('btnRotL').onclick = () => applySelected(p => p.rot = (p.rot + 270) % 360);
+$('btnRotR').onclick = () => applySelected(p => p.rot = (p.rot + 90) % 360);
+$('btnDel').onclick = () => {
+  pages = pages.filter((_, i) => !selected.has(i));
+  selected.clear(); render();
+};
+$('btnAll').onclick = () => { selected = new Set(pages.map((_, i) => i)); render(); };
+$('btnNone').onclick = () => { selected.clear(); render(); };
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'Delete' && selected.size) $('btnDel').click();
+  if ((e.key === 'r' || e.key === 'R') && selected.size) $('btnRotR').click();
+  if ((e.key === 'l' || e.key === 'L') && selected.size) $('btnRotL').click();
+  if (e.key === 'Escape') { selected.clear(); render(); }
+  if (e.key === 'a' && e.ctrlKey && pages.length) { e.preventDefault(); $('btnAll').click(); }
+});
+
+// Drag & drop de archivos en toda la ventana
+['dragenter','dragover'].forEach(ev => document.addEventListener(ev, e => {
+  if (e.dataTransfer && [...e.dataTransfer.types].includes('Files')) {
+    e.preventDefault();
+    dropzone.classList.add('over'); document.body.classList.add('dragging');
+  }
+}));
+['dragleave','drop'].forEach(ev => document.addEventListener(ev, e => {
+  if (ev === 'dragleave' && e.relatedTarget) return;
+  dropzone.classList.remove('over'); document.body.classList.remove('dragging');
+}));
+document.addEventListener('drop', async e => {
+  const files = [...(e.dataTransfer?.files || [])].filter(f => /\.pdf$/i.test(f.name) || f.type === 'application/pdf' || isImage(f));
+  if (!files.length) return;
+  e.preventDefault();
+  const append = pages.length > 0;
+  for (let i = 0; i < files.length; i++) await loadPdf(files[i], append || i > 0);
+});
+dropzone.onclick = () => $('fileInput').click();
+
+// version web (fernandocalle.es): sin servidor local — OCR y firma van en la version de escritorio
+const OCR_SERVER = '';
+let ocrOk = false;
+render(); cargarCertificados();
+
+function downloadPdf(bytes, name) {
+  gcEvento('editor-pdf-guardar');
+  const blob = new Blob([bytes], { type: 'application/pdf' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+}
+
+async function buildPdfBytes() {
+  if (!pages.length) return null;
+  setStatus(T.genPdf);
+  try {
+    const { PDFDocument, degrees } = PDFLib;
+    const out = await PDFDocument.create();
+    const libDocs = {};
+    for (const p of pages) {
+      if (p.type !== 'img' && !libDocs[p.doc]) libDocs[p.doc] = await PDFDocument.load(docs[p.doc].bytes, { ignoreEncryption: true });
+    }
+    for (const p of pages) {
+      if (p.type === 'img') {
+        const rot = ((p.rot % 360) + 360) % 360;
+        const src = p.processed;
+        const swap = rot % 180 !== 0;
+        const c = document.createElement('canvas');
+        c.width = swap ? src.height : src.width;
+        c.height = swap ? src.width : src.height;
+        const ctx = c.getContext('2d');
+        ctx.translate(c.width / 2, c.height / 2);
+        ctx.rotate(rot * Math.PI / 180);
+        ctx.drawImage(src, -src.width / 2, -src.height / 2);
+        const jpg = await new Promise(res => c.toBlob(b => b.arrayBuffer().then(a => res(new Uint8Array(a))), 'image/jpeg', 0.88));
+        const img = await out.embedJpg(jpg);
+        const A4 = [595.28, 841.89];
+        const [pw, ph] = c.width > c.height ? [A4[1], A4[0]] : A4;
+        const page = out.addPage([pw, ph]);
+        page.drawImage(img, { x: 0, y: 0, width: pw, height: ph });
+        continue;
+      }
+      const [copied] = await out.copyPages(libDocs[p.doc], [p.page]);
+      const orig = copied.getRotation().angle || 0;
+      copied.setRotation(degrees(((orig + p.rot) % 360 + 360) % 360));
+      out.addPage(copied);
+    }
+    return await out.save();
+  } catch (e) {
+    console.error(e);
+    setStatus('');
+    alert(T.errGen(e.message));
+    return null;
+  }
+}
+
+$('btnSave').onclick = async () => {
+  const bytes = await buildPdfBytes();
+  if (!bytes) return;
+  downloadPdf(bytes, baseName + T.sufEdit);
+  setStatus(T.saved(pages.length));
+};
+
+$('btnSaveOcr').onclick = async () => {
+  const bytes = await buildPdfBytes();
+  if (!bytes) return;
+  setStatus(T.applyingOcr);
+  try {
+    const r = await fetch(OCR_SERVER + '/ocr', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/pdf' },
+      body: bytes
+    });
+    if (!r.ok) throw new Error(await r.text());
+    downloadPdf(new Uint8Array(await r.arrayBuffer()), baseName + T.sufOcr);
+    setStatus(T.savedOcr(pages.length));
+  } catch (e) {
+    console.error(e);
+    setStatus('');
+    alert(T.errOcr(e.message));
+  }
+};
+
+// ---------- firma digital con certificado ----------
+const fm = { pdf: null, bytes: null, page: 0, n: 1, rect: { x: .08, y: .80, w: .38, h: .085 }, drag: null };
+let certs = [];
+
+function cargarCertificados() {
+  if (!ocrOk) return;
+  fetch(OCR_SERVER + '/certificados')
+    .then(r => r.ok ? r.json() : [])
+    .then(l => { certs = l; pintarCertificados(); })
+    .catch(() => {});
+}
+
+function pintarCertificados() {
+  const elegido = $('sgCert').value;
+  $('sgCert').innerHTML = certs.length
+    ? certs.map(c => '<option value="' + c.huella + '">' + c.nombre + '</option>').join('')
+    : '<option value="">' + T.noCerts + '</option>';
+  if (elegido) $('sgCert').value = elegido;
+  mostrarCert();
+}
+
+function mostrarCert() {
+  const c = certs.find(c => c.huella === $('sgCert').value);
+  $('signCert').textContent = c
+    ? T.certInfo(c.emisor, lang === 'es' ? c.caduca.split('-').reverse().join('/') : c.caduca)
+    : '';
+}
+$('sgCert').onchange = mostrarCert;
+
+async function pintarPaginaFirma() {
+  const page = await fm.pdf.getPage(fm.page + 1);
+  const v1 = page.getViewport({ scale: 1 });
+  const movil = window.innerWidth <= 700;  // panel apilado: el PDF ocupa el ancho
+  const maxH = window.innerHeight * (movil ? 0.5 : 0.74), maxW = movil ? window.innerWidth - 48 : window.innerWidth * 0.52;
+  const scale = Math.min(maxH / v1.height, maxW / v1.width);
+  const v = page.getViewport({ scale });
+  const cv = $('signCanvas');
+  cv.width = Math.round(v.width); cv.height = Math.round(v.height);
+  cv.style.width = cv.width + 'px'; cv.style.height = cv.height + 'px';
+  await page.render({ canvasContext: cv.getContext('2d'), viewport: v, intent: 'print' }).promise;
+  $('sgPageLbl').textContent = T.pageOf(fm.page + 1, fm.n);
+  $('sgPrev').disabled = fm.page === 0;
+  $('sgNext').disabled = fm.page === fm.n - 1;
+  colocarCaja();
+}
+
+function colocarCaja() {
+  const cv = $('signCanvas'), b = $('signBox');
+  b.style.display = $('sgVisible').checked ? 'block' : 'none';
+  b.style.left = (fm.rect.x * cv.width) + 'px';
+  b.style.top = (fm.rect.y * cv.height) + 'px';
+  b.style.width = (fm.rect.w * cv.width) + 'px';
+  b.style.height = (fm.rect.h * cv.height) + 'px';
+}
+
+$('signBox').onpointerdown = e => {
+  fm.drag = { modo: e.target.id === 'signGrip' ? 'tam' : 'mov', x: e.clientX, y: e.clientY, r: { ...fm.rect } };
+  e.target.setPointerCapture(e.pointerId);
+  e.preventDefault();
+};
+$('signBox').onpointermove = e => {
+  if (!fm.drag) return;
+  const cv = $('signCanvas');
+  const dx = (e.clientX - fm.drag.x) / cv.width, dy = (e.clientY - fm.drag.y) / cv.height;
+  const r = fm.drag.r, lim = (v, min, max) => Math.max(min, Math.min(max, v));
+  if (fm.drag.modo === 'mov') {
+    fm.rect.x = lim(r.x + dx, 0, 1 - r.w);
+    fm.rect.y = lim(r.y + dy, 0, 1 - r.h);
+  } else {
+    fm.rect.w = lim(r.w + dx, 0.06, 1 - r.x);
+    fm.rect.h = lim(r.h + dy, 0.02, 1 - r.y);
+  }
+  colocarCaja();
+};
+$('signBox').onpointerup = () => fm.drag = null;
+$('sgVisible').onchange = colocarCaja;
+$('sgPrev').onclick = () => { if (fm.page > 0) { fm.page--; pintarPaginaFirma(); } };
+$('sgNext').onclick = () => { if (fm.page < fm.n - 1) { fm.page++; pintarPaginaFirma(); } };
+
+$('btnSign').onclick = async () => {
+  if (!certs.length) {
+    alert(T.errNoCert);
+    return;
+  }
+  const bytes = await buildPdfBytes();
+  if (!bytes) return;
+  setStatus(T.preparing);
+  fm.bytes = bytes;
+  fm.pdf = await pdfjsLib.getDocument({ data: bytes.slice(), isEvalSupported: false }).promise;
+  fm.n = fm.pdf.numPages;
+  fm.page = fm.n - 1;             // lo normal es firmar en la última página
+  $('signMsg').textContent = '';
+  $('signModal').classList.add('open');
+  await pintarPaginaFirma();
+  setStatus(T.pages(pages.length));
+};
+
+$('sgCancel').onclick = () => $('signModal').classList.remove('open');
+
+$('sgOk').onclick = async () => {
+  const visible = $('sgVisible').checked;
+  const q = new URLSearchParams({
+    pagina: fm.page,
+    x0: fm.rect.x.toFixed(4), y0: fm.rect.y.toFixed(4),
+    x1: (fm.rect.x + fm.rect.w).toFixed(4), y1: (fm.rect.y + fm.rect.h).toFixed(4),
+    motivo: $('sgMotivo').value.trim(),
+    lugar: $('sgLugar').value.trim(),
+    visible: visible ? 1 : 0,
+    sello: $('sgSello').checked ? 1 : 0,
+    huella: $('sgCert').value,
+    idioma: lang
+  });
+  $('sgOk').disabled = true;
+  $('signMsg').textContent = T.signing;
+  try {
+    const r = await fetch(OCR_SERVER + '/firmar?' + q, {
+      method: 'POST', headers: { 'Content-Type': 'application/pdf' }, body: fm.bytes
+    });
+    if (!r.ok) throw new Error(await r.text());
+    let info = {};
+    try { info = JSON.parse(decodeURIComponent(r.headers.get('X-Firma') || '%7B%7D')); } catch (e) {}
+    downloadPdf(new Uint8Array(await r.arrayBuffer()), baseName + T.sufSign);
+    $('signModal').classList.remove('open');
+    setStatus(T.signed(info.titular || '', info.sello_tiempo));
+  } catch (e) {
+    console.error(e);
+    $('signMsg').textContent = '';
+    alert(T.errSign(e.message));
+  } finally {
+    $('sgOk').disabled = false;
+  }
+};
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && $('signModal').classList.contains('open')) $('signModal').classList.remove('open');
+});
+
+$('btnLang').onclick = cambiarIdioma;
+aplicarIdioma();
+</script>
+<script data-goatcounter="https://fernandocalle.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "_doc": "Fragmentos de correcciones editoriales de la auditoría del 27-sep-2026. Referencia de conservación, no fuente productiva. BOE/FormSubmit y encargo: docs/diseno/ontos/web/marca/README.md en ONTOS.",
+  "pages": {
+    "bim.html": [
+      {
+        "selector": ".cifra small",
+        "index": 0,
+        "html": "<small>de valor estimado en adelante</small>"
+      },
+      {
+        "selector": ".cifra small",
+        "index": 1,
+        "html": "<small>hasta menos de 5.404.000 € de valor estimado</small>"
+      },
+      {
+        "selector": ".hito:nth-child(2) .nota",
+        "html": "<p class=\"nota\">En este tramo, <strong>nivel BIM inicial</strong>.</p>"
+      },
+      {
+        "selector": ".pie-dato",
+        "html": "<p class=\"pie-dato\">El Plan se aplica a la Administración General del Estado y sus organismos\n  y entidades de derecho público vinculados o dependientes, con las excepciones justificadas\n  que contempla. Los requisitos concretos se consultan en cada pliego.</p>\n<p class=\"pie-dato\">Fuentes: <a href=\"https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16784\">Plan BIM, apartado 4</a>\n  y <a href=\"https://www.boe.es/buscar/doc.php?id=BOE-A-2025-26605\">umbrales desde el 1 de enero de 2026</a>.\n  Revisión: 27 de septiembre de 2026. El calendario comenzó en octubre de 2025; las cifras\n  mostradas son las vigentes en 2026.</p>"
+      }
+    ],
+    "escrito-plan-bim-ingenieria.html": [
+      {
+        "selector": "tbody th",
+        "index": 0,
+        "html": "<th>Desde 5.404.000 € de valor estimado</th>"
+      },
+      {
+        "selector": "tbody th",
+        "index": 1,
+        "html": "<th>Desde 2.000.000 € y menos de 5.404.000 € de valor estimado</th>"
+      },
+      {
+        "selector": ".fuente",
+        "html": "<p class=\"fuente\">En 2027 los dos umbrales suben un escalón: lo que hoy es nivel inicial y\n    nivel medio pasa a exigir más.</p>\n<p class=\"fuente\">Fuentes: <a href=\"https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16784\">Plan BIM, apartado 4</a>\n    y <a href=\"https://www.boe.es/buscar/doc.php?id=BOE-A-2025-26605\">umbrales desde enero de 2026</a>.\n    Revisado el 27 de septiembre de 2026. Las cifras son las vigentes en 2026; el calendario\n    comenzó en octubre de 2025. Se mantienen las excepciones justificadas previstas en el Plan.</p>"
+      },
+      {
+        "selector": "blockquote",
+        "previous": true,
+        "remove": true
+      },
+      {
+        "selector": "blockquote",
+        "html": "<p>El apartado 4.3 del Plan exige que la gestión interna de la información del contrato alcance\n  el nivel BIM solicitado en la licitación. Si el órgano de contratación aún no llega a ese\n  nivel, contempla el apoyo de una asistencia técnica, conforme a la normativa aplicable.</p>"
+      }
+    ],
+    "privacidad.html": [
+      {
+        "selector": "li:nth-child(3)",
+        "html": "<li><strong>Formulario de contacto.</strong> Si usas el formulario de contacto se tratan los\n  datos que indiques: nombre, organización, email, motivo de contacto y mensaje. El envío pasa\n  por FormSubmit para llegar al correo de ONTOS. Este proveedor procesa el contenido y, según\n  su <a href=\"https://formsubmit.co/documentation\" rel=\"noopener\">documentación</a>, conserva\n  los envíos durante 30 días en su archivo. El mensaje recibido por ONTOS se conserva durante\n  la conversación y, si deriva en relación profesional, durante esa relación y los plazos\n  legales asociados. Base jurídica: consentimiento del interesado al enviar el formulario\n  (art. 6.1.a RGPD). Puedes evitar este intermediario escribiendo directamente a\n  <a href=\"mailto:hola@ontosdigital.es\">hola@ontosdigital.es</a>.</li>"
+      },
+      {
+        "selector": "h2:nth-of-type(3) + p",
+        "html": "<p>ONTOS no vende tus datos, no elabora perfiles y no envía publicidad. El correo se usa\nexclusivamente para responderte y atender lo que solicites. El formulario utiliza el proveedor\ndescrito arriba; su <a href=\"https://formsubmit.co/privacy.pdf\" rel=\"noopener\">política de privacidad</a>\nindica que su propio servicio puede utilizar cookies. La tipografía de este sitio está\nautoalojada: no se conecta a servidores de terceros para cargar fuentes.</p>"
+      }
+    ]
+  },
+  "descriptions": {
+    "juego-2d.html": "Controla a ONTOS en un patio de juegos 2D: rueda, salta, recoge destellos y lleva la semilla a su sitio. Juega con teclado o controles táctiles.",
+    "animacion-3d.html": "Explora la figurita 3D de ONTOS: gírala, cambia el tamaño y prueba sus gestos, poses y animaciones desde el navegador.",
+    "visita-3d.html": "Recorre el pequeño planeta de ONTOS o pasea por una miniatura de Segovia. Una experiencia 3D con teclado, ratón y controles táctiles."
+  }
+}

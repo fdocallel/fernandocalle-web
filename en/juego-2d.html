@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" data-ontos-web data-web-page="juego-2d">
+<head>
+<!-- GENERADO por i18n/gen-en.py desde ../juego-2d.html · no editar a mano -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ontos alive · Playground</title>
+<meta property="og:title" content="ontos alive · Playground">
+<meta property="og:description" content="Control ontos in a 2D playground: roll, jump, collect sparkles and carry the seed where it belongs. Play with a keyboard or touch controls.">
+<meta property="og:url" content="https://fernandocalle.es/en/juego-2d.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://fernandocalle.es/brand/canon/og-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Control ontos in a 2D playground: roll, jump, collect sparkles and carry the seed where it belongs. Play with a keyboard or touch controls.">
+<link rel="icon" href="/brand/canon/favicon.svg">
+<link rel="stylesheet" href="/experiencias/demo.css">
+<style>
+/* The play controls own the lower corners; keep shared chrome above them. */
+body #ontos-chat-fab{display:none}
+body #ontos-demo{top:var(--sp-2);bottom:auto}
+.ov-wrap{padding:var(--sp-5);margin:auto;max-width:1440px}
+.ov-top{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);border-bottom:3px double var(--border);padding-bottom:var(--sp-4)}
+.ov-top h1{font:400 var(--fs-h1)/1.2 var(--serif);margin:0}.ov-label{font-size:var(--fs-micro);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.ov-tools{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-right:var(--sp-7)}.ov-wrap button{min-height:44px;cursor:pointer}.ov-intro{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-4);margin:var(--sp-4) 0;font-size:var(--fs-sec)}
+.ov-intro p{margin:0}.ov-state{white-space:nowrap;color:var(--accent);font-weight:600}
+.ov-stage{position:relative;overflow:hidden;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface)}
+#world{display:block;width:100%;height:clamp(340px,62vh,680px);touch-action:none;outline-offset:-4px}
+.ov-hud{position:absolute;top:var(--sp-4);left:var(--sp-4);right:var(--sp-4);display:flex;justify-content:space-between;pointer-events:none;font-size:var(--fs-nota);color:var(--muted)}
+.ov-hud span{padding:var(--sp-2) var(--sp-3);background:var(--surface);border:1px solid var(--border);border-radius:999px}
+.ov-hud{align-items:flex-start}.ov-hud .btn{pointer-events:auto;font-size:var(--fs-nota)}
+.ov-overlay{position:absolute;inset:0;display:grid;place-content:center;text-align:center;background:color-mix(in oklab,var(--surface) 88%,transparent);pointer-events:none}.ov-overlay[hidden]{display:none}.ov-overlay strong{font:400 var(--fs-h1)/1.2 var(--serif)}
+.ov-caption{min-height:44px;padding:var(--sp-3) var(--sp-4);border-top:1px solid var(--border);font-size:var(--fs-sec);color:var(--accent)}
+.ov-controls{display:flex;justify-content:space-between;gap:var(--sp-3);margin-top:var(--sp-4);flex-wrap:wrap}.ov-controls>div{display:flex;gap:var(--sp-2)}
+.ov-controls button{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-s);color:var(--text);padding:var(--sp-3) var(--sp-4);font:600 var(--fs-sec)/1.2 var(--font);touch-action:none;user-select:none;-webkit-user-select:none}
+.ov-controls button[aria-pressed="true"],.ov-controls button:active{background:var(--soft);border-color:var(--accent)}
+.ov-help{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin-top:var(--sp-4);font-size:var(--fs-nota);color:var(--muted)}.ov-help kbd{font-family:var(--mono);color:var(--text)}
+.ov-tools .btn,.ov-hud .btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:var(--sp-2) var(--sp-3);border:1px solid var(--border);border-radius:var(--radius-s);background:var(--surface);color:var(--text);font:600 var(--fs-sec)/1.2 var(--font);text-decoration:none}
+@media(max-width:640px){.ov-tools{margin-right:0}.ov-wrap{padding:var(--sp-3);padding-top:var(--sp-8)}.ov-top{align-items:flex-start;flex-wrap:wrap}.ov-intro{align-items:flex-start;flex-direction:column;gap:var(--sp-2)}.ov-intro p{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#world{height:46vh;min-height:300px}.ov-controls{gap:var(--sp-2)}.ov-controls button{padding:var(--sp-2) var(--sp-3)}.ov-controls>div{flex:1}.ov-controls button{flex:1}.ov-help{gap:var(--sp-2) var(--sp-4)}.ov-hud{left:var(--sp-2);right:var(--sp-2);top:var(--sp-2)}}
+</style>
+<link rel="canonical" href="https://fernandocalle.es/en/juego-2d.html">
+<!-- i18n:alt -->
+<link rel="alternate" hreflang="es" href="https://fernandocalle.es/juego-2d.html">
+<link rel="alternate" hreflang="en" href="https://fernandocalle.es/en/juego-2d.html">
+<link rel="alternate" hreflang="x-default" href="https://fernandocalle.es/juego-2d.html">
+<!-- /i18n:alt -->
+<!-- MARCA:estilos · generado desde el canon; diseño ES/EN -->
+<link rel="stylesheet" href="/brand/canon/tokens.css">
+<link rel="stylesheet" href="/brand/marca-es.css">
+<!-- /MARCA:estilos -->
+</head>
+<body>
+<nav class="demo-nav" aria-label="Navigation"><a href="/en/aplicaciones.html">← Applications</a><a class="idioma" data-i18n-alt href="/juego-2d.html" aria-label="Ver esta página en español">ES</a></nav>
+<main class="ov-wrap">
+<header class="ov-top"><div><span class="ov-label">Playground · matter and motion</span><h1>ontos is alive.</h1></div><div class="ov-tools"><a class="btn" href="/en/visita-3d.html">3D world</a><button class="btn" id="pause" aria-pressed="false">Pause</button><button class="btn" id="reset">Restart</button></div></header>
+<div class="ov-intro"><p>A core that thinks and connects. Eyes to discover. Hands to act.</p><span class="ov-state" id="state">● Exploring</span></div>
+<section class="ov-stage" aria-label="ontos playground">
+<noscript><style>.ov-stage > :not(noscript), main button, .ov-controls,.ov-help,.ov-intro {display:none!important}</style><p style="padding:24px">This interactive experience requires JavaScript. Enable it to use the experience, or <a href="/en/aplicaciones.html">return to Applications</a> to explore the other work.</p></noscript>
+<canvas id="world" tabindex="0" aria-label="Control ontos with A and D or arrow keys; Space jumps, Shift speeds up, E picks up or drops the seed, H waves, P pauses.">Your browser needs Canvas to display the game.</canvas>
+<div class="ov-hud"><span id="score">Sparkles 0 / 8</span><button class="btn" id="zoom" aria-pressed="false">Look closer</button></div>
+<div class="ov-overlay" id="overlay" hidden><strong>A little breather.</strong><p>Press Pause or P to continue.</p></div>
+<div class="ov-caption" id="message" role="status" aria-live="polite">Try moving. I turn into a wheel all by myself.</div>
+</section>
+<div class="ov-controls" aria-label="Character controls">
+<div><button data-hold="left" aria-label="Move left">←</button><button data-hold="right" aria-label="Move right">→</button><button data-hold="boost" aria-pressed="false">Turbo ⇧</button></div>
+<div><button data-action="jump">Jump ↑</button><button data-action="grab">Pick up / drop</button><button data-action="wave">Wave</button></div>
+</div>
+<div class="ov-help"><span><kbd>← → / A D</kbd> roll</span><span><kbd>Space / W / ↑</kbd> jump</span><span><kbd>Shift</kbd> turbo</span><span><kbd>E</kbd> hands</span><span><kbd>H</kbd> wave</span><span><kbd>P</kbd> pause</span></div>
+</main>
+<script src="/experiencias/i18n.js"></script>
+<script src="/experiencias/juego-2d.js"></script>
+<script>ONTOS_VIVO.boot();</script>
+
+<script data-goatcounter="https://fernandocalle.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

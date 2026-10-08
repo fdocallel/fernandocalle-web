@@ -1,0 +1,757 @@
+/* Escaparate de Aplicaciones (3-oct-2026). Una sección por familia del canon
+   (ONTOS data/ontos-empresa.json → lineas.items[].catalogo_web) con su número y nombre;
+   cada pieza es imagen + tipo + título y la tarjeta entera abre su acción
+   (lineas.comun.catalogo_piezas[id].accion: vídeo o ventana en diálogo, aplicación o web).
+   Colores, tipos y superficies del canon. */
+
+html[data-web-page="aplicaciones"] .hero {
+  padding-block: var(--ds-space-8) var(--ds-space-7);
+}
+
+html[data-web-page="aplicaciones"] .hero .intro {
+  max-width: 44rem;
+}
+
+html[data-web-page="aplicaciones"] #trabajos {
+  padding-block: var(--ds-space-6) 0;
+}
+
+/* Índice de saltos: cuatro anclas, sin JS. */
+html[data-web-page="aplicaciones"] .baldas-indice ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-1) var(--ds-space-6);
+  padding-bottom: var(--ds-space-3);
+  border-bottom: 1px solid var(--borde);
+}
+
+html[data-web-page="aplicaciones"] .baldas-indice a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ds-space-2);
+  min-height: 44px;
+  padding-block: var(--ds-space-3);
+  color: var(--texto);
+  font-weight: 600;
+  font-size: .95rem;
+  text-decoration: underline transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .25em;
+  transition: text-decoration-color var(--web-motion-fast) ease, color var(--web-motion-fast) ease;
+}
+
+html[data-web-page="aplicaciones"] .baldas-indice a:hover {
+  color: var(--acento);
+  text-decoration-color: currentColor;
+}
+
+html[data-web-page="aplicaciones"] .baldas-indice__n,
+html[data-web-page="aplicaciones"] .balda__n {
+  color: var(--acento);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .04em;
+}
+
+html[data-web-page="aplicaciones"] .baldas-indice__n {
+  font-size: var(--ds-type-note);
+}
+
+/* Familias: las tres de una pieza, en columnas; la de cuatro, en su fila debajo.
+   La familia se lee por su cabecera (número + nombre) y el aire, sin separadores. */
+html[data-web-page="aplicaciones"] .catalogo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-8) var(--ds-space-5);
+  margin-top: var(--ds-space-7);
+}
+
+html[data-web-page="aplicaciones"] .balda {
+  padding: 0;
+  border-top: 0;
+  scroll-margin-top: calc(var(--nav-h) + var(--ds-space-4));
+}
+
+/* Cabecera y pieza alineadas entre columnas aunque un nombre ocupe dos líneas. */
+html[data-web-page="aplicaciones"] .balda--una {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+}
+
+html[data-web-page="aplicaciones"] .balda--fila {
+  grid-column: 1 / -1;
+}
+
+html[data-web-page="aplicaciones"] .balda__cabecera {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ds-space-3);
+  margin-bottom: var(--ds-space-4);
+}
+
+html[data-web-page="aplicaciones"] .balda__n {
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 600;
+}
+
+html[data-web-page="aplicaciones"] .balda__cabecera h2 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+}
+
+html[data-web-page="aplicaciones"] .balda__piezas {
+  display: grid;
+}
+
+html[data-web-page="aplicaciones"] .balda--fila .balda__piezas {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--ds-space-5);
+}
+
+/* Pieza: tarjeta con passe-partout, como «Hecho y funcionando» de la portada.
+   La tarjeta entera es el enlace de su acción (::after de .servicio__accion la cubre). */
+html[data-web-page="aplicaciones"] .servicio {
+  position: relative;
+  padding: var(--ds-space-2);
+  border-radius: var(--ds-radius);
+  transition: transform var(--web-motion-fast) ease, border-color var(--web-motion-fast) ease, box-shadow var(--web-motion-fast) ease;
+}
+
+/* Imagen y rótulo de acción comparten celda: el rótulo no se posiciona, así su ::after
+   se estira sobre la tarjeta (.servicio, position: relative). */
+html[data-web-page="aplicaciones"] .servicio__marco {
+  display: grid;
+}
+
+html[data-web-page="aplicaciones"] .servicio__marco > * {
+  grid-area: 1 / 1;
+}
+
+html[data-web-page="aplicaciones"] .servicio img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid var(--borde);
+  border-radius: calc(var(--ds-radius) - var(--ds-space-1));
+  background: var(--bg);
+  transition: filter var(--web-motion-fast) ease;
+}
+
+html[data-web-page="aplicaciones"] .servicio__accion {
+  align-self: end;
+  justify-self: start;
+  margin: var(--ds-space-3);
+  color: #f3ede5;
+  text-decoration: none;
+}
+
+/* El rótulo se posiciona (sobre la imagen, que con filtro forma capa); el enlace no. */
+html[data-web-page="aplicaciones"] .servicio__rotulo {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: .45em;
+  min-height: 36px;
+  padding: .35rem .85rem .35rem .7rem;
+  border-radius: 999px;
+  background: rgba(20, 16, 12, .84);
+  font-weight: 600;
+  font-size: .86rem;
+  line-height: 1.2;
+  transition: opacity var(--web-motion-fast) ease, transform var(--web-motion-fast) ease, background-color var(--web-motion-fast) ease;
+}
+
+/* Icono de la acción: ▶ vídeo · ↗ web externa · ▸ aplicación o ventana. */
+html[data-web-page="aplicaciones"] .servicio__rotulo::before {
+  content: '';
+  flex: none;
+  width: .8em;
+  height: .8em;
+  background: currentColor;
+  -webkit-mask: var(--icono) center / contain no-repeat;
+  mask: var(--icono) center / contain no-repeat;
+  --icono: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3.5 1.5 9 6l-5.5 4.5z'/%3E%3C/svg%3E");
+}
+
+html[data-web-page="aplicaciones"] .servicio__accion[data-modo="video"] .servicio__rotulo::before {
+  --icono: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 .8 11 6l-9 5.2z'/%3E%3C/svg%3E");
+}
+
+html[data-web-page="aplicaciones"] .servicio__accion[data-modo="externo"] .servicio__rotulo::before {
+  --icono: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 9 9.5 2.5M4 2.5h5.5V8' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+html[data-web-page="aplicaciones"] .servicio__accion::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--ds-radius);
+}
+
+html[data-web-page="aplicaciones"] .servicio .texto {
+  padding: var(--ds-space-4) var(--ds-space-2) var(--ds-space-2);
+  display: flex;
+  flex-direction: column;
+}
+
+html[data-web-page="aplicaciones"] .servicio .cabecera .etiqueta {
+  color: var(--sec);
+  font-size: var(--ds-type-note);
+  letter-spacing: .12em;
+}
+
+html[data-web-page="aplicaciones"] .servicio h3 {
+  font-size: 1.15rem;
+  line-height: 1.28;
+  margin-top: var(--ds-space-2);
+  text-wrap: balance;
+}
+
+html[data-web-page="aplicaciones"] .balda--una .servicio h3 {
+  font-size: 1.25rem;
+}
+
+/* Un dato que dé ganas, opcional. */
+html[data-web-page="aplicaciones"] .servicio .dato {
+  margin-top: var(--ds-space-2);
+  color: var(--sec);
+  font-size: .9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Segunda acción (Segovia): por encima del enlace estirado. */
+html[data-web-page="aplicaciones"] .servicio__extra {
+  position: relative;
+  z-index: 2;
+  margin-top: var(--ds-space-1);
+  color: var(--sec);
+  font-size: .9rem;
+}
+
+html[data-web-page="aplicaciones"] .servicio__extra a {
+  display: inline-block;
+  padding-block: .55rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+}
+
+html[data-web-page="aplicaciones"] .servicio__extra a::after {
+  content: ' ▸';
+}
+
+/* Ratón: el rótulo aparece al pasar; la tarjeta sube un poco y la imagen se apaga levemente.
+   Táctil: el rótulo está siempre a la vista. */
+@media (hover: hover) {
+  html[data-web-page="aplicaciones"] .servicio__rotulo {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  html[data-web-page="aplicaciones"] .servicio:is(:hover, :focus-within) .servicio__rotulo {
+    opacity: 1;
+    transform: none;
+  }
+
+  html[data-web-page="aplicaciones"] .servicio:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--acento) 45%, var(--borde));
+    box-shadow: 0 10px 28px -12px color-mix(in srgb, var(--texto) 30%, transparent);
+  }
+
+  html[data-web-page="aplicaciones"] .servicio:hover img {
+    filter: brightness(.9);
+  }
+
+  html[data-web-page="aplicaciones"] .servicio:has(.servicio__extra a:hover) .servicio__rotulo {
+    background: rgba(20, 16, 12, .6);
+  }
+}
+
+html[data-web-page="aplicaciones"] .servicio:focus-within {
+  border-color: color-mix(in srgb, var(--acento) 45%, var(--borde));
+}
+
+/* Teclado: el foco del enlace estirado se dibuja en la tarjeta entera. */
+html[data-web-page="aplicaciones"] .servicio__accion:focus-visible {
+  outline: none;
+}
+
+html[data-web-page="aplicaciones"] .servicio__accion:focus-visible .servicio__rotulo {
+  outline: 3px solid var(--acento);
+  outline-offset: 2px;
+}
+
+@supports selector(:has(*)) {
+  html[data-web-page="aplicaciones"] .servicio__accion:focus-visible .servicio__rotulo {
+    outline: none;
+  }
+
+  html[data-web-page="aplicaciones"] .servicio:has(.servicio__accion:focus-visible) {
+    outline: 3px solid var(--acento);
+    outline-offset: 3px;
+  }
+}
+
+/* Tableta: una familia por fila; las piezas solas, imagen y texto lado a lado; la fila de cuatro, 2 × 2. */
+@media (max-width: 60rem) {
+  html[data-web-page="aplicaciones"] .catalogo {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--ds-space-7);
+  }
+
+  html[data-web-page="aplicaciones"] .balda--una {
+    display: block;
+  }
+
+  html[data-web-page="aplicaciones"] .balda--una .servicio {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  html[data-web-page="aplicaciones"] .balda--una .servicio .texto {
+    padding: var(--ds-space-3) var(--ds-space-5);
+  }
+
+  html[data-web-page="aplicaciones"] .balda--fila .balda__piezas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ds-space-5) var(--ds-space-4);
+  }
+}
+
+/* Móvil: piezas solas, en columna; la fila de cuatro, carril deslizable a sangre. */
+@media (max-width: 40rem) {
+  html[data-web-page="aplicaciones"] .hero {
+    padding-block: var(--ds-space-7) var(--ds-space-6);
+  }
+
+  html[data-web-page="aplicaciones"] .baldas-indice ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--ds-space-4);
+  }
+
+  html[data-web-page="aplicaciones"] .baldas-indice a {
+    font-size: .88rem;
+    line-height: 1.3;
+  }
+
+  html[data-web-page="aplicaciones"] .catalogo {
+    margin-top: var(--ds-space-6);
+    row-gap: var(--ds-space-7);
+  }
+
+  html[data-web-page="aplicaciones"] .balda--una .servicio {
+    display: block;
+  }
+
+  html[data-web-page="aplicaciones"] .balda--una .servicio .texto {
+    padding: var(--ds-space-4) var(--ds-space-2) var(--ds-space-2);
+  }
+
+  html[data-web-page="aplicaciones"] .balda--fila .balda__piezas {
+    display: flex;
+    gap: var(--ds-space-3);
+    margin-left: calc(-1 * var(--web-content-left));
+    margin-right: calc(-1 * var(--web-content-right));
+    padding: var(--ds-space-1) var(--web-content-right) var(--ds-space-2) var(--web-content-left);
+    scroll-padding-inline: var(--web-content-left) var(--web-content-right);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  html[data-web-page="aplicaciones"] .balda--fila .balda__piezas::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* La siguiente asoma: así se ve que la fila sigue. */
+  html[data-web-page="aplicaciones"] .balda--fila .servicio {
+    flex: 0 0 min(80%, 21rem);
+    scroll-snap-align: start;
+  }
+}
+
+/* Entrada: las piezas de cada familia suben una tras otra, una sola vez (aplicaciones-es.js). */
+html[data-web-page="aplicaciones"] .balda--espera .servicio {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: none;
+}
+
+html[data-web-page="aplicaciones"] .balda--entra .servicio {
+  transition: opacity 520ms cubic-bezier(.2, 0, .2, 1) var(--retraso, 0ms), transform 520ms cubic-bezier(.2, 0, .2, 1) var(--retraso, 0ms), border-color var(--web-motion-fast) ease;
+}
+
+html[data-web-page="aplicaciones"] .balda--entra .servicio:nth-child(2) { --retraso: 90ms; }
+html[data-web-page="aplicaciones"] .balda--entra .servicio:nth-child(3) { --retraso: 180ms; }
+html[data-web-page="aplicaciones"] .balda--entra .servicio:nth-child(4) { --retraso: 270ms; }
+
+/* Próximamente: las dos ediciones a la misma altura; los clips, fuera, en su fila. */
+html[data-web-page="aplicaciones"] #proximamente {
+  margin-block: var(--ds-space-8);
+  padding: var(--ds-space-7);
+  border: 1px solid var(--borde);
+  border-radius: var(--ds-radius);
+  background: var(--panel);
+}
+
+html[data-web-page="aplicaciones"] #proximamente .proximo {
+  gap: var(--ds-space-5);
+  margin-top: var(--ds-space-6);
+  align-items: stretch;
+}
+
+html[data-web-page="aplicaciones"] #proximamente .edicion {
+  background: var(--bg);
+  border-radius: var(--ds-radius);
+}
+
+html[data-web-page="aplicaciones"] #proximamente .edicion .estado {
+  margin-top: auto;
+  padding-top: var(--ds-space-4);
+}
+
+html[data-web-page="aplicaciones"] .proximo-clips {
+  margin-top: var(--ds-space-7);
+}
+
+html[data-web-page="aplicaciones"] .proximo-clips__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 var(--ds-space-5);
+  margin-bottom: var(--ds-space-4);
+}
+
+html[data-web-page="aplicaciones"] .proximo-clips__cabecera h3 {
+  font-size: 1.2rem;
+}
+
+/* Los cuatro clips: apaisados, en fila; 2 × 2 en tableta; carril en móvil. */
+html[data-web-page="aplicaciones"] .clips {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--ds-space-4);
+}
+
+html[data-web-page="aplicaciones"] .clip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  color: var(--texto);
+  font-weight: 600;
+  font-size: .92rem;
+  line-height: 1.3;
+  text-decoration: none;
+  border-radius: var(--ds-radius-s);
+}
+
+html[data-web-page="aplicaciones"] .clip__marco {
+  order: -1;
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--borde);
+  border-radius: var(--ds-radius-s);
+  background: #0f0e0c;
+}
+
+html[data-web-page="aplicaciones"] .clip__marco img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter var(--web-motion-fast) ease;
+}
+
+html[data-web-page="aplicaciones"] .clip__play {
+  position: absolute;
+  inset: 0;
+  width: 42px;
+  height: 42px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--teja);
+  transition: transform var(--web-motion-fast) ease;
+}
+
+html[data-web-page="aplicaciones"] .clip__play svg {
+  width: 46%;
+  margin-left: 8%;
+  fill: #14100c;
+}
+
+html[data-web-page="aplicaciones"] .clip__dur {
+  position: absolute;
+  right: var(--ds-space-2);
+  bottom: var(--ds-space-2);
+  padding: 0 var(--ds-space-2);
+  border-radius: 4px;
+  background: rgba(15, 14, 12, .8);
+  color: #ece7e0;
+  font-size: .72rem;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-web-page="aplicaciones"] .clip__titulo {
+  text-decoration: underline transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+  transition: text-decoration-color var(--web-motion-fast) ease;
+}
+
+html[data-web-page="aplicaciones"] :is(.clip:hover, .clip:focus-visible) .clip__titulo {
+  text-decoration-color: currentColor;
+}
+
+html[data-web-page="aplicaciones"] :is(.clip:hover, .clip:focus-visible) .clip__play {
+  transform: scale(1.08);
+}
+
+html[data-web-page="aplicaciones"] .clip:hover .clip__marco img {
+  filter: brightness(.9);
+}
+
+html[data-web-page="aplicaciones"] .clip:focus-visible {
+  outline: 3px solid var(--acento);
+  outline-offset: 4px;
+}
+
+html[data-web-page="aplicaciones"] .leer-caso a {
+  display: inline-block;
+  min-height: 40px;
+  padding: var(--ds-space-2) 0;
+  font-weight: 600;
+  font-size: .92rem;
+  text-decoration: none;
+}
+
+html[data-web-page="aplicaciones"] .leer-caso a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 60rem) {
+  html[data-web-page="aplicaciones"] .clips {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ds-space-5) var(--ds-space-4);
+  }
+}
+
+@media (max-width: 40rem) {
+  html[data-web-page="aplicaciones"] #proximamente {
+    margin-block: var(--ds-space-7);
+    padding: var(--ds-space-5) var(--ds-space-4);
+  }
+
+  html[data-web-page="aplicaciones"] #proximamente .edicion {
+    padding: var(--ds-space-5) var(--ds-space-3) var(--ds-space-4);
+  }
+
+  html[data-web-page="aplicaciones"] .proximo-clips {
+    margin-top: var(--ds-space-6);
+  }
+
+  /* Carril a sangre del panel: el siguiente clip asoma. */
+  html[data-web-page="aplicaciones"] .clips {
+    display: flex;
+    gap: var(--ds-space-3);
+    margin-inline: calc(-1 * var(--ds-space-4));
+    padding: var(--ds-space-1) var(--ds-space-4) var(--ds-space-2);
+    scroll-padding-inline: var(--ds-space-4);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  html[data-web-page="aplicaciones"] .clips::-webkit-scrollbar {
+    display: none;
+  }
+
+  html[data-web-page="aplicaciones"] .clips > li {
+    flex: 0 0 min(72%, 17rem);
+    scroll-snap-align: start;
+  }
+
+  html[data-web-page="aplicaciones"] .clip__play {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Diálogo: vídeo, ventana (otra página) o clip. Oscuro siempre, como una sala de proyección. */
+html:has(dialog.dlg[open]) {
+  overflow: hidden;
+}
+
+.dlg {
+  --ancho: 64rem;
+  --ar: 16 / 9;
+  width: min(var(--ancho), calc(100vw - 2rem), calc((100dvh - 6rem) * var(--ar)));
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #2a261f;
+  border-radius: var(--ds-radius);
+  background: #0f0e0c;
+  color: #ece7e0;
+}
+
+.dlg[open] {
+  animation: dlg-entra 220ms ease;
+}
+
+@keyframes dlg-entra {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.dlg::backdrop {
+  background: rgba(20, 16, 12, .72);
+}
+
+.dlg__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-4);
+  border-bottom: 1px solid #2a261f;
+}
+
+.dlg__titulo {
+  font-weight: 600;
+  font-size: .95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dlg__cerrar {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: #ece7e0;
+  cursor: pointer;
+  transition: background-color var(--web-motion-fast) ease, color var(--web-motion-fast) ease;
+}
+
+.dlg__cerrar:hover {
+  color: var(--teja);
+  background: rgba(212, 113, 59, .14);
+}
+
+html .dlg .dlg__cerrar:focus-visible {
+  outline: 2px solid var(--teja);
+  outline-offset: 2px;
+}
+
+.dlg__cerrar svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.dlg__pantalla {
+  aspect-ratio: var(--ar);
+}
+
+.dlg__pantalla :is(iframe, video) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #000;
+}
+
+/* Vídeo: a su proporción (data-proporcion del enlace). */
+.dlg--video {
+  --ancho: 46rem;
+}
+
+/* Ventana: la página entera (el probador del Armario), alta. */
+.dlg--ventana {
+  --ancho: 72rem;
+  width: min(var(--ancho), calc(100vw - 2rem));
+}
+
+.dlg--ventana .dlg__pantalla {
+  aspect-ratio: auto;
+  height: min(calc(100dvh - 6rem), 52rem);
+}
+
+.dlg--ventana .dlg__pantalla iframe {
+  background: #f3ede5;
+}
+
+@media (max-width: 40rem) {
+  .dlg {
+    width: min(calc(100vw - 1rem), calc((100dvh - 6rem) * var(--ar)));
+  }
+
+  .dlg--ventana {
+    width: calc(100vw - 1rem);
+  }
+
+  .dlg--ventana .dlg__pantalla {
+    height: calc(100dvh - 5rem);
+  }
+}
+
+/* Teléfono en vertical: el clip tiene su versión vertical (se activa sola si el marco es más alto que ancho). */
+@media (max-width: 40rem) and (orientation: portrait) {
+  .dlg--clip {
+    width: calc(100vw - 1rem);
+  }
+
+  .dlg--clip .dlg__pantalla {
+    aspect-ratio: auto;
+    height: min(calc(100dvh - 6rem), calc((100vw - 1rem) * 16 / 9));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-web-page="aplicaciones"] :is(.servicio, .servicio img, .servicio__rotulo, .clip__play, .clip__marco img, .baldas-indice a) {
+    transition: none;
+  }
+
+  html[data-web-page="aplicaciones"] .servicio:hover,
+  html[data-web-page="aplicaciones"] .servicio__rotulo,
+  html[data-web-page="aplicaciones"] :is(.clip:hover, .clip:focus-visible) .clip__play {
+    transform: none;
+  }
+
+  .dlg[open] {
+    animation: none;
+  }
+}

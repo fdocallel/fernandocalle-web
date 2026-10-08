@@ -1,0 +1,102 @@
+/* GENERADO por scripts/build-design-system.js desde data/design-system-tokens.json y fuentes canónicas. Activación explícita: data-ontos-ds. */
+@font-face{font-family:"ONTOS DS Jost";src:url("fonts/jost.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:"ONTOS DS Newsreader";src:url("fonts/newsreader.ttf") format("truetype");font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:"ONTOS DS Newsreader";src:url("fonts/newsreader-italic.ttf") format("truetype");font-weight:200 800;font-style:italic;font-display:swap}
+html[data-ontos-web]{
+  --ds-brand-teja: #D4713B;
+  --ds-brand-granito: #8A8177;
+  --ds-brand-arena: #D8C3A3;
+  --ds-brand-verde: #315B4E;
+  --ds-brand-rojo: #A63F35;
+  --ds-brand-logo-on-dark: #FDFBF7;
+  --ds-brand-teja-quemada: #B0532A;
+  --ds-brand-granito-sombra: #6B6257;
+  --ds-support-hueso: #FAF8F5;
+  --ds-surface-page: #F3EDE5;
+  --ds-surface-panel: #FAF8F5;
+  --ds-ink: #315B4E;
+  --ds-ink-muted: #315B4E;
+  --ds-border: #D8C3A3;
+  --ds-control-border: #315B4E;
+  --ds-action: #315B4E;
+  --ds-on-action: #FAF8F5;
+  --ds-accent: #D4713B;
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 24px;
+  --ds-space-6: 32px;
+  --ds-space-7: 48px;
+  --ds-space-8: 64px;
+  --ds-wrap-lectura: 960px;
+  --ds-wrap: 1100px;
+  --ds-wrap-datos: 1280px;
+  --ds-radius-s: 8px;
+  --ds-radius: 12px;
+  --ds-font-corporativa: "ONTOS DS Jost",sans-serif;
+  --ds-font-editorial: "ONTOS DS Newsreader",serif;
+  --ds-type-h1: 24px;
+  --ds-type-h1-leading: 1.2;
+  --ds-type-h2: 20px;
+  --ds-type-h2-leading: 1.2;
+  --ds-type-h3: 16.8px;
+  --ds-type-h3-leading: 1.2;
+  --ds-type-body: 15px;
+  --ds-type-body-leading: 1.5;
+  --ds-type-note: 12.8px;
+  --ds-type-note-leading: 1.5;
+  --ds-motion-arcilla: 1200ms;
+  --ds-motion-portada-texto: 1300ms;
+  --ds-motion-portada-salida: 250ms;
+  --ds-motion-portada-reposo: 12000ms;
+  --ds-type-display: 68px;
+  --ds-type-display-leading: 1.08;
+  --ds-brand-icon-visible-min: 96px;
+  --ds-type-editorial: 16px;
+  --ds-type-editorial-leading: 1.6;
+  --ds-web-mix-surface: 55%;
+  --ds-web-mix-panel: 75%;
+  --ds-web-technical-black: #000000;
+  --ds-portada-tinta-oscura: #000000;
+  --ds-web-dark-surface: #1B322B;
+  --ds-web-dark-panel: #25443B;
+  --ds-web-dark-ink: #FAF8F5;
+  --ds-web-dark-muted: #D8C3A3;
+  --ds-web-dark-line: #8A8177;
+  --ds-web-motion-fast: 180ms;
+  --ds-web-page-surface: #F3EDE5;
+  --ds-web-logo-width: 150px;
+  --ds-web-logo-height: 50px;
+  --ds-web-mix-muted: 24%;
+  --ds-web-green-muted: #E0D0B7;
+  --ds-web-home-surface: #183D33;
+}
+@media(max-width:640px){html[data-ontos-web]{
+  --ds-type-display: 44px;
+}}
+@media(prefers-reduced-motion:reduce){html[data-ontos-web]{--ds-motion-arcilla:0ms}}
+
+/* Alias de aplicación web. Propuestas y origen en tokens.json. */
+html[data-ontos-web]{
+--web-mix-surface:var(--ds-web-mix-surface);
+--web-mix-panel:var(--ds-web-mix-panel);
+--web-technical-black:var(--ds-web-technical-black);
+--web-dark-surface:var(--ds-web-dark-surface);
+--web-dark-panel:var(--ds-web-dark-panel);
+--web-dark-ink:var(--ds-web-dark-ink);
+--web-dark-muted:var(--ds-web-dark-muted);
+--web-dark-line:var(--ds-web-dark-line);
+--web-motion-fast:var(--ds-web-motion-fast);
+--web-page-surface:var(--ds-web-page-surface);
+--web-logo-width:var(--ds-web-logo-width);
+--web-logo-height:var(--ds-web-logo-height);
+--web-mix-muted:var(--ds-web-mix-muted);
+--web-green-muted:var(--ds-web-green-muted);
+--web-home-surface:var(--ds-web-home-surface);
+--web-logo-horizontal-min:411px;
+--web-logo-icon-min:115px;
+--web-logo-wordmark-min:120px;
+--web-logo-leading-space:14.8492px;
+--web-logo-fallback-offset:12.8458px;
+}

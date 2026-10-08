@@ -1,0 +1,5 @@
+{
+  "_doc": "Traducción al inglés de blog.html. La estructura vive en la página española; aquí solo el texto. Genera con ./i18n/gen-en.py",
+  "Escritos · Fernando Calle": "Writing · Fernando Calle",
+  "Los escritos están ahora en <a href=\"fernando-calle.html#escritos\">Sobre mí</a>.": "The writing is now in <a href=\"fernando-calle.html#escritos\">About me</a>."
+}

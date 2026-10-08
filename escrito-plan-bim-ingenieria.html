@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es" data-ontos-web data-web-page="escrito-plan-bim-ingenieria">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qué exige el Plan BIM a una ingeniería mediana en 2026 · Fernando Calle</title>
+<meta name="description" content="Qué obliga hoy el Plan BIM, a quién alcanza y desde cuándo, qué significa en la práctica y cómo saber si tu ingeniería está lista para el próximo pliego.">
+<link rel="canonical" href="https://fernandocalle.es/escrito-plan-bim-ingenieria.html">
+<!-- i18n:alt -->
+<link rel="alternate" hreflang="es" href="https://fernandocalle.es/escrito-plan-bim-ingenieria.html">
+<link rel="alternate" hreflang="en" href="https://fernandocalle.es/en/escrito-plan-bim-ingenieria.html">
+<link rel="alternate" hreflang="x-default" href="https://fernandocalle.es/escrito-plan-bim-ingenieria.html">
+<!-- /i18n:alt -->
+<meta property="og:title" content="Qué exige el Plan BIM a una ingeniería mediana en 2026">
+<meta property="og:description" content="Umbrales vigentes, alcance real, entregables y errores típicos al responder un pliego con requisitos BIM. Con una lista de comprobación honesta.">
+<meta property="og:image" content="https://fernandocalle.es/brand/canon/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://fernandocalle.es/escrito-plan-bim-ingenieria.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fernando Calle">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Qué exige el Plan BIM a una ingeniería mediana en 2026">
+<meta name="twitter:description" content="Umbrales vigentes, alcance real, entregables y errores típicos al responder un pliego con requisitos BIM.">
+<meta name="twitter:image" content="https://fernandocalle.es/brand/canon/og.png">
+<meta name="theme-color" content="#F3EDE5">
+<meta name="theme-color" content="#F3EDE5" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="brand/canon/favicon.svg">
+<link rel="stylesheet" href="brand/tokens.css">
+<script src="brand/barra.js" defer></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--sans); font-size: 16px; line-height: 1.7;
+    background: var(--bg); color: var(--texto);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: var(--serif); }
+  .wrap { max-width: 42rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  .cabecera { padding: 3.5rem 0 1.6rem; }
+  h1 { font-size: clamp(2rem, 5.4vw, 2.9rem); font-weight: 600; line-height: 1.15; }
+  .meta {
+    margin-top: 1.1rem; font-size: 0.85rem; color: var(--sec);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .entradilla { margin-top: 1.2rem; font-size: 1.1rem; color: var(--sec); }
+
+  article { padding-bottom: 1rem; }
+  section { padding: 1.6rem 0; }
+  h2 { font-size: 1.45rem; font-weight: 600; margin: 1rem 0 0.9rem; line-height: 1.25; }
+  h3 { font-size: 1.08rem; font-weight: 600; margin: 1.4rem 0 0.5rem; }
+  p { margin-bottom: 1rem; }
+  p:last-child { margin-bottom: 0; }
+  ul, ol { margin: 0 0 1rem 1.2rem; }
+  li { margin-bottom: 0.45rem; }
+  strong { color: var(--realce); font-weight: 600; }
+  a { color: var(--acento); }
+
+  /* La sombra del borde derecho avisa de que la tabla sigue: sin ella el corte cae justo
+     en un borde de columna y parece que las dos fechas siguientes no existen. */
+  .tabla-envoltorio {
+    overflow-x: auto; margin: 1.2rem 0 0.6rem;
+    background:
+      linear-gradient(to right, var(--bg) 30%, transparent) left / 2.5rem 100% no-repeat local,
+      linear-gradient(to left, var(--bg) 30%, transparent) right / 2.5rem 100% no-repeat local,
+      radial-gradient(farthest-side at 0 50%, rgba(107,98,87,0.35), transparent) left / 0.75rem 100% no-repeat scroll,
+      radial-gradient(farthest-side at 100% 50%, rgba(107,98,87,0.35), transparent) right / 0.75rem 100% no-repeat scroll;
+  }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 31rem; table-layout: fixed; }
+  @media (max-width: 36rem) {
+    table { font-size: 0.8rem; min-width: 26rem; }
+    th, td { padding: 0.5rem 0.5rem 0.5rem 0; }
+    col.c1 { width: 32%; } col.c2 { width: 26%; } col.c3 { width: 21%; } col.c4 { width: 21%; }
+  }
+  th, td { text-align: left; padding: 0.6rem 0.7rem 0.6rem 0; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  thead th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sec); font-weight: 600; line-height: 1.35; }
+  tbody th { font-weight: 600; line-height: 1.4; }
+  col.c1 { width: 38%; } col.c2 { width: 24%; } col.c3 { width: 19%; } col.c4 { width: 19%; }
+  .hoy { color: var(--realce); font-weight: 600; }
+
+  .caja {
+    margin: 1.6rem 0; padding: 1.3rem 1.5rem;
+    background: var(--panel); border: 1px solid var(--borde); border-radius: 14px;
+  }
+  .caja h3 { margin-top: 0; }
+  .caja p:last-child { margin-bottom: 0; }
+  .fuente { font-size: 0.85rem; color: var(--sec); margin-top: 0.9rem; }
+  .desliza { display: none; font-size: 0.78rem; color: var(--sec); margin: 0.4rem 0 0; }
+  @media (max-width: 36rem) { .desliza { display: block; } }
+
+  blockquote {
+    margin: 1.4rem 0; padding: 0.2rem 0 0.2rem 1.2rem;
+    border-left: 3px solid var(--teja); color: var(--sec); font-size: 0.98rem;
+  }
+
+  .lista-check { list-style: none; margin-left: 0; }
+  .lista-check li {
+    padding: 0.6rem 0 0.6rem 1.7rem; position: relative;
+    border-bottom: 1px solid var(--borde); margin-bottom: 0;
+  }
+  .lista-check li::before { content: "▸"; position: absolute; left: 0; color: var(--acento); }
+
+  .cierre { text-align: center; padding: 2.6rem 0 3.5rem; border-top: 1px solid var(--borde); margin-top: 2rem; }
+  .cierre h2 { margin-bottom: 0.6rem; }
+  .cierre p { color: var(--sec); max-width: 32rem; margin: 0 auto 1.6rem; }
+  .cta {
+    display: inline-block; padding: 0.8rem 2rem; border-radius: 999px;
+    background: var(--teja); color: #14100c; font-weight: 600; text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,113,59,0.35); }
+  .cierre .alt { display: block; margin-top: 1.2rem; font-size: 0.9rem; }
+
+  footer {
+    border-top: 1px solid var(--borde);
+    padding: 2rem 0 3rem; font-size: 0.8rem; color: var(--sec);
+  }
+  footer a { color: inherit; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Qué exige el Plan BIM a una ingeniería mediana en 2026",
+  "description": "Qué obliga hoy el Plan BIM, a quién alcanza y desde cuándo, qué significa en la práctica y cómo saber si tu ingeniería está lista para el próximo pliego.",
+  "inLanguage": "es-ES",
+  "datePublished": "2026-08-19",
+  "dateModified": "2026-09-27",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://fernandocalle.es/escrito-plan-bim-ingenieria.html"
+  },
+  "image": "https://fernandocalle.es/brand/canon/og.png",
+  "author": {
+    "@type": "Person",
+    "name": "Fernando Calle",
+    "jobTitle": "Ingeniero de Caminos, Canales y Puertos",
+    "url": "https://fernandocalle.es/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Fernando Calle",
+    "url": "https://fernandocalle.es/"
+  }
+}
+</script>
+<!-- MARCA:estilos · generado desde el canon; diseño ES/EN -->
+<link rel="stylesheet" href="brand/canon/tokens.css">
+<link rel="stylesheet" href="brand/marca-es.css">
+<!-- /MARCA:estilos -->
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<header class="barra">
+  <nav>
+    <a class="marca" href="/"><span class="marca__nombre">Fernando Calle</span></a>
+    <a class="item" href="aplicaciones.html">Aplicaciones</a>
+    <a class="item" aria-current="page" href="fernando-calle.html">Sobre mí</a>
+    <a class="item item--ontos" href="https://ontosdigital.es/">ontos</a>
+    <a class="item icono-contacto" href="contacto.html" data-contacto aria-label="Contacto"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.8 7l8.2 6.2L20.2 7"/></svg></a>
+    <a class="item idioma" data-i18n-alt href="/en/escrito-plan-bim-ingenieria.html" hreflang="en" lang="en" aria-label="View this page in English">EN</a>
+  </nav>
+</header>
+<main class="web-main" id="contenido" tabindex="-1">
+
+<div class="wrap">
+
+<div class="cabecera">
+  <h1>Qué exige el Plan BIM a una ingeniería mediana en 2026</h1>
+  <p class="meta">19 de agosto de 2026 · 7 minutos de lectura · Fernando Calle</p>
+  <p class="entradilla">El calendario está corriendo y el vocabulario de los pliegos ya ha cambiado,
+  pero en muchas oficinas técnicas el asunto se resuelve la semana antes de presentar. Esto es lo
+  que obliga de verdad, lo que significa en el día a día y cómo saber si llegas.</p>
+</div>
+
+<article>
+
+<section>
+  <h2>Qué obliga exactamente hoy</h2>
+  <p>El dato duro es corto. Lo dice el Plan BIM en la contratación pública, aprobado en Consejo de
+  Ministros; los umbrales vigentes son los de la actualización del 1 de enero de 2026.</p>
+
+  <div class="caja">
+    <h3>El calendario legal</h3>
+    <div class="tabla-envoltorio" tabindex="0">
+      <table>
+        <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+        <thead>
+          <tr>
+            <th>Valor estimado del contrato</th>
+            <th>Desde el 1 de octubre de 2025</th>
+            <th>1 de octubre de 2027</th>
+            <th>1 de abril de 2030</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Desde 5.404.000 € de valor estimado</th>
+            <td class="hoy">Nivel BIM medio</td>
+            <td>Avanzado</td>
+            <td>Integrado</td>
+          </tr>
+          <tr>
+            <th>Desde 2.000.000 € y menos de 5.404.000 € de valor estimado</th>
+            <td class="hoy">Nivel BIM inicial</td>
+            <td>Medio</td>
+            <td>Avanzado</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="desliza">La tabla se desplaza a los lados.</p>
+    <p class="fuente">En 2027 los dos umbrales suben un escalón: lo que hoy es nivel inicial y
+    nivel medio pasa a exigir más.</p>
+    <p class="fuente">Fuentes: <a href="https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16784">Plan BIM, apartado 4</a>
+    y <a href="https://www.boe.es/buscar/doc.php?id=BOE-A-2025-26605">umbrales desde enero de 2026</a>.
+    Revisado el 27 de septiembre de 2026. Las cifras son las vigentes en 2026; el calendario
+    comenzó en octubre de 2025. Se mantienen las excepciones justificadas previstas en el Plan.</p>
+  </div>
+
+  <p>Dos precisiones cambian el resultado de esa cuenta más veces de lo que parece. La primera:
+  <strong>aplica a las obras, a las concesiones, a la dirección facultativa, a la
+  asistencia técnica y a la redacción de proyectos</strong>, casi toda la cadena técnica. Si tu
+  ingeniería no ejecuta obra, esto te alcanza igual por la puerta de los servicios, y en los
+  contratos vinculados o previos el nivel lo marca la obra, no el importe de tus honorarios.</p>
+  <p>La segunda: <strong>en los contratos divididos en lotes se mira el valor estimado de cada
+  lote</strong>, no el del expediente completo. La decisión de lotear tiene consecuencias directas
+  sobre el nivel de información exigible, y casi nunca se analiza al preparar el expediente.</p>
+
+  <h3>A quién alcanza y a quién no</h3>
+  <p>Aquí conviene ser honesto. El Plan BIM tiene efecto de instrucción interna para la <strong>Administración General del Estado y sus
+  organismos y entidades de derecho público vinculados</strong>; para el resto del sector público
+  estatal es recomendación. Una comunidad autónoma, una diputación o un ayuntamiento no están
+  obligados por él.</p>
+  <p>Eso no significa que puedas ignorarlo fuera del ámbito estatal. Dentro de una misma
+  administración conviven pliegos que exigen metodología BIM desde hace años, con su responsable de
+  gestión de la información nombrado por contrato, y pliegos de obra de ocho cifras que no mencionan
+  la palabra. No hay una regla por administración: hay una por expediente, y hay que leerla.</p>
+  <p>El apartado 4.3 del Plan exige que la gestión interna de la información del contrato alcance
+  el nivel BIM solicitado en la licitación. Si el órgano de contratación aún no llega a ese
+  nivel, contempla el apoyo de una asistencia técnica, conforme a la normativa aplicable.</p>
+  <p>Traducido: el que te pide el modelo tiene que estar en condiciones de leerlo, y muchos no lo
+  están. Esa asimetría produce pliegos con requisitos copiados y recepciones que se atascan.</p>
+</section>
+
+<section>
+  <h2>Qué significa en la práctica</h2>
+  <p>Cuando el pliego lo pide, lo pide con este vocabulario: coordinación bajo <strong>ISO
+  19650</strong>, entrega en <strong>IFC</strong>, <strong>entorno común de datos</strong>,
+  seguridad conforme al <strong>Esquema Nacional de Seguridad</strong>. Detrás hay cuatro cosas
+  concretas.</p>
+  <p><strong>Requisitos de información del contratante.</strong> El documento donde el cliente dice
+  qué información necesita, para qué la va a usar, cuándo la quiere y con qué criterio la va a
+  aceptar. Es el origen de la cadena: cuando falta, o cuando es una lista de formatos sin propósito,
+  el resto se improvisa.</p>
+  <p><strong>Plan de ejecución BIM.</strong> Tu respuesta a lo anterior: quién produce qué, cuándo,
+  con qué nomenclatura y por qué flujo de revisión pasa antes de salir. Un plan que repite el
+  pliego con otras palabras no es un plan, y en fase de obra no protege de nada.</p>
+  <p><strong>Entorno común de datos.</strong> El sitio único por el que pasa la información, con
+  estados (en elaboración, compartido, publicado, archivado), control de versiones, control de
+  acceso y trazabilidad de quién aprobó qué y cuándo.</p>
+  <p><strong>Roles.</strong> Alguien responde de la gestión de la información del contrato, alguien
+  coordina los modelos de las distintas disciplinas y cada disciplina responde de lo suyo. Pueden
+  ser dos personas o tres, pero los papeles tienen que estar asignados con nombre y con horas, no
+  repartidos por costumbre.</p>
+  <p>Y los entregables: IFC para el modelo, BCF para las incidencias, COBie o un esquema
+  equivalente cuando el destinatario final va a explotar y mantener el activo, y mediciones que
+  salen del modelo y no de una hoja aparte. Ese último punto es el que más dinero mueve.</p>
+</section>
+
+<section>
+  <h2>Cuatro errores típicos al responder un pliego con requisitos BIM</h2>
+
+  <h3>1. Calcular el nivel sobre el importe equivocado</h3>
+  <p>Sobre el total del expediente en vez de sobre el lote. Sobre tus honorarios en vez de sobre la
+  obra a la que tu servicio está vinculado. Es un error de dos minutos que condiciona el esfuerzo
+  de toda la ejecución y, si te quedas corto, aparece cuando ya no hay margen para corregir.</p>
+
+  <h3>2. Responder con software en vez de con procedimiento</h3>
+  <p>La oferta enumera programas y versiones, adjunta el organigrama de siempre y da el apartado
+  por resuelto. El pliego no pregunta qué compras: pregunta cómo produces, revisas, apruebas y
+  entregas información. Si el plan de ejecución no dice quién revisa el modelo antes de publicarlo
+  y con qué criterio, no has contestado.</p>
+
+  <h3>3. Llamar entorno común de datos a una carpeta compartida</h3>
+  <p>El control de cambios y de versiones durante la ejecución es la obligación que más se incumple
+  en la práctica, y la que más caro sale. El día que hay que demostrar qué versión estaba vigente
+  cuando se ejecutó una unidad, o hay trazabilidad o hay una discusión de meses.</p>
+
+  <h3>4. Dejar abierto el criterio de aceptación</h3>
+  <p>Cláusulas del tipo «en formatos compatibles con los utilizados por la propiedad» son las más
+  peligrosas de un pliego: la conformidad de la entrega final depende de una interpretación que hoy
+  no está escrita. Eso se cierra al principio, con una reunión y un acta, no en la recepción. Lo
+  mismo vale para el as built: entregar geometría sin datos de activo cumple la letra del pliego y
+  desperdicia todo el valor para quien va a mantener la instalación durante treinta años.</p>
+</section>
+
+<section>
+  <h2>Qué puedes hacer con el equipo que ya tienes</h2>
+  <p>Más de lo que crees, y menos de lo que te venden. Una oficina técnica mediana que ya modela puede, sin contratar a nadie: fijar una nomenclatura
+  única y aplicarla; escribir la matriz de responsabilidades del próximo contrato en una tarde;
+  montar un entorno común de datos con estados y control de versiones sobre herramientas que ya
+  paga; establecer que nada se publica sin una revisión con criterio escrito; y exportar a IFC de
+  forma periódica durante el proyecto en lugar de al final. Ese último cambio evita por sí solo la
+  mayoría de los sustos de entrega: si el IFC se genera cada quince días, los problemas de
+  clasificación y de propiedades aparecen cuando todavía se pueden arreglar.</p>
+  <p>Ahora lo que no. No se puede nombrar responsable de gestión de la información a alguien que ya
+  está al cien por cien en producción: es el modo más habitual de que la coordinación acabe siendo
+  un correo semanal. No se puede auditar a mano, en cada hito, que un modelo cumple lo exigido: esa
+  comprobación es repetitiva y o la hace un programa o no se hace. Y no se puede decidir el esquema
+  de datos de activo el mes antes de la recepción, porque los datos se capturan mientras se
+  ejecuta.</p>
+  <p>Después de seis años haciendo esto en HS2, Sydney Metro West, Red Sea y Trojena, mi criterio
+  es que la parte difícil nunca fue el software: fue acordar el dato, escribir el procedimiento y
+  sostenerlo cuando la obra aprieta.</p>
+</section>
+
+<section>
+  <h2>Cómo saber si estás listo: lista de comprobación honesta</h2>
+  <p>Diez preguntas, con sí o con no y sin matices, pensando en el último contrato que entregaste.
+  Con cuatro noes vas a tiempo. Con siete, el problema aparece en la próxima licitación, no en la
+  siguiente.</p>
+  <ul class="lista-check">
+    <li>¿Sabes el valor estimado y el nivel exigible, lote a lote, de los contratos a los que te
+    presentarás este año?</li>
+    <li>¿Tienes un plan de ejecución BIM propio, que puedas particularizar en dos días, y no uno
+    copiado del último pliego que ganaste?</li>
+    <li>¿Existe una persona con nombre que responde de la gestión de la información, con horas
+    asignadas en el presupuesto del contrato?</li>
+    <li>¿La nomenclatura de ficheros y de elementos es la misma en los tres últimos proyectos?</li>
+    <li>¿Puedes decir, hoy y sin preguntar a nadie, qué versión de cada modelo está publicada y
+    quién la aprobó?</li>
+    <li>¿Has exportado alguna vez tu modelo a IFC y lo has abierto en un visor ajeno al programa
+    con el que lo hiciste?</li>
+    <li>¿Las incidencias de coordinación se gestionan en BCF con responsable y fecha, o viven en
+    actas de reunión?</li>
+    <li>¿Las mediciones de la última certificación salieron del modelo o de una hoja de cálculo
+    paralela?</li>
+    <li>¿Sabes qué datos de activo necesita quien va a explotar lo que entregas, y los estás
+    capturando durante la ejecución?</li>
+    <li>¿Alguien revisa los entregables contra el pliego antes de enviarlos, con una lista escrita
+    y no de memoria?</li>
+  </ul>
+  <p>La lista no mide madurez teórica ni certificaciones. Mide si la información de tu casa está
+  bajo control: un pliego con requisitos BIM no es más que alguien preguntando eso mismo por
+  escrito.</p>
+  <p>Y si solo puedes hacer una cosa este mes: coge el último pliego con requisitos de información,
+  subraya cada exigencia concreta, contrástala con lo que de verdad hiciste y escribe la diferencia
+  en una página. Esa página tiene que existir antes de la próxima licitación, porque descubrir la
+  brecha durante la ejecución cuesta otro orden de magnitud.</p>
+</section>
+
+</article>
+
+<section class="cierre">
+  <h2>Si prefieres que la escriba yo</h2>
+  <p>Diagnóstico de nivel BIM sin coste: me envías un pliego o el último proyecto entregado y
+  recibes una página con el nivel que te exige la norma, qué te falta, qué riesgo tienes y qué
+  haría yo primero. Si te sirve, seguimos. Si no, te quedas el diagnóstico.</p>
+  <a class="cta" href="bim.html#diagnostico">Ver el diagnóstico de nivel BIM</a>
+  <span class="alt">o escríbeme desde <a href="contacto.html">la página de contacto</a></span>
+</section>
+
+<footer>
+  <p>© 2026 Fernando Calle · La Lastrilla (Segovia) · <a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · Web sin cookies · recuento de visitas anónimo.</p>
+</footer>
+
+</div>
+
+</main>
+<script data-goatcounter="https://fernandocalle.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+/* Sobre mí (fernando-calle.html y su espejo /en/). Encargo de Fernando, 3-oct-2026:
+   sin hueco a la derecha, cabecera con retrato, proyectos como tarjetas, credencial
+   y el mismo cierre que la portada. Solo tokens del canon (brand/canon/tokens.css);
+   se carga después de marca-es.css y se limita a esta página. */
+
+html[data-ontos-web][data-web-page="fernando-calle"] body {
+  --sm-medida: 46rem; /* línea de lectura de la prosa */
+}
+
+/* ---- cabecera: retrato junto al nombre, antetítulo e intro ---- */
+html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera {
+  display: grid;
+  grid-template-columns: minmax(13rem, 19rem) minmax(0, 1fr);
+  gap: var(--ds-space-5) clamp(var(--ds-space-6), 4vw, var(--ds-space-8));
+  align-items: center;
+  padding: var(--ds-space-8) 0 var(--ds-space-7);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .retrato { margin: 0; }
+html[data-ontos-web][data-web-page="fernando-calle"] body .retrato img {
+  display: block; width: 100%; height: auto; aspect-ratio: 3 / 4;
+  object-fit: cover; object-position: center 30%;
+  border: 1px solid var(--borde); border-radius: var(--ds-radius);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .retrato figcaption {
+  margin-top: var(--ds-space-2); font-size: 0.8rem; color: var(--sec);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera h1 {
+  font-size: clamp(2.2rem, 4.6vw, 3.4rem); line-height: 1.05; letter-spacing: -.025em;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera .meta {
+  margin: var(--ds-space-3) 0 0; max-width: none;
+  font-size: 0.82rem; text-transform: uppercase; letter-spacing: .1em; line-height: 1.5;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera .presentacion {
+  margin-top: var(--ds-space-5); padding-top: var(--ds-space-5);
+  border-top: 1px solid var(--borde);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera .presentacion p {
+  max-width: var(--sm-medida);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera .presentacion p {
+  font-size: clamp(1.1rem, 1.6vw, 1.28rem); line-height: 1.55;
+}
+
+/* ---- títulos de sección: un solo lenguaje en toda la página ---- */
+html[data-ontos-web][data-web-page="fernando-calle"] body :is(article section, .escritos-sec) > h2 {
+  font-family: var(--ds-font-editorial); font-weight: 600;
+  font-size: clamp(1.5rem, 2.4vw, 1.85rem); line-height: 1.2;
+  margin: 0 0 var(--ds-space-3);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body :is(article section, .escritos-sec) {
+  padding: var(--ds-space-7) 0;
+  border-top: 1px solid var(--borde);
+  margin: 0;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body :is(.trayectoria > p, .escritos-sec .bajada) {
+  max-width: var(--sm-medida); color: var(--sec); margin-bottom: var(--ds-space-6);
+  font-family: var(--ds-font-editorial); font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading);
+}
+
+/* ---- proyectos: tarjetas como las de la portada ---- */
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyectos {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: var(--ds-space-4);
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* cinco proyectos: 3 + 2 (3-oct: sin HS2, con Malabar) */
+}
+@media (max-width: 64rem) {
+  html[data-ontos-web][data-web-page="fernando-calle"] body .proyectos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 40rem) {
+  html[data-ontos-web][data-web-page="fernando-calle"] body .proyectos { grid-template-columns: 1fr; }
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto {
+  max-width: none; margin: 0;
+  display: flex; flex-direction: column; gap: var(--ds-space-2);
+  padding: var(--ds-space-5);
+  background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius);
+  transition: border-color var(--web-motion-fast, .15s) ease, transform var(--web-motion-fast, .15s) ease;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto:hover {
+  border-color: var(--ds-control-border, var(--teja)); transform: translateY(-2px);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto .pais {
+  font-size: 0.72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--acento); line-height: 1.4;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto h3 {
+  font-size: 1.15rem; line-height: 1.25; margin: 0;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto p {
+  max-width: none; margin: 0; font-size: 0.95rem; line-height: 1.55; color: var(--sec);
+  text-align: left; hyphens: manual; -webkit-hyphens: manual;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto .cargo {
+  color: var(--texto); font-weight: 600;
+}
+
+/* ---- premio y publicación: credencial con su fuente ---- */
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__items {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius);
+  border-left: 3px solid var(--teja);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__item {
+  padding: var(--ds-space-5) var(--ds-space-6);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__item + .credencial__item {
+  border-left: 1px solid var(--borde);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__item p {
+  max-width: none; margin: 0; text-align: left; hyphens: manual; -webkit-hyphens: manual;
+  font-size: 1.02rem; line-height: 1.55;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__item p.fuente {
+  margin-top: var(--ds-space-3); font-size: 0.85rem; color: var(--sec);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__item a { color: var(--acento); font-weight: 600; }
+
+/* ---- escritos: la tarjeta con la fecha a un lado ---- */
+html[data-ontos-web][data-web-page="fernando-calle"] body .escritos { display: grid; gap: var(--ds-space-4); }
+html[data-ontos-web][data-web-page="fernando-calle"] body .escrito {
+  display: grid; grid-template-columns: 15rem minmax(0, 1fr);
+  grid-template-areas: "fecha titulo" "fecha texto" "fecha ver";
+  column-gap: var(--ds-space-6); row-gap: var(--ds-space-2);
+  padding: var(--ds-space-5) var(--ds-space-6);
+  text-decoration: none; color: var(--texto);
+  background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius);
+  transition: border-color var(--web-motion-fast, .15s) ease, transform var(--web-motion-fast, .15s) ease;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .escrito:hover { transform: translateY(-2px); }
+html[data-ontos-web][data-web-page="fernando-calle"] body .escrito .fecha {
+  grid-area: fecha; padding-top: .35rem;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--acento);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .escrito h3 { grid-area: titulo; margin: 0; font-size: 1.3rem; line-height: 1.3; }
+html[data-ontos-web][data-web-page="fernando-calle"] body .escrito p {
+  grid-area: texto; max-width: var(--sm-medida); margin: 0;
+  color: var(--sec); font-size: 1rem; line-height: 1.55; text-align: left; hyphens: manual; -webkit-hyphens: manual;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .escrito .ver {
+  grid-area: ver; justify-self: start; margin-top: var(--ds-space-2);
+  font-size: 0.85rem; font-weight: 600; color: var(--acento);
+}
+
+/* ---- cierre: el mismo que la portada (index.html .cierre) ---- */
+html[data-ontos-web][data-web-page="fernando-calle"] body .cierre {
+  text-align: center; padding: var(--sp-sec) 0; margin: 0; border-top: 1px solid var(--borde);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cierre h2 {
+  font-family: var(--ds-font-corporativa); text-transform: uppercase; margin: 0 0 1.2rem;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cierre .titular {
+  max-width: none; margin: 0;
+  font-family: var(--ds-font-corporativa); font-size: clamp(1.8rem, 4.4vw, 2.8rem);
+  font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; color: var(--texto); text-wrap: balance;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cierre .ctas {
+  margin-top: 2rem; display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; align-items: center;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cierre .cta {
+  display: inline-block; padding: 0.85rem 1.9rem; text-decoration: none;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cierre .mail {
+  color: var(--acento); font-weight: 600; text-decoration: none; padding: 0.6rem 0;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cierre .mail:hover { text-decoration: underline; }
+html[data-ontos-web][data-web-page="fernando-calle"] body .cierre .alt {
+  max-width: none; margin: var(--ds-space-5) 0 0; font-size: 0.85rem; color: var(--sec);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .cierre .alt a { color: inherit; }
+
+/* ---- anchos ---- */
+@media (max-width: 64rem) {
+  html[data-ontos-web][data-web-page="fernando-calle"] body .escrito {
+    grid-template-columns: 1fr; grid-template-areas: "fecha" "titulo" "texto" "ver";
+  }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .escrito .fecha { padding-top: 0; }
+}
+@media (max-width: 48rem) {
+  html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera {
+    grid-template-columns: clamp(6.5rem, 28vw, 9.5rem) minmax(0, 1fr); align-items: end;
+    gap: var(--ds-space-4) var(--ds-space-5);
+    padding: var(--ds-space-6) 0 var(--ds-space-6);
+  }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera__texto { display: contents; }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .retrato { grid-row: 1; }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera h1 {
+    grid-column: 2; grid-row: 1; align-self: end; padding-bottom: var(--ds-space-6);
+    font-size: clamp(1.8rem, 8.4vw, 2.6rem); overflow-wrap: anywhere;
+  }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera .meta { grid-column: 1 / -1; margin: 0; }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .cabecera .presentacion { grid-column: 1 / -1; margin-top: 0; }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__items { grid-template-columns: 1fr; }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__item { padding: var(--ds-space-5); }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__item + .credencial__item {
+    border-left: 0; border-top: 1px solid var(--borde);
+  }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .escrito { padding: var(--ds-space-5); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-ontos-web][data-web-page="fernando-calle"] body :is(.proyecto, .escrito, .cta, .proyecto:hover, .escrito:hover, .cta:hover) { transition: none; transform: none; }
+}
+
+/* Premio y publicación en una sola pieza que lleva a la ficha (3-oct-2026, Fernando: «se repite»). */
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__enlace {
+  display: block; padding: var(--ds-space-5) var(--ds-space-6); color: inherit; text-decoration: none;
+  background: var(--panel); border: 1px solid var(--borde); border-left: 3px solid var(--teja); border-radius: var(--ds-radius);
+  transition: transform var(--web-motion-fast) ease, border-color var(--web-motion-fast) ease;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__enlace p {
+  max-width: 62ch; margin: 0; text-align: left; hyphens: manual; -webkit-hyphens: manual; font-size: 1.02rem; line-height: 1.55;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__enlace p.fuente { margin-top: var(--ds-space-3); font-size: .85rem; color: var(--sec); }
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__ver { display: inline-block; margin-top: var(--ds-space-4); color: var(--acento); font-weight: 600; }
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__enlace:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--acento) 45%, var(--borde)); border-left-color: var(--teja); }
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__enlace:hover .credencial__ver { text-decoration: underline; text-underline-offset: .2em; }
+html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__enlace:focus-visible { outline: 3px solid var(--acento); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__enlace { transition: none; } html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__enlace:hover { transform: none; } }

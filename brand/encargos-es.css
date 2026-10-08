@@ -1,0 +1,124 @@
+/* Composiciones de esta revisión web. Identidad y escala desde el kit canónico. */
+html[data-web-page="index"] #familias { padding-bottom: var(--ds-space-8); }
+html[data-web-page="index"] .familias__cabecera { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-5); margin-bottom: var(--ds-space-6); }
+html[data-web-page="index"] .familias__cabecera h2 { margin: 0; }
+html[data-web-page="index"] .familias__controles:not([hidden]) { display: flex; gap: var(--ds-space-2); align-items: center; }
+html[data-web-page="index"] .familias__estado { margin-right: var(--ds-space-3); font-size: var(--ds-type-note); white-space: nowrap; font-variant-numeric: tabular-nums; }
+html[data-web-page="index"] .familias__controles button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--ds-control-border); border-radius: 50%; background: var(--panel); color: var(--texto); cursor: pointer; }
+html[data-web-page="index"] .familias__controles button:hover:not(:disabled) { background: var(--ds-action); color: var(--ds-on-action); }
+html[data-web-page="index"] .familias__controles button:disabled { opacity: .35; cursor: default; }
+html[data-web-page="index"] .familias__controles svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+html[data-web-page="index"] .familias { display: grid; grid-auto-flow: column; --familias-asoma: 3rem; grid-auto-columns: calc((100% - 3 * var(--ds-space-5)) / 4); gap: var(--ds-space-5); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--borde) transparent; padding-block: var(--ds-space-1) var(--ds-space-4); }
+html[data-web-page="index"] .familia { min-width: 0; display: flex; flex-direction: column; padding: var(--ds-space-5); margin: 0; background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius); scroll-snap-align: start; transition: transform var(--web-motion-fast) ease; }
+/* Movimiento de las familias (propuesta 3-oct): figura trazada al entrar, gesto al pasar; controles al pie con un círculo por familia. */
+@media (hover: hover) { html[data-web-page="index"] .familia:hover { transform: translateY(-3px); } }
+html[data-web-page="index"] .familia:focus-within { transform: translateY(-3px); }
+html[data-web-page="index"] .familias--pie { scrollbar-width: none; }
+html[data-web-page="index"] .familias--pie::-webkit-scrollbar { display: none; }
+html[data-web-page="index"] .familias__controles--pie:not([hidden]) { justify-content: center; gap: var(--ds-space-4); margin-top: var(--ds-space-3); }
+html[data-web-page="index"] .familias__controles--pie .familias__estado { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
+html[data-web-page="index"] .familias__controles--pie button { width: 44px; height: 44px; border: 0; background: transparent; color: var(--acento); transition: background-color var(--web-motion-fast) ease, color var(--web-motion-fast) ease; }
+html[data-web-page="index"] .familias__controles--pie button:hover:not(:disabled) { background: var(--panel); color: var(--acento); }
+html[data-web-page="index"] .familias__controles--pie button:disabled { opacity: .3; }
+html[data-web-page="index"] .familias__controles--pie svg { width: 20px; height: 20px; stroke-width: 1.25; }
+html[data-web-page="index"] .familias__puntos { display: flex; gap: var(--ds-space-2); align-items: center; }
+html[data-web-page="index"] .familias__puntos span { width: 7px; height: 7px; border: 1px solid var(--acento); border-radius: 50%; opacity: .55; transition: background-color var(--web-motion-fast) ease, opacity var(--web-motion-fast) ease; }
+html[data-web-page="index"] .familias__puntos span.es-visible { background: var(--acento); opacity: 1; }
+html[data-web-page="index"] .familia__titulo { min-height: 112px; }
+html[data-web-page="index"] .familia .num { display: block; font-size: var(--ds-type-note); color: var(--acento); font-variant-numeric: tabular-nums; margin-bottom: var(--ds-space-3); }
+html[data-web-page="index"] .familia h3 { font-size: clamp(var(--ds-type-h2), 2vw, var(--ds-type-h1)); line-height: var(--ds-type-h2-leading); margin: 0; }
+html[data-web-page="index"] .familia__texto { display: flex; flex-direction: column; flex: 1; }
+html[data-web-page="index"] .familia__texto p { flex: 1; font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading); }
+html[data-web-page="index"] .familia .enlaces { list-style: none; margin-top: auto; border-top: 1px solid var(--borde); padding-top: var(--ds-space-4); }
+html[data-web-page="index"] .familia__texto p + .enlaces { margin-top: var(--ds-space-5); }
+html[data-web-page="index"] .familia .enlaces a { min-height: 44px; display: inline-flex; align-items: center; color: var(--acento); font-weight: 600; text-decoration: none; padding-block: var(--ds-space-2); }
+html[data-web-page="index"] .familia .enlaces a:hover { text-decoration: underline; }
+html[data-web-page="index"] .familia__figura { display: block; flex: none; width: 100%; height: 144px; margin-bottom: var(--ds-space-5); fill: none; stroke: var(--ds-brand-verde); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+html[data-web-page="index"] .familia__figura .acento { stroke: var(--teja); }
+html[data-web-page="index"] :where(.familias, .familias__controles button):focus-visible { outline: 3px solid var(--acento); outline-offset: 3px; }
+/* Las cuatro caben juntas en escritorio; por debajo, carril con flechas y círculos. */
+@media (max-width: 72rem) {
+  html[data-web-page="index"] .familias { grid-auto-columns: calc((100% - 2 * var(--ds-space-5) - var(--familias-asoma)) / 2); }
+}
+@media (max-width: 40rem) {
+  html[data-web-page="index"] .familias__cabecera { gap: var(--ds-space-3); flex-wrap: wrap; }
+  html[data-web-page="index"] .familias { grid-auto-columns: 86%; gap: var(--ds-space-4); }
+  html[data-web-page="index"] .familia__titulo { min-height: 88px; }
+  html[data-web-page="index"] .familia__figura { height: 120px; }
+}
+/* Así empieza un encargo: cabecera arriba y recorrido de cuatro nodos.
+   Escritorio en horizontal, unidos por una línea; tablet y móvil en vertical.
+   Cada nodo es un círculo con su pictograma; el 02, la bisagra del acuerdo, en teja. */
+html[data-web-page="index"] .encargo { --nodo: 88px; }
+html[data-web-page="index"] .encargo__intro { max-width: 46rem; margin-bottom: var(--ds-space-7); }
+html[data-web-page="index"] .encargo h2 { margin-bottom: var(--ds-space-4); }
+html[data-web-page="index"] .encargo .bajada { font-size: var(--ds-type-editorial); text-align: start; max-width: 52ch; margin: 0; }
+html[data-web-page="index"] .encargo .pasos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--ds-space-6); margin: 0; padding: 0; list-style: none; }
+html[data-web-page="index"] .paso { position: relative; padding: 0; }
+html[data-web-page="index"] .paso__figura { display: block; width: var(--nodo); height: var(--nodo); margin-bottom: var(--ds-space-5); overflow: visible; fill: none; stroke: var(--ds-brand-verde); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+html[data-web-page="index"] .paso__figura .paso__nodo { fill: var(--panel); stroke: var(--borde); }
+html[data-web-page="index"] .paso__figura .paso__nodo.acento { stroke: var(--teja); stroke-width: 2; }
+/* Línea de unión: del borde de un nodo al del siguiente, a la altura de su centro. */
+html[data-web-page="index"] .paso:not(:last-child)::after { content: ''; position: absolute; top: calc(var(--nodo) / 2); left: calc(var(--nodo) + var(--ds-space-3)); right: calc(var(--ds-space-3) - var(--ds-space-6)); height: 1.5px; background: var(--ds-brand-verde); opacity: .45; transform-origin: left center; transition: transform 520ms cubic-bezier(.4, 0, .2, 1) var(--retraso, 0ms); }
+html[data-web-page="index"] .pasos--espera .paso::after, html[data-web-page="index"] .paso.paso--espera::after { transform: scaleX(0); transition: none; }
+html[data-web-page="index"] .paso .num { display: block; margin: 0 0 var(--ds-space-2); color: var(--acento); font-size: var(--ds-type-note); font-weight: 600; font-variant-numeric: tabular-nums; }
+html[data-web-page="index"] .paso h3 { font-size: var(--ds-type-h3); margin: 0 0 var(--ds-space-3); }
+html[data-web-page="index"] .paso p { max-width: 34ch; margin: 0; }
+@media (max-width: 72rem) {
+  html[data-web-page="index"] .encargo { --nodo: 64px; }
+  html[data-web-page="index"] .encargo .pasos { display: block; max-width: 46rem; }
+  html[data-web-page="index"] .paso { min-height: var(--nodo); padding: 0 0 var(--ds-space-7) calc(var(--nodo) + var(--ds-space-5)); }
+  html[data-web-page="index"] .paso:last-child { padding-bottom: 0; }
+  html[data-web-page="index"] .paso__figura { position: absolute; left: 0; top: 0; margin: 0; }
+  html[data-web-page="index"] .paso .num { padding-top: var(--ds-space-1); }
+  html[data-web-page="index"] .paso p { max-width: 52ch; }
+  html[data-web-page="index"] .paso:not(:last-child)::after { top: calc(var(--nodo) + var(--ds-space-2)); bottom: var(--ds-space-2); left: calc(var(--nodo) / 2); right: auto; width: 1.5px; height: auto; transform-origin: center top; }
+  html[data-web-page="index"] .pasos--espera .paso::after, html[data-web-page="index"] .paso.paso--espera::after { transform: scaleY(0); transition: none; }
+}
+@media (max-width: 34rem) {
+  html[data-web-page="index"] .encargo { --nodo: 56px; }
+  html[data-web-page="index"] .encargo__intro { margin-bottom: var(--ds-space-6); }
+  html[data-web-page="index"] .paso { padding-left: calc(var(--nodo) + var(--ds-space-4)); padding-bottom: var(--ds-space-6); }
+}
+/* «Hecho y funcionando»: una tarjeta por familia; cuatro en escritorio, dos en tablet, carril en móvil.
+   Misma pieza que #familias (panel, borde fino, número 01–04 en acento) para que se lean juntas.
+   Cada imagen (16:9, como sus fuentes: sin recorte) va enmarcada igual (passe-partout del panel + filete), así capturas claras y fotos
+   oscuras conviven con la misma densidad. Al pasar o con foco: leve elevación, título subrayado y flecha.
+   Entrada escalonada al llegar con scroll (encargos-es.js); sin JS o con movimiento reducido, estático. */
+html[data-web-page="index"] .trabajos { counter-reset: trabajo; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ds-space-5); margin-top: 0; }
+@media (max-width: 72rem) { html[data-web-page="index"] .trabajos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+html[data-web-page="index"] .trabajo { counter-increment: trabajo; position: relative; display: flex; flex-direction: column; overflow: hidden; padding: var(--ds-space-2); background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius); color: var(--texto); text-decoration: none; transition: transform var(--web-motion-fast) ease, border-color var(--web-motion-fast) ease; }
+html[data-web-page="index"] .trabajo img { flex: none; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: center top; border: 1px solid var(--borde); border-radius: calc(var(--ds-radius) - var(--ds-space-1)); background: var(--bg); }
+html[data-web-page="index"] .trabajo .texto { display: flex; flex-direction: column; flex: 1; padding: var(--ds-space-4) var(--ds-space-3) var(--ds-space-3); }
+html[data-web-page="index"] .trabajo .etiqueta { display: flex; align-items: baseline; gap: var(--ds-space-2); font-size: var(--ds-type-note); line-height: 1.3; color: var(--sec); letter-spacing: .12em; }
+html[data-web-page="index"] .trabajo .etiqueta::before { content: counter(trabajo, decimal-leading-zero); color: var(--acento); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+html[data-web-page="index"] .trabajo h3 { font-size: var(--ds-type-h3); line-height: 1.3; margin: var(--ds-space-2) 0 0; text-decoration: underline transparent; text-decoration-thickness: 1px; text-underline-offset: .22em; transition: text-decoration-color var(--web-motion-fast) ease; }
+html[data-web-page="index"] .trabajo h3::after { content: '\00a0\25B8'; display: inline-block; color: var(--acento); opacity: 0; transform: translateX(-4px); transition: opacity var(--web-motion-fast) ease, transform var(--web-motion-fast) ease; }
+html[data-web-page="index"] .trabajo:hover { transform: none; border-color: var(--borde); }
+@media (hover: hover) {
+  html[data-web-page="index"] .trabajo:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--acento) 45%, var(--borde)); }
+}
+html[data-web-page="index"] .trabajo:focus-visible { transform: translateY(-3px); border-color: var(--acento); outline: 3px solid var(--acento); outline-offset: 3px; }
+html[data-web-page="index"] :is(.trabajo:hover, .trabajo:focus-visible) h3 { text-decoration-color: currentColor; }
+html[data-web-page="index"] :is(.trabajo:hover, .trabajo:focus-visible) h3::after { opacity: 1; transform: none; }
+/* Entrada: las cuatro suben y aparecen una tras otra, una sola vez. */
+html[data-web-page="index"] .trabajos--espera .trabajo { opacity: 0; transform: translateY(12px); transition: none; }
+html[data-web-page="index"] .trabajos--entra .trabajo { transition: opacity 520ms cubic-bezier(.2, 0, .2, 1) var(--retraso, 0ms), transform 520ms cubic-bezier(.2, 0, .2, 1) var(--retraso, 0ms), border-color var(--web-motion-fast) ease; }
+html[data-web-page="index"] .trabajos--entra .trabajo:nth-child(2) { --retraso: 90ms; }
+html[data-web-page="index"] .trabajos--entra .trabajo:nth-child(3) { --retraso: 180ms; }
+html[data-web-page="index"] .trabajos--entra .trabajo:nth-child(4) { --retraso: 270ms; }
+html[data-web-page="index"] #trabajos .mas { margin-top: var(--ds-space-5); }
+@media (prefers-reduced-motion: reduce) {
+  html[data-web-page="index"] { scroll-behavior: auto; }
+  html[data-web-page="index"] .familias { scroll-behavior: auto; }
+  html[data-web-page="index"] .familia { transition: none; }
+  html[data-web-page="index"] .familia:hover, html[data-web-page="index"] .familia:focus-within { transform: none; }
+  html[data-web-page="index"] .trabajo, html[data-web-page="index"] .trabajos--entra .trabajo, html[data-web-page="index"] .trabajo h3, html[data-web-page="index"] .trabajo h3::after { transition: none; }
+  html[data-web-page="index"] .trabajo:is(:hover, :focus-visible) { transform: none; }
+  html[data-web-page="index"] .trabajos--espera .trabajo { opacity: 1; transform: none; }
+  html[data-web-page="index"] .paso::after { transition: none; }
+}
+
+@media (max-width: 52rem) {
+  html[data-web-page="index"] .trabajos { margin-inline: 0; padding-inline: 0; padding-top: var(--ds-space-1); scroll-padding-inline: 0; }
+}

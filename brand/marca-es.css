@@ -1,0 +1,500 @@
+/* Aplicación española de la identidad ONTOS. Se carga después de los estilos de página.
+   Fondo editorial claro del manual en ambos esquemas del sistema.
+   Las piezas de cine con #stage conservan su dirección de arte y su escala temporal. */
+
+html[data-ontos-web]:not(:has(:where(#stage))) {
+  --bg: var(--web-page-surface);
+  --panel: var(--ds-surface-panel);
+  --borde: var(--ds-border);
+  --texto: var(--ds-ink);
+  --sec: var(--ds-ink-muted);
+  --acento: var(--ds-action);
+  --realce: var(--ds-action);
+  --teja: var(--ds-brand-teja);
+  --piedra-logo: var(--ds-brand-verde);
+  --serif: var(--ds-font-corporativa);
+  --sans: var(--ds-font-corporativa);
+  --sp-sec: var(--ds-space-8);
+  --nav-h: 4rem;
+  --web-shell-max: 86rem;
+  --web-shell-pad: clamp(var(--ds-space-4), 3vw, var(--ds-space-8));
+  --web-shell-outside: max(0px, calc((100% - var(--web-shell-max)) / 2));
+  --web-content-left: calc(var(--web-shell-outside) + var(--web-shell-pad) + var(--web-logo-leading-space));
+  --web-content-right: calc(var(--web-shell-outside) + var(--web-shell-pad));
+  color-scheme: light;
+  scroll-padding-top: calc(var(--nav-h) + var(--ds-space-2));
+}
+
+html[data-ontos-web]:not(:has(:where(#stage))) body {
+  color: var(--texto);
+  background: var(--bg);
+  font-family: var(--ds-font-corporativa);
+  font-size: var(--ds-type-body);
+  line-height: var(--ds-type-body-leading);
+}
+
+html[data-ontos-web]:not(:has(:where(#stage))) :where(h1, h2, h3, h4, button, input, select, textarea) {
+  font-family: var(--ds-font-corporativa);
+}
+
+html[data-ontos-web]:not(:has(:where(#stage))) body :where(h1, h2, h3) {
+  color: var(--texto);
+  font-weight: 600;
+  text-wrap: balance;
+}
+html[data-ontos-web]:not(:has(:where(#stage))) body h1 {
+  font-size: clamp(var(--ds-type-h1), 3.8vw, var(--ds-type-display));
+  line-height: var(--ds-type-h1-leading);
+  letter-spacing: -.025em;
+}
+html[data-ontos-web]:not(:has(:where(#stage))) body .hero h1,
+html[data-ontos-web]:not(:has(:where(#stage))) body .titular h1 {
+  font-size: var(--ds-type-display);
+  line-height: var(--ds-type-display-leading);
+  max-width: 18ch;
+  margin-inline: 0;
+}
+/* 29-sep-2026 (Fernando): los titulares interiores se alinean a la izquierda,
+   en la misma guía que el resto de elementos. Solo el panel verde de portada se centra. */
+html[data-ontos-web] body .hero:not(.home-feature) {
+  align-items: flex-start;
+  text-align: start;
+}
+html[data-ontos-web] body .hero:not(.home-feature) :where(h1, .kicker, .lema, .intro, .plazo) {
+  margin-inline: 0;
+  text-align: start;
+}
+html[data-ontos-web] body .hero:not(.home-feature) :where(.ctas, .acciones) {
+  justify-content: flex-start;
+}
+html[data-ontos-web]:not(:has(:where(#stage))) body h2 {
+  font-size: var(--ds-type-h2);
+  line-height: var(--ds-type-h2-leading);
+  letter-spacing: -.015em;
+}
+html[data-ontos-web]:not(:has(:where(#stage))) body h3 {
+  font-size: var(--ds-type-h3);
+  line-height: var(--ds-type-h3-leading);
+}
+html[data-ontos-web]:not(:has(:where(#stage))) :where(.kicker, .etiqueta, .meta, .stat .l, .hito .fecha) {
+  color: var(--acento);
+  font-family: var(--ds-font-corporativa);
+  font-weight: 600;
+  letter-spacing: .08em;
+}
+html[data-ontos-web]:not(:has(:where(#stage))) :where(.stat .n, .hito .cifra, .cifra .n) {
+  font-family: var(--ds-font-corporativa);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* La firma Arcilla conserva su caja mientras el SVG anima nombre y símbolo al scroll. */
+html[data-ontos-web] .barra {
+  background: var(--bg);
+  border-bottom-color: var(--borde);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html[data-ontos-web] .barra nav {
+  max-width: var(--web-shell-max);
+  min-height: var(--nav-h);
+  gap: clamp(var(--ds-space-3), 1.6vw, var(--ds-space-5));
+  padding-inline: var(--web-shell-pad);
+}
+html[data-ontos-web] .barra .marca {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: none;
+  width: var(--web-logo-width);
+  min-width: var(--web-logo-width);
+  min-height: var(--web-logo-height);
+  margin-right: auto;
+  color: var(--texto);
+}
+html[data-ontos-web] .barra .marca__arcilla {
+  display: block;
+  position: relative;
+  width: var(--web-logo-width);
+  height: var(--web-logo-height);
+  flex: none;
+}
+html[data-ontos-web] .barra .marca__arcilla :where(svg, img, canvas) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+}
+html[data-ontos-web] .barra .marca__arcilla img {
+  transform: translateX(var(--web-logo-fallback-offset));
+}
+html[data-ontos-web] .barra .marca__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+html[data-ontos-web] .barra a.item {
+  color: var(--texto);
+  font-family: var(--ds-font-corporativa);
+  font-weight: 500;
+  font-size: var(--ds-type-body);
+  border-bottom-color: transparent;
+}
+html[data-ontos-web] .barra a.item:hover,
+html[data-ontos-web] .barra a.item[aria-current="page"] {
+  color: var(--acento);
+  border-bottom-color: var(--acento);
+}
+html[data-ontos-web] .barra a.icono-contacto {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--ds-radius-s);
+}
+html[data-ontos-web] .barra a.item.idioma {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  border-color: var(--borde);
+  border-radius: var(--ds-radius-s);
+}
+
+/* Una guía exterior: desde la o visible de Arcilla hasta el borde de idioma.
+   Los bloques de lectura/formularios conservan sus columnas interiores. */
+html[data-ontos-web] body:has(.barra) :where(.wrap),
+html[data-ontos-web] body:has(.barra) > main:not(.wrap, .web-main),
+html[data-ontos-web] body:has(.barra) > .hero:not(.home-feature),
+html[data-ontos-web] body:has(.barra) > .web-main > .hero:not(.home-feature) {
+  width: auto;
+  max-width: none;
+  margin-left: var(--web-content-left);
+  margin-right: var(--web-content-right);
+  padding-inline: 0;
+}
+/* El landmark agrupa secciones; son sus hijos quienes siguen las guías. */
+html[data-ontos-web] body > main.web-main {
+  width: auto;
+  max-width: none;
+  margin: 0;
+}
+html[data-ontos-web] body:has(.barra) .wrap .wrap {
+  margin-inline: 0;
+}
+html[data-ontos-web] body:has(.barra) > footer:not(:has(.wrap)) {
+  padding-left: var(--web-content-left);
+  padding-right: var(--web-content-right);
+}
+html[data-ontos-web]:is([data-web-page="aviso-legal"], [data-web-page="privacidad"]) body {
+  max-width: none;
+  margin-left: var(--web-content-left);
+  margin-right: var(--web-content-right);
+  padding-inline: 0;
+}
+html[data-ontos-web][data-web-page="editor-pdf"] #toolbar {
+  padding-left: var(--web-content-left);
+  padding-right: var(--web-content-right);
+}
+html[data-ontos-web][data-web-page="index"] :where(.entrada p, .intro p, .bajada, .quien .fila) {
+  margin-inline: 0;
+}
+html[data-ontos-web][data-web-page="index"] .intro h2 {
+  text-align: left;
+}
+html[data-ontos-web][data-web-page="contacto"] .contacto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* La guía exterior no debe convertir la prosa en líneas de pantalla entera. */
+html[data-ontos-web]:is(
+  [data-web-page="animacion-3d"], [data-web-page="armario"],
+  [data-web-page="aviso-legal"], [data-web-page="caso-salud"],
+  [data-web-page="caso-sistema"], [data-web-page="escrito-plan-bim-ingenieria"],
+  [data-web-page="fernando-calle"], [data-web-page="privacidad"],
+  [data-web-page="solicitud"], [data-web-page="visita-3d"]
+) body :where(p, li, blockquote):not(:where(footer *, .barra *, .dlg-contacto *)) {
+  max-width: 42rem;
+}
+
+/* Primer destino al tabular: visible y táctil sin quedar debajo de la barra fija. */
+html[data-ontos-web] .skip-link {
+  position: fixed;
+  top: 0;
+  left: var(--web-content-left, 16px);
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 2px solid var(--ds-brand-verde);
+  border-radius: var(--ds-radius-s);
+  background: var(--ds-support-hueso);
+  color: var(--ds-brand-verde);
+  font-family: var(--ds-font-corporativa);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 4px));
+}
+html[data-ontos-web] .skip-link:focus-visible {
+  transform: translateY(8px);
+  outline: 3px solid var(--ds-brand-verde);
+  outline-offset: 2px;
+}
+
+/* Superficies de lectura y de colección. Se conserva su anatomía y sus enlaces. */
+html[data-ontos-web]:not(:has(:where(#stage))) body :where(.card, .familia, .trabajo, .servicio, .edicion, .caja, .escrito, .hito, .demo-bloque, .demo-cta, .nota) {
+  border-color: var(--borde);
+  border-radius: var(--ds-radius);
+  background-color: var(--panel);
+  color: var(--texto);
+}
+html[data-ontos-web]:not(:has(:where(#stage))) body :where(.card, .familia, .trabajo, .servicio, .edicion, .caja, .escrito, .hito, .demo-bloque, .demo-cta):is(:hover, :focus-within) {
+  border-color: var(--ds-control-border);
+}
+html[data-ontos-web]:not(:has(:where(#stage))) :where(.cta, .dlg-contacto .cta, button.primary):not(.secundario) {
+  background: var(--ds-action);
+  border: 1px solid var(--ds-action);
+  color: var(--ds-on-action);
+  border-radius: var(--ds-radius-s);
+  font-family: var(--ds-font-corporativa);
+  font-weight: 600;
+  box-shadow: none;
+  transition-duration: var(--web-motion-fast);
+}
+html[data-ontos-web]:not(:has(:where(#stage))) :where(.cta, .dlg-contacto .cta, button.primary):not(.secundario):hover {
+  background: var(--ds-action);
+  border-color: var(--ds-action);
+  color: var(--ds-on-action);
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--web-technical-black) 24%, transparent);
+}
+html[data-ontos-web]:not(:has(:where(#stage))) .cta.secundario {
+  background: transparent;
+  color: var(--acento);
+  border: 1px solid var(--ds-control-border);
+  border-radius: var(--ds-radius-s);
+  box-shadow: none;
+}
+html[data-ontos-web]:not(:has(:where(#stage))) :where(.pill, .tag, .badge) {
+  font-family: var(--ds-font-corporativa);
+  border-radius: var(--ds-radius-s);
+}
+html[data-ontos-web][data-web-page="aplicaciones"] .pill {
+  color: var(--texto);
+  background: var(--panel);
+  border: 1px solid var(--borde);
+}
+
+/* Lectura larga: Newsreader está aprobada para comunicación editorial. Los controles,
+   metadatos, tablas y navegación mantienen Jost. */
+html[data-ontos-web][data-web-page="fernando-calle"] :where(article > section > p, .presentacion p, .escrito p),
+html[data-ontos-web][data-web-page="escrito-plan-bim-ingenieria"] :where(article section > p, article section > ul, article section > ol, blockquote),
+html[data-ontos-web][data-web-page="privacidad"] :where(body > p, body > ul),
+html[data-ontos-web][data-web-page="aviso-legal"] body > p {
+  font-family: var(--ds-font-editorial);
+  font-size: var(--ds-type-editorial);
+  line-height: var(--ds-type-editorial-leading);
+  font-weight: 400;
+  text-align: left;
+  hyphens: auto;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] :where(.escrito h3, article section h2),
+html[data-ontos-web][data-web-page="escrito-plan-bim-ingenieria"] article section h2 {
+  font-family: var(--ds-font-editorial);
+  font-weight: 600;
+}
+
+/* Formularios y modal comparten contraste, foco y espacio táctil. */
+html[data-ontos-web]:not(:has(:where(#stage))) :where(input[type="text"], input[type="email"], input[type="search"], select, textarea) {
+  background: var(--panel);
+  color: var(--texto);
+  border: 1px solid var(--ds-control-border);
+  border-radius: var(--ds-radius-s);
+  font-family: var(--ds-font-corporativa);
+}
+html[data-ontos-web]:not(:has(:where(#stage))) :where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid var(--ds-action);
+  outline-offset: 3px;
+}
+html[data-ontos-web]:not(:has(:where(#stage))) .dlg-contacto {
+  border-color: var(--borde);
+  border-radius: var(--ds-radius);
+  background: var(--panel);
+  color: var(--texto);
+  font-family: var(--ds-font-corporativa);
+}
+html[data-ontos-web]:not(:has(:where(#stage))) .dlg-contacto :where(h2, label, .dlg-lema) {
+  color: var(--texto);
+  font-family: var(--ds-font-corporativa);
+}
+html[data-ontos-web]:not(:has(:where(#stage))) .dlg-contacto :where(input, select, textarea) {
+  background: var(--bg);
+}
+
+/* Herramientas y demos interactivas: solo la envolvente y los mandos. */
+html[data-ontos-web][data-web-page="editor-pdf"] {
+  --border: var(--borde);
+  --text: var(--texto);
+  --muted: var(--sec);
+  --accent: var(--acento);
+  --accent-soft: color-mix(in srgb, var(--acento) 22%, var(--panel));
+}
+html[data-ontos-web][data-web-page="editor-pdf"] #top .barra nav {
+  min-height: var(--nav-h);
+  max-width: var(--web-shell-max);
+  padding-inline: var(--web-shell-pad);
+  padding-block: 7px;
+}
+html[data-ontos-web][data-web-page="editor-pdf"] :where(#toolbar, #dropzone, #signPanel) {
+  background: var(--panel);
+  color: var(--texto);
+}
+html[data-ontos-web][data-web-page="editor-pdf"] :where(#toolbar button, #signPanel button) {
+  font-family: var(--ds-font-corporativa);
+  border-radius: var(--ds-radius-s);
+}
+html[data-ontos-web] :where(.demo-nav, .ov-wrap, .of-wrap, .ot-wrap) {
+  font-family: var(--ds-font-corporativa);
+}
+/* El lienzo cinematográfico mantiene escala, color y tiempos. Su voz de marca
+   (rótulos, apertura, cierre y controles) hereda la familia corporativa. */
+html[data-ontos-web]:has(#stage) body {
+  font-family: var(--ds-font-corporativa);
+}
+html[data-ontos-web] :where(.ov-controls button, .of-wrap .btn, .ot-wrap .btn) {
+  min-height: 44px;
+  border-radius: var(--ds-radius-s);
+  border-color: var(--borde);
+  font-family: var(--ds-font-corporativa);
+}
+html[data-ontos-web]:has(#stage) :where(.play, .pill a):focus-visible {
+  outline: 3px solid var(--ds-brand-teja);
+  outline-offset: var(--ds-space-2);
+}
+/* Misma huella visible; el enlace de vuelta alcanza un área táctil de 44 px. */
+html[data-ontos-web]:has(#stage) #volver {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 12px;
+  left: calc(1.4rem - 12px);
+  bottom: calc(1.1rem - 12px);
+}
+html[data-ontos-web]:has(#stage) #volver:focus-visible {
+  outline: 3px solid var(--ds-brand-teja);
+  outline-offset: 2px;
+  border-radius: var(--ds-radius-s);
+}
+
+@media (max-width: 34rem) {
+  html[data-ontos-web]:not(:has(:where(#stage))) {
+    --nav-h: 6rem;
+    --sp-sec: var(--ds-space-7);
+    --web-shell-pad: var(--ds-space-4);
+  }
+  html[data-ontos-web] .barra nav {
+    min-height: var(--nav-h);
+    padding: var(--ds-space-1) var(--ds-space-4);
+    gap: 0 var(--ds-space-3);
+  }
+  html[data-ontos-web][data-web-page="editor-pdf"] #top .barra nav {
+    padding-block: var(--ds-space-1);
+    gap: 0 var(--ds-space-3);
+  }
+  html[data-ontos-web] .barra .marca {
+    min-width: var(--web-logo-width);
+    min-height: var(--web-logo-height);
+  }
+  html[data-ontos-web] .barra a.item {
+    font-size: max(var(--ds-type-note), .85rem);
+  }
+  html[data-ontos-web] .barra a.item.idioma {
+    min-height: 44px;
+  }
+  html[data-ontos-web]:not(:has(:where(#stage))) body .hero h1,
+  html[data-ontos-web]:not(:has(:where(#stage))) body .titular h1 {
+    max-width: 22ch;
+  }
+  html[data-ontos-web]:not(:has(:where(#stage))) footer {
+    font-size: max(var(--ds-type-note), .85rem);
+  }
+  html[data-ontos-web][data-web-page="index"] :where(.entrada p, .intro p, .bajada, .quien p) {
+    text-align: start;
+    hyphens: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-ontos-web] :where(.cta, .card, .trabajo, .servicio, .edicion, .escrito, .barra .marca) {
+    transition-duration: 0s;
+  }
+}
+
+/* El símbolo del área de entrada conserva diámetro visible y variante de fondo. */
+html[data-ontos-web][data-web-page="editor-pdf"] #dropzone > span[aria-hidden="true"] {
+  width: var(--web-logo-icon-min) !important;
+  height: var(--web-logo-icon-min) !important;
+}
+html[data-ontos-web][data-web-page="entrar"] .sello {
+  width: var(--web-logo-icon-min);
+  height: var(--web-logo-icon-min);
+}
+
+/* El nombre se escribe siempre «ontos», en minúscula, también dentro de rótulos en versalitas
+   (Fernando, 3-oct-2026). Las etiquetas de las demos 3D las escribe el motor: se dejan sin versalitas. */
+.nombre-marca, .ot-label, .of-kicker { text-transform: none; }
+
+/* Menú móvil (3-oct-2026, brand/barra.js §4): una fila; las secciones se despliegan al pulsar.
+   Solo con JS (html.barra-menu-js); sin JS sigue la barra de dos filas. */
+html[data-ontos-web] .barra-menu { display: none; }
+@media (max-width: 34rem) {
+  html[data-ontos-web].barra-menu-js:not(:has(:where(#stage))) { --nav-h: 3.75rem; }
+  html[data-ontos-web].barra-menu-js .barra nav { flex-wrap: wrap; align-items: center; min-height: var(--nav-h); }
+  html[data-ontos-web].barra-menu-js .barra nav::after { display: none; }
+  html[data-ontos-web].barra-menu-js .barra a.item:not(.idioma):not(.icono-contacto) { display: none; }
+  html[data-ontos-web].barra-menu-js .barra-menu {
+    display: inline-flex; align-items: center; justify-content: center; order: 1;
+    width: 44px; height: 44px; margin: 0 -0.5rem 0 0; padding: 0;
+    background: none; border: 0; border-radius: var(--ds-radius-s); color: var(--texto); cursor: pointer;
+  }
+  html[data-ontos-web].barra-menu-js .barra-menu svg {
+    width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;
+  }
+  html[data-ontos-web].barra-menu-js .barra-menu:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+  html[data-ontos-web].barra-menu-js .barra.menu-abierto .barra-menu { color: var(--acento); }
+  html[data-ontos-web].barra-menu-js .barra.menu-abierto a.item:not(.idioma):not(.icono-contacto) {
+    display: flex; align-items: center; order: 3; flex-basis: 100%;
+    min-height: 48px; padding: 0 0 0 var(--web-logo-fallback-offset); font-size: 1.05rem;
+    border-top: 1px solid var(--borde); border-bottom: 0;
+  }
+  html[data-ontos-web].barra-menu-js .barra.menu-abierto a.item[aria-current="page"] { color: var(--acento); }
+  html[data-ontos-web].barra-menu-js .barra.menu-abierto nav { padding-bottom: var(--ds-space-2); }
+}
+/* 320 px: la fila (marca 150 + contacto + idioma + menú) no cabe; la marca baja a 120 px,
+   el tamaño del estado compacto. */
+@media (max-width: 22rem) {
+  html[data-ontos-web].barra-menu-js { --web-logo-width: 120px; --web-logo-height: 40px; }
+  html[data-ontos-web].barra-menu-js .barra nav { gap: 0 var(--ds-space-2); }
+}
+/* Web personal (8-oct-2026): la firma de la barra es «Fernando Calle» en texto, con la tipografía
+   corporativa del manual de marca de ontos (Jost); sin logotipo ni pliegue. El enlace a ontos va como un item más, discreto. */
+html[data-ontos-web] .barra .marca:has(.marca__nombre) {
+  width: auto;
+  min-width: 0;
+  text-decoration: none;
+}
+html[data-ontos-web] .barra .marca__nombre {
+  font-family: var(--ds-font-corporativa);
+  font-weight: 500;
+  font-size: 1.15rem;
+  letter-spacing: .01em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--texto);
+}
+html[data-ontos-web] .barra a.item.item--ontos { opacity: .8; }
+html[data-ontos-web] .barra a.item.item--ontos:hover { opacity: 1; }

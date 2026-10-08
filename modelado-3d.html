@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es" data-ontos-web data-web-page="modelado-3d">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelado 3D desde dron · De un vuelo a una casa en 3D · Fernando Calle</title>
+<meta name="description" content="Una vuelta con el dron de 26 segundos y, sin que las imágenes salgan del ordenador, el exterior de una casa en 3D: escaneado con textura y geometría simple. Fotogrametría con herramientas de código abierto.">
+<meta name="theme-color" content="#F3EDE5">
+<link rel="icon" type="image/svg+xml" href="brand/canon/favicon.svg">
+<link rel="canonical" href="https://fernandocalle.es/modelado-3d.html">
+<!-- i18n:alt -->
+<link rel="alternate" hreflang="es" href="https://fernandocalle.es/modelado-3d.html">
+<link rel="alternate" hreflang="en" href="https://fernandocalle.es/en/modelado-3d.html">
+<link rel="alternate" hreflang="x-default" href="https://fernandocalle.es/modelado-3d.html">
+<!-- /i18n:alt -->
+<meta property="og:title" content="De un vuelo de dron a una casa en 3D">
+<meta property="og:description" content="26 segundos de vídeo, 131 fotogramas, una malla con textura y una geometría simple con la que trabajar. Todo en local.">
+<meta property="og:url" content="https://fernandocalle.es/modelado-3d.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://fernandocalle.es/brand/servicios/modelado-3d.png">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="brand/tokens.css">
+<script src="brand/barra.js" defer></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--texto); font: 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+h1,h2,h3 { font-family: var(--serif); font-weight: 600; line-height: 1.18; }
+a { color: var(--acento); text-underline-offset: .2em; }
+a:focus-visible { outline: 3px solid var(--acento); outline-offset: 5px; }
+.wrap { max-width: 64rem; margin: auto; padding: 0 1.5rem; }
+.hero { padding: 5rem 0 3.5rem; }
+.etiqueta { color: var(--acento); font-size: .85rem; letter-spacing: .15em; text-transform: uppercase; }
+h1 { font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 600; line-height: 1.2; max-width: 46rem; letter-spacing: -0.01em; margin: 1rem 0 1.5rem; } /* 21-sep-2026: mismo tamaño que el resto de páginas (Fernando) */
+.hero .intro { max-width: 43rem; color: var(--sec); font-size: 1.15rem; }
+.acciones { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-top: 1.7rem; }
+.acciones > a { display: inline-flex; align-items: center; min-height: 46px; }
+.cta { display: inline-flex; justify-content: center; align-items: center; min-height: 46px; padding: .7rem 1.35rem; border-radius: 999px; background: var(--teja); color: #14100c; text-decoration: none; font-weight: 600; }
+section { padding: 3rem 0; border-top: 1px solid var(--borde); }
+h2 { font-size: clamp(1.65rem, 4vw, 2.25rem); margin-bottom: 1rem; }
+.bajada { max-width: 42rem; color: var(--sec); }
+.catalogo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 2rem; }
+.servicio { border: 1px solid var(--borde); border-radius: 16px; background: var(--panel); overflow: hidden; }
+.servicio img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; border-bottom: 1px solid var(--borde); }
+.servicio .texto { padding: 1.6rem; }
+.servicio h3 { font-size: 1.55rem; margin: .6rem 0 1rem; }
+.servicio p { color: var(--sec); }
+.servicio p + p { margin-top: .9rem; }
+.servicio .caso { border-top: 1px solid var(--borde); padding-top: 1rem; margin-top: 1.2rem; font-size: .95rem; }
+.servicio strong { color: var(--texto); font-weight: 600; }
+.servicio a { display: inline-block; margin-top: 1rem; min-height: 44px; padding: .5rem 0; font-weight: 600; }
+.pasos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; list-style: none; margin-top: 2rem; counter-reset: paso; }
+.pasos li { counter-increment: paso; color: var(--sec); }
+.pasos li::before { content: '0' counter(paso); display: block; color: var(--acento); margin-bottom: .5rem; }
+.pasos h3 { color: var(--texto); font-size: 1.2rem; margin-bottom: .8rem; }
+.bim { display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
+.bim p { max-width: 39rem; color: var(--sec); }
+.bim a { flex-shrink: 0; padding: .7rem 0; }
+.contacto { padding-bottom: 4rem; }
+.contacto p { max-width: 41rem; color: var(--sec); }
+footer { border-top: 1px solid var(--borde); padding: 2rem 0; color: var(--sec); font-size: .85rem; }
+footer a { color: inherit; }
+@media (max-width: 40rem) { .hero { padding: 3rem 0; } .catalogo,.pasos { grid-template-columns: 1fr; } .bim { display: block; } .bim a { display: inline-block; margin-top: 1rem; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+/* height:auto es obligatorio: el atributo height="1080" del <video> gana a aspect-ratio y el reproductor salía de 640×1080 (21-sep-2026, Fernando) */
+.pelicula{max-width:640px;margin:0 auto}
+.pelicula video{display:block;width:100%;height:auto;aspect-ratio:1/1;background:#faf8f5;border:1px solid var(--border,#e3ddd2);border-radius:12px}
+.pelicula figcaption{margin-top:.75rem;font-size:.95rem;color:var(--muted,#6b6257);text-align:center}
+.limites{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.limites div{border:1px solid var(--border,#e3ddd2);border-radius:12px;padding:1.1rem 1.25rem;background:var(--surface,#fff)}
+.limites h3{margin:0 0 .4rem;font-size:1.05rem}
+.limites p{margin:0}
+</style>
+<!-- MARCA:estilos · generado desde el canon; diseño ES/EN -->
+<link rel="stylesheet" href="brand/canon/tokens.css">
+<link rel="stylesheet" href="brand/marca-es.css">
+<!-- /MARCA:estilos -->
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<header class="barra">
+  <nav>
+    <a class="marca" href="/"><span class="marca__nombre">Fernando Calle</span></a>
+    <a class="item" aria-current="page" href="aplicaciones.html">Aplicaciones</a>
+    <a class="item" href="fernando-calle.html">Sobre mí</a>
+    <a class="item item--ontos" href="https://ontosdigital.es/">ontos</a>
+    <a class="item icono-contacto" href="contacto.html" data-contacto aria-label="Contacto"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.8 7l8.2 6.2L20.2 7"/></svg></a>
+    <a class="item idioma" data-i18n-alt href="/en/modelado-3d.html" hreflang="en" lang="en" aria-label="View this page in English">EN</a>
+  </nav>
+</header>
+<main id="contenido" tabindex="-1" class="wrap">
+<div class="hero">
+<p class="etiqueta">Aplicaciones · Modelado 3D desde dron</p>
+<h1>De un vuelo de dron a una casa en 3D.</h1>
+<p class="intro">Una vuelta con el dron de 26 segundos. Con ese vídeo, y sin que las imágenes salgan del ordenador, sale el exterior de la casa en 3D: el escaneado con su textura y una geometría simple con la que trabajar.</p>
+<div class="acciones"><a class="cta" href="#pelicula">Ver el vídeo</a><a href="aplicaciones.html">Volver a Aplicaciones</a></div>
+</div>
+<section id="pelicula">
+<h2>El proceso y el resultado, en 34 segundos</h2>
+<p class="bajada">Es una casa construida con contenedores. El vídeo enseña el vuelo, los pasos intermedios y el visor con las dos versiones del modelo.</p>
+<figure class="pelicula">
+<video controls playsinline preload="metadata" poster="/brand/servicios/casa-3d-poster.jpg" width="1080" height="1080" data-goatcounter-click="modelado-3d-play" data-goatcounter-no-session="1">
+<source src="/brand/servicios/casa-3d.mp4" type="video/mp4">
+Tu navegador no reproduce este vídeo. <a href="brand/servicios/casa-3d.mp4">Descárgalo</a>.
+</video>
+<figcaption>Vuelo → 131 fotogramas → cámaras → malla y recinto → secciones → visor: exterior y geometría.</figcaption>
+</figure>
+</section>
+<section>
+<h2>Cómo se hace</h2>
+<p class="bajada">Cinco pasos, todos en un ordenador de casa, con herramientas de código abierto.</p>
+<ol class="pasos">
+<li><h3>Del vídeo salen los fotogramas</h3><p>Un fotograma cada 0,2 segundos: 131 imágenes de la casa desde todos los ángulos de la vuelta.</p></li>
+<li><h3>Cada cámara vuelve a su sitio</h3><p>El programa compara las imágenes entre sí, recoloca las 131 cámaras en el espacio y monta una nube de puntos.</p></li>
+<li><h3>De la nube, una malla con textura</h3><p>Ocho millones de puntos se convierten en una superficie continua con la fotografía real encima.</p></li>
+<li><h3>Se marca el recinto</h3><p>A mano, sobre el modelo: lo que interesa se queda y el resto se descarta.</p></li>
+<li><h3>Una geometría simple</h3><p>Secciones a varias alturas dan el contorno real. De ahí salen los volúmenes y la cubierta, sin ruido: la versión que sirve para comparar con un plano, pensar una ampliación o contar contenedores.</p></li>
+</ol>
+</section>
+<section>
+<h2>Lo que es y lo que no</h2>
+<div class="limites">
+<div><h3>Exterior, no interior</h3><p>Se modela lo que la cámara ve desde fuera. Porches y zonas en sombra salen peor.</p></div>
+<div><h3>Sin escala de obra</h3><p>Este modelo no está calibrado con medidas de campo. Para medir hacen falta dos o tres pasadas a distintas alturas y una cinta métrica.</p></div>
+<div><h3>Nada sale de casa</h3><p>Las imágenes se procesan en local con OpenDroneMap. Las fotos de una vivienda no viajan a un servidor ajeno.</p></div>
+<div><h3>El resultado fino, con más fotos</h3><p>Este modelo sale de un vídeo de 26 segundos. El resultado fino se consigue con más fotos: varias pasadas a distintas alturas, fotografías originales en lugar de vídeo y una medida de referencia. Eso ya es un trabajo privado con quien hace el encargo.</p></div>
+</div>
+</section>
+<section class="contacto" id="contacto">
+<h2>¿Una nave, una casa, una parcela?</h2>
+<p>Cuéntame qué quieres ver en 3D y para qué. Si hace falta escala de obra, lo planteamos desde el vuelo.</p>
+<div class="acciones"><a class="cta" href="mailto:hola@ontosdigital.es">Escríbeme a hola@ontosdigital.es</a><a href="contacto.html">Usar el formulario de contacto</a></div>
+</section>
+</main>
+<footer><div class="wrap"><p>© 2026 Fernando Calle · La Lastrilla (Segovia) · <a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · Web sin cookies · recuento de visitas anónimo.</p></div></footer>
+<script src="/brand/analytics-preferences.js?v=2"></script>
+<script data-goatcounter="https://fernandocalle.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
