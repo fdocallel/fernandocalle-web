@@ -170,18 +170,18 @@ async function bootOntosMotion() {
     const dot = el('circle', {r: dotRadius, fill: '#d4713b'});
     svg.append(dot);
     return {render(p) {
-      const compact = button.hasAttribute('data-small') ||
-        svg.getBoundingClientRect().width / width * target.r * 2 < 96;
-      const d = paths(p, compact, glyph, layout);
+      // Destino: el isotipo N5 del manual con radios a cualquier tamaño, también en cabeceras (Fernando, 8-oct-2026).
+      // Se retira el modo compacto (esqueleto sin radios y núcleo 16,5 por debajo de 96 px); esa figura queda para el favicon.
+      const d = paths(p, false, glyph, layout);
       pieces.forEach((path, i) => path.setAttribute('d', d[i]));
       const fade = 1 - smooth(p / .37);
       letters.forEach(letter => { letter.style.opacity = fade; });
       const move = smooth(p / .88);
       dot.setAttribute('cx', lerp(dotX, target.x, move));
       dot.setAttribute('cy', lerp(dotY, target.y, move));
-      dot.setAttribute('r', lerp(dotRadius, (compact ? 16.5 : 14) * scale, smooth((p - .25) / .72)));
+      dot.setAttribute('r', lerp(dotRadius, 14 * scale, smooth((p - .25) / .72)));
       spokes.forEach((line, i) => {
-        line.style.opacity = compact ? 0 : smooth((p - .53 - i * .015) / .28);
+        line.style.opacity = smooth((p - .53 - i * .015) / .28);
       });
       button.dataset.progress = p.toFixed(3);
     }};
@@ -213,7 +213,7 @@ async function bootOntosMotion() {
     toggle.setAttribute('aria-pressed', String(p > .5));
     heroButton.setAttribute('aria-pressed', String(p > .5));
   }) : null;
-  const nav = controller(create(navButton, skeleton));
+  const nav = controller(create(navButton, logo));
   let hover = false, focus = false, manual = null;
   function navTarget() {
     if (manual !== null) return manual ? 0 : 1;
