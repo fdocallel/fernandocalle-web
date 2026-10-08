@@ -483,28 +483,35 @@ html[data-ontos-web] .barra-menu { display: none; }
 /* Web personal (8-oct-2026): la firma de la barra es el logotipo provisional de la consultoría:
    símbolo de ontos (isotipo N5, variante color para fondo claro, brand/canon/icon-color.svg) + «Fernando Calle»
    en Jost, la tipografía corporativa del manual. Un solo enlace a /; el símbolo es decorativo (alt="").
-   - Altura: el diámetro visible del símbolo = altura de los ascendentes de Jost 500 (0,78 em, medida con
-     canvas: «d» 14,35 px a 18,4 px), apoyado en la línea de base: no sobresale del texto.
+   Excepción del manual 3.1.6.3 (isotipo de la cabecera de la web personal).
+   - Diámetro visible: 1,48 em del nombre (27,2 px a 18,4 px), ≈ 1,9 × la altura de las letras altas de Jost 500
+     (0,78 em, «d» 14,35 px medida con canvas).
+   - Centrado óptico: el centro del símbolo cae a --marca-centro sobre la línea de base.
    - Separación: la del imagotipo horizontal del canon, proporcional al diámetro visible (0,349 D:
      29,3 u entre tinta del N5 y tinta del logotipo con D = 84 u en horizontal-color.svg).
    - Alineación: el borde izquierdo del símbolo cae en --web-content-left (guía de títulos y párrafos);
      el viewBox del icono (8 8 84 84) recorta a la tinta, sin sangrado óptico que compensar. */
 html[data-ontos-web] .barra .marca:has(.marca__nombre) {
-  --marca-simbolo: .78em;
+  --marca-simbolo: 1.48em;
+  --marca-centro: .35em;
+  display: block;
   width: auto;
   min-width: 0;
   min-height: 0;
-  align-items: baseline;
-  gap: calc(var(--marca-simbolo) * .349);
   margin-left: var(--web-logo-leading-space);
   font-size: 1.15rem;
+  line-height: 1;
+  white-space: nowrap;
   text-decoration: none;
 }
+/* En línea con el texto: la base del símbolo (borde inferior de su margen) se apoya en la línea de base
+   y el margen negativo lo baja hasta que su centro queda a --marca-centro sobre ella, igual en todos los motores. */
 html[data-ontos-web] .barra .marca__simbolo {
-  display: block;
-  flex: none;
+  display: inline-block;
+  vertical-align: baseline;
   width: var(--marca-simbolo);
   height: var(--marca-simbolo);
+  margin: 0 calc(var(--marca-simbolo) * .349) calc(var(--marca-centro) - var(--marca-simbolo) / 2) 0;
 }
 html[data-ontos-web] .barra .marca__nombre {
   font-family: var(--ds-font-corporativa);
@@ -515,10 +522,16 @@ html[data-ontos-web] .barra .marca__nombre {
   white-space: nowrap;
   color: var(--texto);
 }
-html[data-ontos-web] .barra a.item.item--ontos { opacity: .8; }
-html[data-ontos-web] .barra a.item.item--ontos:hover { opacity: 1; }
 /* 320 px: firma (símbolo + nombre), contacto, idioma y menú en una fila; la firma baja a 1rem
-   (el símbolo escala con ella y sigue a la altura de los ascendentes). */
+   (el símbolo escala con ella en la misma proporción). */
 @media (max-width: 22rem) {
   html[data-ontos-web] .barra .marca:has(.marca__nombre) { font-size: 1rem; }
+}
+/* Con el símbolo a 1,48 em la fila móvil necesita menos hueco entre controles para no partirse
+   (la barra conserva 60 px): 8 px hasta 24rem y 4 px hasta 22rem; las áreas táctiles siguen en 44/36 px. */
+@media (max-width: 24rem) {
+  html[data-ontos-web].barra-menu-js .barra nav { gap: 0 var(--ds-space-2); }
+}
+@media (max-width: 22rem) {
+  html[data-ontos-web].barra-menu-js .barra nav { gap: 0 var(--ds-space-1); }
 }

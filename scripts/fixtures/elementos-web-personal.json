@@ -1,9 +1,6 @@
 {
   "_doc": "Web personal (separación del 8-oct-2026): diferencias con el catálogo de elementos de ontosdigital.es (ONTOS data/web-elementos.json). Lo que no aparece aquí se comprueba igual que allí.",
   "cambian": {
-    "comun.menu": {
-      "texto": "Aplicaciones · Sobre mí · ontos"
-    },
     "aplicaciones.proximamente": {
       "selector": "#producto a[href^=\"https://ontosdigital.es/\"]"
     },

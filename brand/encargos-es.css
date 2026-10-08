@@ -1,11 +1,12 @@
 /* Composiciones de esta revisión web. Identidad y escala desde el kit canónico. */
 /* Familias y «Hecho y funcionando» comparten rejilla (8-oct-2026, Fernando): cada caso es el ejemplo real
-   de la familia que tiene encima. Mismas columnas y huecos en las dos secciones; poco aire entre ellas y sin filete.
+   de la familia que tiene encima. Mismas columnas y huecos; los casos van pegados a sus familias, sin titular
+   ni filete: el hueco vertical es el mismo que entre columnas (--ds-space-5).
    ≥ 60rem: cuatro columnas · 40–60rem: dos (2 × 2 en ambas) · < 40rem: dos carriles de una tarjeta que se siguen
    (encargos-es.js): al pasar de familia, debajo aparece su ejemplo. El número 01–04 une cada pareja. */
-html[data-web-page="index"] #familias { padding-bottom: var(--ds-space-6); }
-html[data-web-page="index"] #familias + #trabajos { padding-top: 0; border-top: 0; }
-html[data-web-page="index"] #trabajos h2 { margin-bottom: var(--ds-space-5); }
+html[data-web-page="index"] #familias { padding-bottom: 0; }
+/* .trabajos lleva --ds-space-1 arriba (elevación al pasar): space-5 − space-1 + space-1 = space-5. */
+html[data-web-page="index"] #familias + #trabajos { padding-top: calc(var(--ds-space-5) - var(--ds-space-1)); border-top: 0; }
 html[data-web-page="index"] .familias__cabecera { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-space-5); margin-bottom: var(--ds-space-6); }
 html[data-web-page="index"] .familias__cabecera h2 { margin: 0; }
 html[data-web-page="index"] .familias__controles:not([hidden]) { display: flex; gap: var(--ds-space-2); align-items: center; }
@@ -94,7 +95,8 @@ html[data-web-page="index"] .trabajos { counter-reset: trabajo; display: grid; g
 }
 @media (max-width: 40rem) {
   html[data-web-page="index"] :is(.familias, .trabajos) { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 86%; gap: var(--ds-space-4); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--borde) transparent; padding-bottom: var(--ds-space-4); }
-  html[data-web-page="index"] .familias { scroll-behavior: smooth; }
+  html[data-web-page="index"] .familias { scroll-behavior: smooth; padding-bottom: 0; }
+  html[data-web-page="index"] #familias + #trabajos { padding-top: calc(var(--ds-space-4) - var(--ds-space-1)); }
 }
 html[data-web-page="index"] .trabajo { counter-increment: trabajo; position: relative; display: flex; flex-direction: column; overflow: hidden; padding: var(--ds-space-2); background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius); color: var(--texto); text-decoration: none; transition: transform var(--web-motion-fast) ease, border-color var(--web-motion-fast) ease; }
 html[data-web-page="index"] .trabajo img { flex: none; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: center top; border: 1px solid var(--borde); border-radius: calc(var(--ds-radius) - var(--ds-space-1)); background: var(--bg); }
@@ -130,14 +132,17 @@ html[data-web-page="index"] #trabajos .mas { margin-top: var(--ds-space-5); }
   html[data-web-page="index"] .paso::after { transition: none; }
 }
 
-/* Próximamente (8-oct-2026): vuelve de Aplicaciones como cierre de la portada. Una sola caja para ontos:
-   imagotipo del canon (horizontal; vertical en móvil) al mínimo digital del manual 3.1.6 (N5 de 96 px visibles),
-   con su área de protección x = B/6 (≈ 19 px) libre; debajo, qué es ontos y sus dos ediciones. */
-html[data-web-page="index"] .proximamente .bajada { max-width: 46rem; margin: 0 0 var(--ds-space-6); font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading); text-align: start; hyphens: manual; }
+/* Próximamente (8-oct-2026): vuelve de Aplicaciones, tras «Así empieza un encargo» y antes de «Hablamos».
+   Una sola caja para ontos: imagotipo del canon (horizontal; vertical en móvil) al mínimo digital del manual
+   3.1.6 (N5 de 96 px visibles), con su área de protección x = B/6 (≈ 19 px) libre; debajo, «Próximamente.»,
+   la bajada, qué es ontos y sus dos ediciones. */
+/* «Próximamente.» es el antetítulo de la caja (mismo estilo que los h2 de sección) y la bajada su primer texto. */
+html[data-web-page="index"] .ontos-caja__titulo { margin: var(--ds-space-6) 0 var(--ds-space-3); }
+html[data-web-page="index"] .ontos-caja__bajada { max-width: 46rem; margin: 0; font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading); font-weight: 600; }
 html[data-web-page="index"] .ontos-caja { padding: var(--ds-space-7); background: var(--panel); border: 1px solid var(--borde); border-radius: var(--ds-radius); }
 html[data-web-page="index"] .ontos-caja__logo, html[data-web-page="index"] .ontos-caja__logo img { display: block; }
 html[data-web-page="index"] .ontos-caja__logo img { width: 392px; max-width: none; height: auto; }
-html[data-web-page="index"] .ontos-caja__que-es { max-width: 46rem; margin: var(--ds-space-6) 0 0; font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading); }
+html[data-web-page="index"] .ontos-caja__que-es { max-width: 46rem; margin: var(--ds-space-4) 0 0; font-size: var(--ds-type-editorial); line-height: var(--ds-type-editorial-leading); }
 html[data-web-page="index"] .ontos-caja__que-es strong { font-weight: 600; }
 html[data-web-page="index"] .proximo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-5); margin-top: var(--ds-space-6); }
 html[data-web-page="index"] .edicion { padding-top: var(--ds-space-4); border-top: 1px solid var(--borde); border-radius: 0; background: none; }

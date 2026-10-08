@@ -17,7 +17,9 @@
 
   // Controles bajo el carril, centrados: flecha, un círculo por familia (lleno si se ve), flecha.
   // Sin JavaScript siguen ocultos en la cabecera; el estado textual queda para lectores de pantalla.
-  track.after(controls);
+  // 8-oct-2026: los casos van pegados a sus familias; los controles bajan bajo los casos (en móvil los dos carriles
+  // se siguen, así que mueven ambos). Sin casos, bajo el carril de familias.
+  (document.querySelector('#trabajos .trabajos') || track).after(controls);
   controls.classList.add('familias__controles--pie');
   track.classList.add('familias--pie');
   const dots = document.createElement('span');

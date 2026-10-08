@@ -78,6 +78,8 @@ function artifacts(root){
     else html=html.replace('</head>',links+'\n</head>');
     html=html.replace(/(<link\b[^>]*rel="icon"[^>]*href=")[^"]*(")/g,'$1'+rel+'/canon/favicon.svg$2');
     html=html.replace(/(<meta\b[^>]*(?:property="og:image"|name="twitter:image")[^>]*content=")https:\/\/ontosdigital\.es\/brand\/og\.png("[^>]*>)/g,'$1https://ontosdigital.es/brand/canon/og.png$2');
+    // 8-oct-2026 (Fernando): «ontos» sale del menú de la barra; el puente queda en la portada y en Aplicaciones.
+    html=html.replace(/\n[ \t]*<a class="item item--ontos"[^>]*>[\s\S]*?<\/a>/g,'');
     html=html.replace(/<a\b([^>]*class="marca"[^>]*)>[\s\S]*?<\/a>/g,(_,attrs)=>`<a${attrs}><img class="marca__simbolo" src="${rel}/canon/icon-color.svg" alt="" width="84" height="84"><span class="marca__nombre">${MARCA_NOMBRE}</span></a>`);
     // Restantes sellos/escenas: conservar atributos, identidad de DOM y animaciones.
     html=html.replace(/<svg\b([^>]*)>([\s\S]*?)<\/svg>/g,(all,attrs,body)=>{

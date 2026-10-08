@@ -13,14 +13,16 @@ página: ONTOS `docs/estudios/2026-10-08-separar-web-personal-y-ontos.md`.
   `entrar.html`, `solicitud.html` y `producto/`. Los enlaces a ellas apuntan a `https://ontosdigital.es/<ruta>`
   (en /en/, a su espejo `/en/` de allí).
 - La barra firma con el **logotipo provisional** de la consultoría (8-oct-2026): símbolo de ontos (`brand/canon/icon-color.svg`,
-  decorativo, `alt=""`) + «Fernando Calle» en Jost, un solo enlace a `/`, y un enlace discreto «ontos» a ontosdigital.es.
-  Lo escribe `import-marca.cjs`; medidas en `brand/marca-es.css`: símbolo a la altura de los ascendentes (0,78 em),
-  separación del imagotipo horizontal del canon (0,349 × diámetro) y borde izquierdo en `--web-content-left`. Sin Arcilla.
-  Ojo: queda por debajo del mínimo digital del símbolo del manual (3.1.6, 96 px); es provisional, a decidir por Fernando.
+  decorativo, `alt=""`) + «Fernando Calle» en Jost, un solo enlace a `/`. Lo escribe `import-marca.cjs` (que además retira
+  cualquier `item--ontos`: «ontos» ya no está en el menú; el puente queda en la portada y en Aplicaciones). Medidas en
+  `brand/marca-es.css`, excepción 3.1.6.3 del manual: diámetro 1,48 em (27,2 px a 18,4 px; ≈ 1,9 × letras altas),
+  centro a 0,35 em sobre la línea de base (mitad de las mayúsculas), separación 0,349 × diámetro y borde izquierdo en
+  `--web-content-left`. Barra móvil de 60 px también a 320 (huecos de 8/4 px bajo 24/22rem).
 - Portada (8-oct-2026): «Qué es ontos» sale como sección; su texto (mensaje.json `web.que_es`) va en la caja de
-  «Próximamente», al final tras «Hablamos», con el imagotipo del canon (96 px de símbolo, mínimo del manual) y las dos
-  ediciones. Familias y «Hecho y funcionando» comparten rejilla (4 · 2 × 2 · carriles sincronizados en móvil) y el caso n
-  es el «Ejemplo real» de la familia n (lo vigila `test-marca-es.cjs`).
+  «Próximamente» (tras «Así empieza un encargo», antes de «Hablamos»): imagotipo del canon (96 px de símbolo), «Próximamente.»
+  y su bajada como primer texto, qué es ontos y las dos ediciones. Familias y casos comparten rejilla (4 · 2 × 2 · carriles
+  sincronizados en móvil, con los controles bajo los casos); los casos van pegados a sus familias, sin titular (queda como
+  `aria-label`), y el caso n es el «Ejemplo real» de la familia n (lo vigila `test-marca-es.cjs`).
 - `brand/` es una copia; la canónica sigue en `ontosdigital-web` (la leen los scripts de ONTOS). El canon de marca
   se importa igual (`scripts/import-marca.cjs`).
 - Dominio en: `CNAME`, `robots.txt`, `gen-sitemap.sh` (`DOMINIO`), `i18n/gen-en.py` (`DOMINIO`),
