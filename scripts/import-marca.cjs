@@ -3,17 +3,11 @@
 // Importación explícita de marca. El contenido editorial permanece en cada HTML.
 // Solo exporta fuentes, vectores y tokens; ningún dato personal o documento privado.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
-const {execFileSync}=require('node:child_process');
 const WEB=path.resolve(__dirname,'..');
 // Firma de la web personal: el nombre en texto (tipografía corporativa del manual, brand/marca-es.css), sin logotipo.
 const MARCA_NOMBRE='Fernando Calle';
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function socialCard(html,root){
-  // Render local sin red. Fuente y firma incluidas en el documento; salida PNG determinista.
-  const runner=`const fs=require('node:fs');const {webkit}=require(process.env.ONTOS_BRAND_ROOT+'/scripts/verify/node_modules/playwright');(async()=>{const b=await webkit.launch();try{const p=await b.newPage({viewport:{width:1200,height:630},deviceScaleFactor:1});await p.route('**/*',r=>r.abort());await p.setContent(fs.readFileSync(0,'utf8'));await p.evaluate(()=>document.fonts.ready);process.stdout.write(await p.screenshot({type:'png',animations:'disabled'}));}finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1});`;
-  return execFileSync(process.execPath,['-e',runner],{input:html,env:{...process.env,ONTOS_BRAND_ROOT:root},timeout:30000,maxBuffer:5*1024*1024});
-}
 const put=(p,b,check,changed)=>{if(fs.existsSync(p)&&fs.readFileSync(p).equals(Buffer.from(b)))return;changed.push(path.relative(WEB,p));if(!check){fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,b);}};
 function artifacts(root){
   const {loadDesignSystem}=require(path.join(root,'scripts/lib/design-system-model'));
@@ -62,15 +56,8 @@ function artifacts(root){
   out['brand/canon/tokens.css']=css;
   out['brand/canon/tokens.json']=JSON.stringify({_doc:'GENERADO por scripts/import-marca.cjs. Selección pública de identidad, sin datos de producto.',version:1,tokens:model.tokens.map(t=>({id:t.id,tipo:t.tipo,valor:t.valor,unidad:t.unidad,movil:t.movil,estado:t.estado})),minimos:Object.fromEntries(['horizontal','vertical','wordmark','icon'].map(k=>[k,min(k)]))},null,2)+'\n';
   const home=fs.readFileSync(path.join(WEB,'index.html'),'utf8');
-  // Imagen social: opción C del 29-sep-2026 (Fernando). ES = eslogan + apoyo aprobados (Simbología 1.1.0);
-  // EN conserva su titular hasta que exista eslogan inglés aprobado (no se traduce por cuenta propia).
-  const social=(text,lang,apoyo)=>`<!doctype html><html lang="${lang}"><meta charset="utf-8"><style>@font-face{font-family:Jost;src:url(data:font/ttf;base64,${read(model.familias.corporativa.archivo).toString('base64')})}*{box-sizing:border-box}body{margin:0;width:1200px;height:630px;background:${tokens['brand-verde'].valor};color:${tokens['brand-logo-on-dark'].valor};font-family:Jost,sans-serif;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:60px}.firma{width:540px;margin-bottom:${apoyo?58:68}px}p{font-size:${apoyo?54:34}px;font-weight:${apoyo?500:400};letter-spacing:${apoyo?'-.01em':'0'};line-height:1.2;text-align:center;margin:0;max-width:1080px}p+span{font-size:27px;margin-top:12px}small{font-size:24px;font-weight:600;letter-spacing:.02em;margin-top:30px}</style><div class="firma">${marks.logo('horizontal','color-dark')}</div><p>${esc(text)}</p>${apoyo?`<span>${esc(apoyo)}</span>`:''}<small>ontosdigital.es</small></html>`;
-  const eslogan=message.fundamentos.esloganes;
-  if(!eslogan?.texto||!eslogan?.apoyo)throw Error('Falta el eslogan aprobado para la imagen social');
-  out['brand/canon/og.png']=socialCard(social(eslogan.texto,'es',eslogan.apoyo),root);
-  const englishHeadline=message.superficies.find(s=>s.id==='web.og')?.en;
-  if(!englishHeadline)throw Error('Falta el titular social inglés canónico');
-  out['brand/canon/og-en.png']=socialCard(social(englishHeadline,'en'),root);
+  // Imagen social: la de la web personal es propia (Fernando Calle, sin logotipo de ontos, 8-oct-2026) y la
+  // genera brand/gen-og.py con estas fuentes y tokens; el canon de ontos ya no la exporta aquí.
   out['brand/canon/provenance.json']=JSON.stringify({_doc:'GENERADO por scripts/import-marca.cjs. Copias de entrega, no fuentes editables.',source:'ONTOS · manual de marca 1–3 y Design System',scope:'es-en',sources:Object.fromEntries(sources.map(p=>[p,hash(read(p))])),outputs:Object.fromEntries(Object.entries(out).map(([p,b])=>[p,hash(b)]))},null,2)+'\n';
   const pages=fs.readdirSync(WEB).filter(f=>f.endsWith('.html')).concat(['editor-pdf/index.html']);
   for(const file of pages){

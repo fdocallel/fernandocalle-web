@@ -9,7 +9,7 @@ let walk=!!(canvas&&canvas.dataset.mode==='walk');
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const segoviaWorld=new URLSearchParams(location.search).get('mundo')==='segovia';
 if(canvas&&canvas.dataset.mode!=='figure'&&canvas.dataset.mode!=='walk'){
- document.title=(segoviaWorld?T('Segovia en 3D · ontos'):T('Visita 3D · ontos'));
+ document.title=(segoviaWorld?T('Segovia en 3D · Fernando Calle'):T('Visita 3D · Fernando Calle'));
  const label=document.querySelector('.ot-label');if(label)label.textContent=(segoviaWorld?T('ontos vivo · Mundo Segovia'):T('ontos vivo · un mundo para explorar'));
  const view=$('ot-segovia');if(view&&!segoviaWorld)view.style.display='none';
  const help=$('ot-segovia-help');if(help&&!segoviaWorld)help.hidden=true;

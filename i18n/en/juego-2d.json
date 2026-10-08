@@ -1,6 +1,6 @@
 {
   "_doc": "Traducción al inglés de juego-2d.html. La estructura vive en la página española; aquí solo el texto. Genera con ./i18n/gen-en.py",
-  "ontos vivo · Patio de juegos": "ontos alive · Playground",
+  "Patio de juegos · Fernando Calle": "Playground · Fernando Calle",
   "Controla a ontos en un patio de juegos 2D: rueda, salta, recoge destellos y lleva la semilla a su sitio. Juega con teclado o controles táctiles.": "Control ontos in a 2D playground: roll, jump, collect sparkles and carry the seed where it belongs. Play with a keyboard or touch controls.",
   "Navegación": "Navigation",
   "← Aplicaciones": "← Applications",

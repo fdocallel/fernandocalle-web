@@ -1,6 +1,6 @@
 {
   "_doc": "Traducción al inglés de animacion-3d.html. La estructura vive en la página española; aquí solo el texto. Genera con ./i18n/gen-en.py",
-  "ontos · Figurita 3D": "ontos · 3D figurine",
+  "Figurita 3D · Fernando Calle": "3D figurine · Fernando Calle",
   "Explora la figurita 3D de ontos: gírala, cambia el tamaño y prueba sus gestos, poses y animaciones desde el navegador.": "Explore the ontos 3D figurine in your browser: turn it, resize it and try its gestures, poses and animations.",
   "Navegación": "Navigation",
   "← Aplicaciones": "← Applications",

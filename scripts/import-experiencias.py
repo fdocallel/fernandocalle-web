@@ -18,7 +18,7 @@ for src,dst in [("ontos-vivo.js","juego-2d.js"),("ontos-tierra.js","mundo-3d.js"
     if src=="ontos-tierra.js":
         s=once(s,".get('mundo')!=='normal'", ".get('mundo')==='segovia'")
         s=once(s,"fetch('lib/ontos-alcazar.json'", "fetch('/experiencias/ontos-alcazar.json'")
-        s=once(s,"document.title='ONTOS · Mundo ('+(segoviaWorld?'Segovia':'normal')+')';", "document.title=(segoviaWorld?'Segovia en 3D · ontos':'Visita 3D · ontos');")
+        s=once(s,"document.title='ONTOS · Mundo ('+(segoviaWorld?'Segovia':'normal')+')';", "document.title=(segoviaWorld?'Segovia en 3D · Fernando Calle':'Visita 3D · Fernando Calle');")
         s=once(s,"label.textContent='ONTOS vivo · Mundo ('+(segoviaWorld?'Segovia':'normal')+')';", "label.textContent=(segoviaWorld?'ontos vivo · Mundo Segovia':'ontos vivo · un mundo para explorar');")
         s=once(s,'// docs/estudios/2026-09-10-catedral-segovia-geometria.md. Local x=south, z=west.','// Procedural cathedral. Local x=south, z=west.')
         # Public brand name is written «ontos» in lowercase (3-oct-2026); console tags stay as they are.

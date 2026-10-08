@@ -1,7 +1,7 @@
 {
   "_doc": "Traducción al inglés de index.html. La estructura vive en la página española; aquí solo el texto. Genera con ./i18n/gen-en.py",
   "Fernando Calle · ingeniería de la información, por encargo": "Fernando Calle · information engineering, on demand",
-  "Consultoría por encargo: tu contexto para la IA, ingeniería digital con BIM y GIS, herramientas a medida, webs y experiencias. Fernando Calle · ontos.": "On-demand consulting: your context for AI, digital engineering with BIM and GIS, custom tools, websites and experiences. Fernando Calle · ontos.",
+  "Consultoría por encargo: tu contexto para la IA, ingeniería digital con BIM y GIS, herramientas a medida, webs y experiencias. Fernando Calle.": "On-demand consulting: your context for AI, digital engineering with BIM and GIS, custom tools, websites and experiences. Fernando Calle.",
   "Fernando Calle": "Fernando Calle",
   "ES": "ES",
   "Ingeniero de Caminos, Canales y Puertos": "Civil Engineer",
@@ -24,6 +24,7 @@
   "Ver las familias siguientes": "See next service families",
   "Tu contexto para la IA": "Your context for AI",
   "Para personas y negocios con la información repartida en carpetas, correos y cabezas. Ordenamos lo que sabes y tienes, y lo conectamos a una IA que trabaja desde ahí, con fuentes que puedes comprobar.": "For people and businesses whose information is scattered across folders, inboxes and heads. We put what you know and have in order, and connect it to an AI that works from there, with sources you can check.",
+  "Y lo convierto en producto: ontos ▸": "And I turn it into a product: ontos ▸",
   "Ingeniería digital": "Digital engineering",
   "BIM, GIS y captura con dron para ingenierías y contratación pública: requisitos de información, coordinación y control de entregables. Empieza con un diagnóstico de nivel BIM sin coste.": "BIM, GIS and drone capture for engineering firms and public procurement: information requirements, coordination and deliverable control. It starts with a free BIM readiness check.",
   "Herramientas a medida": "Custom tools",

@@ -23,7 +23,10 @@ function separa(href){
  if(PODADAS.includes(hoja)&&(rel!==href||!/^[a-z]+:/.test(href)))return ONTOS_URL+'/'+rel.replace(/^\//,'');
  return rel!==href?DOMINIO+rel:href;
 }
-const retitula=t=>t.replace(/ · ontos$/,' · Fernando Calle').replace(/ \| ontos$/,' | Fernando Calle').replace(/^ontos · ingeniería/,'Fernando Calle · ingeniería');
+const retitula=t=>t.replace(/ · ontos$/,' · Fernando Calle').replace(/ \| ontos$/,' | Fernando Calle').replace(/^ontos · ingeniería/,'Fernando Calle · ingeniería')
+ // Puente a ontos, 8-oct-2026 (Fernando): las demos firman como el resto de páginas, «<página> · Fernando Calle».
+ .replace(/^ontos(?: vivo)? · (.+)$/,'$1 · Fernando Calle');
+assert.equal(retitula('ontos vivo · Patio de juegos'),'Patio de juegos · Fernando Calle','Separación: título de demo con la firma personal');
 assert.equal(separa('armario.html'),ONTOS_URL+'/armario.html','Separación: página podada a ontosdigital.es');
 assert.equal(separa(ONTOS_URL+'/bim.html'),DOMINIO+'/bim.html','Separación: página propia al dominio personal');
 assert.equal(separa('mailto:hola@ontosdigital.es'),'mailto:hola@ontosdigital.es','Separación: el correo no cambia');
@@ -110,8 +113,9 @@ function checkTrabajos(html){
 // una balda por familia en su orden, sus piezas en orden, tipo y título de cada pieza, «Producto» solo
 // donde lo es, cabecera de la página desde mensaje.json y los cuatro clips de «Próximamente».
 const piezas=proceso.catalogo_piezas;
-const podada=id=>PODADAS.includes(String(piezas[id]?.accion?.href||piezas[id]?.accion?.src||'').replace(/^\//,''));
-const baldasPersonales=lineas.map(l=>({...l,catalogo_web:l.catalogo_web.filter(id=>!podada(id))})).filter(l=>l.catalogo_web.length);
+// Puente a ontos (Fernando, 8-oct-2026): las piezas de páginas podadas (Armario) vuelven a su balda; su acción
+// apunta a ontosdigital.es (separa). Todas las familias del canon, en su orden.
+const baldasPersonales=lineas;
 const superficie=id=>JSON.parse(fs.readFileSync(path.join(ONTOS,'data/mensaje.json'),'utf8')).superficies.find(s=>s.id===id);
 function checkCatalogo(html){
  const texto=s=>s.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
@@ -133,7 +137,7 @@ function checkCatalogo(html){
    const acc=art.match(/<a class="servicio__accion" href="([^"]*)"([^>]*)>[\s\S]*?<span class="servicio__rotulo">([\s\S]*?)<\/span>/);
    assert(acc,'Catálogo: '+id+' con su acción');
    assert.deepEqual([acc[1],texto(acc[3]),/data-modo="([^"]*)"/.exec(acc[2])?.[1],/data-goatcounter-click="([^"]*)"/.exec(acc[2])?.[1],/target="_blank"/.test(acc[2])],
-    [x.src||x.href,x.rotulo,x.modo,x.evento,x.modo==='externo'],'Catálogo: acción de '+id+' (destino, rótulo, modo, analítica)');
+    [separa(x.src||x.href),x.rotulo,x.modo,x.evento,x.modo==='externo'],'Catálogo: acción de '+id+' (destino, rótulo, modo, analítica)');
    if(x.extra)assert(art.includes('href="'+x.extra.href+'" data-goatcounter-click="'+x.extra.evento+'"')&&art.includes('>'+x.extra.rotulo+'</a>'),'Catálogo: acción extra de '+id);
   }
  });
@@ -147,6 +151,7 @@ function checkCatalogo(html){
 const appsHtml=fs.readFileSync(path.join(WEB,'aplicaciones.html'),'utf8');
 checkCatalogo(appsHtml);
 assert.throws(()=>checkCatalogo(appsHtml.replace('id="balda-herramientas" data-familia="herramientas"','id="balda-herramientas" data-familia="contexto-ia"')),/baldas/,'Caso rojo: una balda fuera del canon debe bloquear');
+assert.throws(()=>checkCatalogo(appsHtml.replace('href="'+ONTOS_URL+'/armario.html"','href="armario.html"')),/Separación|acción/,'Caso rojo: Armario con enlace relativo (página podada) debe bloquear');
 assert.throws(()=>checkCatalogo(appsHtml.replace('href="'+ONTOS_URL+'/">Conocer','href="producto.html">Conocer')),/Separación/,'Caso rojo: un enlace relativo al producto debe bloquear');
 // «Qué es ONTOS» = mensaje.json web.que_es (3-oct-2026; ONTOS/raw/marca/2026-10-03-web-que-es-ontos-a-fernando.md).
 const queEs=JSON.parse(fs.readFileSync(path.join(ONTOS,'data/mensaje.json'),'utf8')).superficies.find(s=>s.id==='web.que_es');
@@ -301,6 +306,10 @@ function signature({html,baseline=false,file,subtitle,revision,description,sep})
   const sobre=[...d.querySelectorAll('header.barra nav a.item')].find(e=>clean(e.textContent)==='Sobre mí');
   if(sobre){const o=d.createElement('a');o.className='item item--ontos';o.href=ONTOS_URL+'/';o.textContent='ontos';sobre.after('\n    ',o);}
  }
+ // Puente a ontos, 8-oct-2026 (Fernando): fuera de la web personal las solicitudes de acceso a ontos (privacidad)
+ // y la opción «Usar ontos (producto)» del formulario. Solo esos fragmentos salen de la base.
+ if(baseline&&file==='privacidad.html')for(const li of d.querySelectorAll('li'))if(li.querySelector('strong')?.textContent.startsWith('Solicitudes de acceso a'))li.remove();
+ if(baseline&&file==='contacto.html')d.querySelector('select[name=interes] option[value=producto]')?.remove();
  if(file==='aplicaciones.html')for(const e of d.querySelectorAll('section#proximamente, section#producto'))e.remove();
  // Armario mínimo, 3-oct-2026 (Fernando: «que sea solo probar el armario. Nada más»): de la página solo queda
  // el probador (#demo), cuyo título pasa a ser el h1. Se compara solo el probador, sin su título ni la nota final.
@@ -326,7 +335,7 @@ function signature({html,baseline=false,file,subtitle,revision,description,sep})
   d.querySelector('section#trabajos')?.remove(); // 3-oct: «Hecho y funcionando» desde el canon (checkTrabajos)
   d.querySelector('section#que-es p')?.remove(); // 3-oct: «Qué es ONTOS» desde mensaje.json web.que_es (checkQueEs)
   d.querySelector('.home-feature .cta--secundaria')?.remove(); // 3-oct: «Ver lo hecho» desde mensaje.json web.cta_trabajos (checkQueEs)
-  if(baseline&&description){for(const m of d.querySelectorAll('meta[name=description]'))m.remove();const m=d.createElement('meta');m.name='description';m.content=description;d.head.append(m);}
+  if(baseline&&description){for(const m of d.querySelectorAll('meta[name=description]'))m.remove();const m=d.createElement('meta');m.name='description';m.content=description.replace(/ · ontos\.$/,'.');d.head.append(m);} // 8-oct-2026: sin «· ontos» (web personal)
  }
  // Los landmarks y el salto de teclado no alteran el contenido del encargo.
  for(const e of d.querySelectorAll('.skip-link'))e.remove();

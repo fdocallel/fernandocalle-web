@@ -18,6 +18,11 @@ página: ONTOS `docs/estudios/2026-10-08-separar-web-personal-y-ontos.md`.
   se importa igual (`scripts/import-marca.cjs`).
 - Dominio en: `CNAME`, `robots.txt`, `gen-sitemap.sh` (`DOMINIO`), `i18n/gen-en.py` (`DOMINIO`),
   `scripts/test-marca-es.cjs` (`DOMINIO`) y los HTML (canonical, og, JSON-LD, `_next`).
+- Puente a ontos (8-oct-2026): Aplicaciones recupera la balda 01 «Tu contexto para la IA» con Armario, que abre
+  `https://ontosdigital.es/armario.html` (evento `servicio-probar-armario`) y enlaza «Conocer ontos»; la familia 01 de la
+  portada enlaza a ontosdigital.es. Fuera de aquí: las solicitudes de acceso (privacidad) y la opción «Usar ontos» del formulario.
+- Imagen social propia (8-oct-2026): `python3 brand/gen-og.py` → `brand/og.png` y `brand/og-en.png` (nombre, rótulo
+  de la portada y dominio; Jost y tokens de `brand/canon/`, sin logotipo). `import-marca.cjs` ya no exporta `canon/og*.png`.
 - Pendiente: sitio GoatCounter `fernandocalle` (los contadores ya apuntan a él), Pages y DNS, Search Console.
   Correo: `hola@ontosdigital.es`.
 

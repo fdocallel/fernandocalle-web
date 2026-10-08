@@ -232,8 +232,8 @@ def traduce_etiqueta(tag, tr, pagina, indexable):
             pon("content", tr(clave(atrs.get("content", ""))))
         elif clave_meta == "og:url":
             pon("content", url_en(pagina))
-        elif clave_meta in ("og:image", "twitter:image") and atrs.get("content") == DOMINIO + "/brand/canon/og.png":
-            pon("content", DOMINIO + "/brand/canon/og-en.png")
+        elif clave_meta in ("og:image", "twitter:image") and atrs.get("content") == DOMINIO + "/brand/og.png":
+            pon("content", DOMINIO + "/brand/og-en.png")
         # redirecciones (servicios.html → aplicaciones.html): el destino del refresh también va a /en/
         if atrs.get("http-equiv", "").lower() == "refresh":
             m_url = re.match(r"(\s*\d+\s*;\s*url=)(.+)$", atrs.get("content", ""), re.I)
@@ -279,8 +279,8 @@ def traduce_json_ld(bloque, tr, pagina):
             return '"%s": %s' % (llave, json.dumps(nuevo, ensure_ascii=False))
         if llave == "inLanguage":
             return '"inLanguage": "en"' if valor.startswith("es") else m.group(0)
-        if llave in ("image", "url") and valor == DOMINIO + "/brand/canon/og.png":
-            return '"%s": "%s/brand/canon/og-en.png"' % (llave, DOMINIO)
+        if llave in ("image", "url") and valor == DOMINIO + "/brand/og.png":
+            return '"%s": "%s/brand/og-en.png"' % (llave, DOMINIO)
         if llave in ("url", "@id", "mainEntityOfPage") and valor.startswith(DOMINIO):
             resto = valor[len(DOMINIO):]
             nueva = ruta_en(resto or "/")

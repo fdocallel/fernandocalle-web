@@ -1,5 +1,5 @@
 {
-  "_doc": "Reviewed snapshots. Regenerate only with scripts/import-experiencias.py; Segovia mesh is allowlisted and loaded only for mundo=segovia; mesh adaptation CC BY-SA 4.0. 3-oct-2026: visible brand name lowercased in place (same source); import-experiencias.py applies it on the next import.",
+  "_doc": "Reviewed snapshots. Regenerate only with scripts/import-experiencias.py; Segovia mesh is allowlisted and loaded only for mundo=segovia; mesh adaptation CC BY-SA 4.0. 3-oct-2026: visible brand name lowercased in place (same source); import-experiencias.py applies it on the next import. 8-oct-2026: the 3D tour window title ends in «Fernando Calle» (personal site), same way.",
   "engines": {
     "juego-2d.js": {
       "source": "ONTOS/app/lib/ontos-vivo.js",
@@ -9,7 +9,7 @@
     "mundo-3d.js": {
       "source": "ONTOS/app/lib/ontos-tierra.js",
       "source_sha256": "8950e743315135b4683415c2456fcedf506fa9f6c48c675f5e5487d7c086fa8e",
-      "public_sha256": "5a08386995683bd8dff4ece8af369c8193d98d71583e1a2f9d9801d22987c3b9"
+      "public_sha256": "a01f617f1dcd0697425ff6324dc91825d4c7a6da6786ed6d983845086e800f30"
     },
     "ontos-alcazar.json": {
       "source": "ONTOS/app/lib/ontos-alcazar.json",
