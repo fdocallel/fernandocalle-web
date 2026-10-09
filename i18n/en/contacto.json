@@ -1,7 +1,7 @@
 {
   "_doc": "Traducción al inglés de contacto.html. La estructura vive en la página española; aquí solo el texto. Genera con ./i18n/gen-en.py",
   "Contacto · Fernando Calle": "Contact · Fernando Calle",
-  "Cuéntame qué te come horas o pide ver ontos por dentro. Formulario, correo hola@ontosdigital.es y acceso por invitación.": "Tell me what eats your hours, or ask to see ontos from the inside. Form, email hola@ontosdigital.es and invitation-only access.",
+  "Cuéntame qué te come horas o pide ver ontos por dentro. Formulario, correo fcalle@ontosdigital.es y acceso por invitación.": "Tell me what eats your hours, or ask to see ontos from the inside. Form, email fcalle@ontosdigital.es and invitation-only access.",
   "Saltar al contenido": "Skip to content",
   "Fernando Calle": "Fernando Calle",
   "Aplicaciones": "Applications",
@@ -20,7 +20,7 @@
   "Contacto web · Contacto": "Web contact · Contact",
   "Enviar": "Send",
   "El envío pasa por FormSubmit solo para llegar a mi correo; detalle en la <a href=\"privacidad.html\" style=\"color:inherit\">política de privacidad</a>.": "The form goes through FormSubmit only so it reaches my inbox; details in the <a href=\"privacidad.html\" style=\"color:inherit\">privacy policy</a>.",
-  "O directamente: <a href=\"mailto:hola@ontosdigital.es\">hola@ontosdigital.es</a>": "Or directly: <a href=\"mailto:hola@ontosdigital.es\">hola@ontosdigital.es</a>",
+  "O directamente: <a href=\"mailto:fcalle@ontosdigital.es\">fcalle@ontosdigital.es</a>": "Or directly: <a href=\"mailto:fcalle@ontosdigital.es\">fcalle@ontosdigital.es</a>",
   "copiar": "copy",
   "¿Lo que quieres es usar ontos tú, no encargarme un trabajo? Se entra por invitación: <a href=\"https://ontosdigital.es/solicitud.html\">solicita el acceso ▸</a>": "Do you want to use ontos yourself, rather than hire me for a job? It is invitation-only: <a href=\"https://ontosdigital.es/solicitud.html\">request access ▸</a>",
   "© 2026 Fernando Calle · La Lastrilla (Segovia) · <a href=\"aviso-legal.html\">Aviso legal</a> · <a href=\"privacidad.html\">Privacidad</a> · Web sin cookies · recuento de visitas anónimo.": "© 2026 Fernando Calle · La Lastrilla (Segovia) · <a href=\"aviso-legal.html\">Legal notice</a> · <a href=\"privacidad.html\">Privacy</a> · Cookie-free website · anonymous visit count.",

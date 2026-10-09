@@ -189,6 +189,10 @@ function checkContactoApps(html){
  assert(/<div class="acciones"><a class="cta" href="contacto\.html" data-contacto>Cuéntame tu caso<\/a><\/div>/.test(zona)&&!zona.includes('mailto:'),'Aplicaciones: «¿Qué te gustaría construir?» lleva solo al formulario, sin el correo');
 }
 checkContactoApps(fs.readFileSync(path.join(WEB,'aplicaciones.html'),'utf8'));
+const conCorreoViejo=fs=>fs.filter(([,h])=>h.includes('hola@ontosdigital.es')).map(([f])=>f);
+const paginasEs=pages.map(f=>[f,fs.readFileSync(path.join(WEB,f),'utf8')]);
+assert.deepEqual(conCorreoViejo(paginasEs),[],'Correo de la web personal: fcalle@ontosdigital.es (9-oct-2026), sin hola@ontosdigital.es');
+assert.deepEqual(conCorreoViejo([['x.html','<a href="mailto:hola@ontosdigital.es">']]),['x.html'],'Caso rojo: hola@ontosdigital.es en una página debe detectarse');
 assert.throws(()=>checkContactoApps(fs.readFileSync(path.join(WEB,'aplicaciones.html'),'utf8').replace('<a class="cta" href="contacto.html" data-contacto>Cuéntame tu caso</a></div>','<a class="cta" href="contacto.html" data-contacto>Cuéntame tu caso</a><a href="mailto:hola@ontosdigital.es">correo</a></div>')),/formulario/,'Caso rojo: el correo de vuelta en Aplicaciones debe bloquear');
 assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('Lo comprueba una máquina','Lo revisa una máquina')),/que_es/,'Caso rojo: un «Qué es» fuera del mensaje debe bloquear');
 assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<p class="ontos-caja__accion"><a class="cta" href="https://ontosdigital.es/">Conocer ontos</a></p>','<p class="ontos-caja__enlace"><a href="https://ontosdigital.es/">Conocer ontos ▸</a></p>')),/botón/,'Caso rojo: Próximamente sin botón (enlace de texto) debe bloquear');
@@ -273,6 +277,8 @@ assert.throws(()=>checkEncargo(fs.readFileSync(path.join(WEB,'index.html'),'utf8
 checkFamilias(homeHtml);
 assert.throws(()=>checkFamilias(homeHtml.replace('<h3>'+lineas[0].nombre+'</h3>','<h3>Otra familia</h3>')),/títulos/,'Caso rojo: una familia fuera del canon debe bloquear');
 function signature({html,baseline=false,file,subtitle,revision,description,sep}){
+ // 9-oct-2026 (Fernando: «es: fcalle@ontosdigital.es»): el correo de la web personal cambia en todas las páginas.
+ if(baseline)html=html.split('hola@ontosdigital.es').join('fcalle@ontosdigital.es');
  const d=new DOMParser().parseFromString(html,'text/html');
  const clean=s=>s.replace(/\s+/g,' ').trim();
  if(!baseline&&d.querySelector('header.barra')){

@@ -35,7 +35,7 @@ página: ONTOS `docs/estudios/2026-10-08-separar-web-personal-y-ontos.md`.
 - Imagen social propia (8-oct-2026): `python3 brand/gen-og.py` → `brand/og.png` y `brand/og-en.png` (nombre, rótulo
   de la portada y dominio; Jost y tokens de `brand/canon/`, sin logotipo). `import-marca.cjs` ya no exporta `canon/og*.png`.
 - Pendiente: sitio GoatCounter `fernandocalle` (los contadores ya apuntan a él), Pages y DNS, Search Console.
-  Correo: `hola@ontosdigital.es`.
+  Correo: `fcalle@ontosdigital.es`.
 
 Todo lo que sigue es la historia heredada de ontosdigital-web; donde dice ontosdigital.es, la regla vale aquí con
 el dominio propio.
