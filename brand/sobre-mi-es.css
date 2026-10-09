@@ -98,7 +98,7 @@ html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto .cargo {
    el lenguaje de «Así empieza un encargo» (disco, trazo verde de marca, un solo trazo teja para la
    obra). Va a la izquierda del lugar y el título; el texto ocupa toda la ficha debajo. */
 html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto {
-  --figura: 72px;
+  --figura: 88px; /* 9-oct: «más grande, pero a la izquierda»; mismo nodo que las figuras de paso de la portada */
   display: grid; grid-template-columns: var(--figura) minmax(0, 1fr);
   grid-template-areas: "figura pais" "figura titulo" "texto texto";
   grid-template-rows: auto auto 1fr; align-content: start;
@@ -115,9 +115,8 @@ html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura {
 html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura .proyecto__nodo { fill: var(--panel); stroke: var(--borde); }
 html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura .acento { stroke: var(--teja); stroke-width: 1.75; }
 html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura .proyecto__pin { fill: var(--panel); }
-html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura .proyecto__estrellas { fill: var(--ds-brand-verde); stroke: none; }
 @media (max-width: 40rem) {
-  html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto { --figura: 64px; }
+  html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto { --figura: 72px; }
 }
 
 /* ---- premio y publicación: credencial con su fuente ---- */
