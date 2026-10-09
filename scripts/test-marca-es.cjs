@@ -180,9 +180,16 @@ function checkQueEs(html){
  // de la casa (.cta), último de la caja y tras las ediciones, hacia ontosdigital.es.
  assert(/<div class="proximo">[\s\S]*?<\/div>\s*<p class="ontos-caja__accion"><a class="cta" href="https:\/\/ontosdigital\.es\/">Conocer ontos<\/a><\/p>\s*<\/div>\s*$/.test(zona),'Próximamente: botón «Conocer ontos» (.cta) a ontosdigital.es, tras las ediciones');
  const cta=JSON.parse(fs.readFileSync(path.join(ONTOS,'data/mensaje.json'),'utf8')).superficies.find(s=>s.id==='web.cta_trabajos');
- assert(html.includes('<a class="cta cta--secundaria" href="#familias">'+cta.es+'</a>'),'Panel: segundo botón de mensaje.json web.cta_trabajos hacia #familias (los ejemplos están en sus familias)');
+ // 9-oct-2026 (Fernando: «Ver lo hecho, que te lleve a Aplicaciones, no al cuadro de familias»).
+ assert(html.includes('<a class="cta cta--secundaria" href="aplicaciones.html">'+cta.es+'</a>'),'Panel: segundo botón de mensaje.json web.cta_trabajos hacia Aplicaciones');
 }
 checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8'));
+function checkContactoApps(html){
+ const zona=html.match(/<section class="contacto" id="contacto">[\s\S]*?<\/section>/)?.[0]||'';
+ assert(/<div class="acciones"><a class="cta" href="contacto\.html" data-contacto>Cuéntame tu caso<\/a><\/div>/.test(zona)&&!zona.includes('mailto:'),'Aplicaciones: «¿Qué te gustaría construir?» lleva solo al formulario, sin el correo');
+}
+checkContactoApps(fs.readFileSync(path.join(WEB,'aplicaciones.html'),'utf8'));
+assert.throws(()=>checkContactoApps(fs.readFileSync(path.join(WEB,'aplicaciones.html'),'utf8').replace('<a class="cta" href="contacto.html" data-contacto>Cuéntame tu caso</a></div>','<a class="cta" href="contacto.html" data-contacto>Cuéntame tu caso</a><a href="mailto:hola@ontosdigital.es">correo</a></div>')),/formulario/,'Caso rojo: el correo de vuelta en Aplicaciones debe bloquear');
 assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('Lo comprueba una máquina','Lo revisa una máquina')),/que_es/,'Caso rojo: un «Qué es» fuera del mensaje debe bloquear');
 assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<p class="ontos-caja__accion"><a class="cta" href="https://ontosdigital.es/">Conocer ontos</a></p>','<p class="ontos-caja__enlace"><a href="https://ontosdigital.es/">Conocer ontos ▸</a></p>')),/botón/,'Caso rojo: Próximamente sin botón (enlace de texto) debe bloquear');
 assert.throws(()=>checkQueEs(fs.readFileSync(path.join(WEB,'index.html'),'utf8').replace('<a class="cta" href="https://ontosdigital.es/">Conocer ontos</a>','<a class="cta" href="contacto.html">Conocer ontos</a>')),/botón|ontosdigital/,'Caso rojo: botón de Próximamente que no va a ontosdigital.es debe bloquear');
@@ -385,6 +392,8 @@ function signature({html,baseline=false,file,subtitle,revision,description,sep})
  // y checkCatalogo los comprueba contra el canon (piezas, acciones, analítica y clips).
  if(file==='aplicaciones.html'){
   for(const e of d.querySelectorAll('section#trabajos, .hero h1, .hero .intro, #proximamente ul.videos, .proximo-clips, dialog.dlg, dialog.dlg-clip'))e.remove();
+  // 9-oct-2026 (Fernando: «quita lo de escríbeme a hola@ontosdigital.es (ya sale)»): la acción es solo el formulario (checkContactoApps).
+  d.querySelector('section#contacto .acciones')?.remove();
  }
  // Encargo explícito de Fernando, 3-oct-2026: cuatro familias desde el canon de la oferta
  // (ONTOS/data/ontos-empresa.json#lineas v2) y descripción desde mensaje.json web.description.

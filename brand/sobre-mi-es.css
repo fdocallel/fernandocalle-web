@@ -94,6 +94,31 @@ html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto p {
 html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto .cargo {
   color: var(--texto); font-weight: 600;
 }
+/* Figura de cada proyecto (9-oct-2026, Fernando: «algún icono… de las ciudades/países y su temática»):
+   el lenguaje de «Así empieza un encargo» (disco, trazo verde de marca, un solo trazo teja para la
+   obra). Va a la izquierda del lugar y el título; el texto ocupa toda la ficha debajo. */
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto {
+  --figura: 72px;
+  display: grid; grid-template-columns: var(--figura) minmax(0, 1fr);
+  grid-template-areas: "figura pais" "figura titulo" "texto texto";
+  grid-template-rows: auto auto 1fr; align-content: start;
+  column-gap: var(--ds-space-4); row-gap: var(--ds-space-1);
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto .pais { grid-area: pais; align-self: end; }
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto h3 { grid-area: titulo; align-self: start; }
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto p { grid-area: texto; margin-top: var(--ds-space-3); }
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura {
+  grid-area: figura; align-self: start; display: block; width: var(--figura); height: var(--figura);
+  overflow: visible; fill: none; stroke: var(--ds-brand-verde); stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura .proyecto__nodo { fill: var(--panel); stroke: var(--borde); }
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura .acento { stroke: var(--teja); stroke-width: 1.75; }
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura .proyecto__pin { fill: var(--panel); }
+html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto__figura .proyecto__estrellas { fill: var(--ds-brand-verde); stroke: none; }
+@media (max-width: 40rem) {
+  html[data-ontos-web][data-web-page="fernando-calle"] body .proyecto { --figura: 64px; }
+}
 
 /* ---- premio y publicación: credencial con su fuente ---- */
 html[data-ontos-web][data-web-page="fernando-calle"] body .credencial__items {

@@ -23,7 +23,7 @@ página: ONTOS `docs/estudios/2026-10-08-separar-web-personal-y-ontos.md`.
   «Próximamente» (tras «Así empieza un encargo», antes de «Hablamos»): «Próximamente.» como título, debajo el texto
   (bajada + qué es ontos) y el imagotipo del canon en segunda columna (96 px de símbolo; en móvil, título, imagotipo,
   texto), y las dos ediciones. Cada tarjeta de familia lleva al final su «Ejemplo real» (enlace propio; sin sección
-  #trabajos, «Ver lo hecho» va a #familias); subrejilla común para que el ejemplo empiece a la misma altura en las cuatro.
+  #trabajos, «Ver lo hecho» va a Aplicaciones desde el 9-oct); subrejilla común para que el ejemplo empiece a la misma altura en las cuatro.
   Lo vigila `test-marca-es.cjs`.
 - `brand/` es una copia; la canónica sigue en `ontosdigital-web` (la leen los scripts de ONTOS). El canon de marca
   se importa igual (`scripts/import-marca.cjs`).
