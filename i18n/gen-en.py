@@ -234,6 +234,9 @@ def traduce_etiqueta(tag, tr, pagina, indexable):
             pon("content", url_en(pagina))
         elif clave_meta in ("og:image", "twitter:image") and atrs.get("content") == DOMINIO + "/brand/og.png":
             pon("content", DOMINIO + "/brand/og-en.png")
+        # 9-oct-2026: el texto alternativo de la imagen social describe og-en.png (mismo texto que brand/gen-og.py).
+        elif clave_meta == "og:image:alt" and atrs.get("content") == "Fernando Calle · Ingeniería de la información, por encargo · fernandocalle.es":
+            pon("content", "Fernando Calle · Information engineering, on demand · fernandocalle.es")
         # redirecciones (servicios.html → aplicaciones.html): el destino del refresh también va a /en/
         if atrs.get("http-equiv", "").lower() == "refresh":
             m_url = re.match(r"(\s*\d+\s*;\s*url=)(.+)$", atrs.get("content", ""), re.I)
